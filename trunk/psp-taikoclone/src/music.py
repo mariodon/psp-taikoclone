@@ -41,43 +41,39 @@ class _CMusic(object):
     def get_millisec(self):
         pass
 
-    def destroy(self):
-        pass
-
 # a wrapper of pspogg
 class CMusicMp3(_CMusic):
     def __init__(self, filename):
-        pass
+        pspmp3.init(1)        
+        pspmp3.load(filename)
 
     def start(self):
-        pass
+        pspmp3.play()
 
     def pause(self):
+        pspmp3.pause()
         pass
 
     def stop(self):
-        pass
+        pspmp3.end()
 
     def get_millisec(self):
-        pass
-    def destroy(self):
-        pass
+        return self.mp3.get_millisec()
 
 # a wrapper of pspmp3
 class CMusicOgg(_CMusic):
     def __init__(self, filename):
-        pass
+        pspogg.init(2)
+        pspogg.load(filename)
 
     def start(self):
-        pass
+        pspogg.play()
 
     def pause(self):
-        pass
+        pspogg.pause()
 
     def stop(self):
-        pass
+        pspogg.end()
 
     def get_millisec(self):
-        pass
-    def destroy(self):
-        pass
+        return self.ogg.get_millisec()
