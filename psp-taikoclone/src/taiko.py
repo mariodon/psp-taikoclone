@@ -4,8 +4,10 @@ import time
 import os
 import psp2d
 import pspsnd
+import music
 
 RES_PATH = "taiko/res/"
+SONG_PATH = "taiko/songs/"
 SFX_PATH = "taiko/hitsounds/"
 DON = "don"
 KA = "katsu"
@@ -13,7 +15,7 @@ soundMap = {}
 
 def play_sfx(name):
     assert name in (DON, KA)
-    snd = soundMap[os.path.join(SFX_PATH,name)+"3.wav"]
+    snd = soundMap[os.path.join(SFX_PATH,name)+".wav"]
     snd.start()
 
 def on_left_down():
@@ -54,75 +56,39 @@ def update_keybuffer(new_keybuffer):
             event_map[event]()
         keybuffer[key] = new_keybuffer[key]
 
-def main2():
-    global is_keybuff_inited
+def main():
     scr = psp2d.Screen()
 
-    fnt = psp2d.Font('font_small.png')
+    fnt = psp2d.Font(os.path.join(RES_PATH, 'font_small.png'))
     dy = fnt.textHeight('') + 5
+
+    init_sound_fx()
+
+    bgm = music.CMusic(os.path.join(SONG_PATH, "bgm.ogg"))
+    bgm.set_volume(70)
+    bgm.start()
+    
+    pspsnd.setSndFxVolume(255)
 
     while True:
         pad = psp2d.Controller()
+        
+        new_keybuffer = build_keybuffer(pad)
+        update_keybuffer(new_keybuffer)
+        if pad.start:
+            bgm.stop()
+            break
 
-        scr.blit(img)
         scr.swap()
 
 # TODO: support diy hitsound
 def init_sound_fx():
     global soundMap
-    snd = pspsnd.Sound(os.path.join(SFX_PATH, DON)+"3.wav")
-    snd2 = pspsnd.Sound(os.path.join(SFX_PATH, KA)+"3.wav")
-    soundMap[os.path.join(SFX_PATH,DON)+"3.wav"] = snd
-    soundMap[os.path.join(SFX_PATH,KA)+"3.wav"] = snd2
+    snd = pspsnd.Sound(os.path.join(SFX_PATH, DON)+".wav")
+    snd2 = pspsnd.Sound(os.path.join(SFX_PATH, KA)+".wav")
+    soundMap[os.path.join(SFX_PATH,DON)+".wav"] = snd
+    soundMap[os.path.join(SFX_PATH,KA)+".wav"] = snd2
     time.sleep(5)    
-
-# load bgm into memory for play
-def init_bgm(filename):
-    assert isinstance(filename, basestring)
-    if filename.endswith(".ogg"):
-        init_ogg()
-    elif filename.endswith(".mp3"):
-        init_mp3()
-
-def clear_bgm(filename):
-    assert isinstance(filename, basestring)
-    if filename.endswith(".ogg"):
-        init_ogg()
-
-def init_ogg():
-    pass
-def init_mp3():
-    pass
-
-def main():
-    scr = psp2d.Screen()
-    fnt = psp2d.Font(os.path.join(RES_PATH, "font_small.png"))
-    dy = fnt.textHeight('') + 5
-
-    while True:
-        pad = psp2d.Controller()
-
-        img = psp2d.Image(480, 272)
-        img.clear(psp2d.Color(0, 0, 0))
-
-        fnt.drawText(img, 0, 0, 'Analog X: %d' % pad.analogX)
-        fnt.drawText(img, 0, dy, 'Analog Y: %d' % pad.analogY)
-        fnt.drawText(img, 0, 2 * dy, 'Square: %d' % int(pad.square))
-        fnt.drawText(img, 0, 3 * dy, 'Circle: %d' % int(pad.circle))
-        fnt.drawText(img, 0, 4 * dy, 'Cross: %d' % int(pad.cross))
-        fnt.drawText(img, 0, 5 * dy, 'Triangle: %d' % int(pad.triangle))
-        fnt.drawText(img, 0, 6 * dy, 'Left: %d' % int(pad.left))
-        fnt.drawText(img, 0, 7 * dy, 'Right: %d' % int(pad.right))
-        fnt.drawText(img, 0, 8 * dy, 'Up: %d' % int(pad.up))
-        fnt.drawText(img, 0, 9 * dy, 'Down: %d' % int(pad.down))
-        fnt.drawText(img, 0, 10 * dy, 'Left trigger: %d' % int(pad.l))
-        fnt.drawText(img, 0, 11 * dy, 'Right trigger: %d' % int(pad.r))
-
-        if pad.start:
-            break
-
-        scr.blit(img)
-        scr.swap()
 
 if __name__ == '__main__':
     main()
