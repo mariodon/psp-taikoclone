@@ -1,6 +1,7 @@
 # $Id$
-import pspogg, pspmp3
 import os
+import pspsnd # need import this first, it just works this way.
+import pspogg, pspmp3
 
 class UnsupportedError(Exception):
     def __init__(self, reason):

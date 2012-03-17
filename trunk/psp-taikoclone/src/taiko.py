@@ -3,29 +3,20 @@
 import time
 import os
 import psp2d
-import pspsnd
+import hitsound
 import music
 
 RES_PATH = "taiko/res/"
 SONG_PATH = "taiko/songs/"
-SFX_PATH = "taiko/hitsounds/"
-DON = "don"
-KA = "katsu"
-soundMap = {}
-
-def play_sfx(name):
-    assert name in (DON, KA)
-    snd = soundMap[os.path.join(SFX_PATH,name)+".wav"]
-    snd.start()
 
 def on_left_down():
-    play_sfx(KA)
+    hitsound.play(hitsound.KA)
 def on_down_down():
-    play_sfx(DON)
+    hitsound.play(hitsound.DON)
 def on_cross_down():
-    play_sfx(DON)
+    hitsound.play(hitsound.DON)
 def on_circle_down():
-    play_sfx(KA)
+    hitsound.play(hitsound.KA)
 
 is_keybuffer_inited = False
 keybuffer = {"left":None, "down":None, "right":None, "up":None,
@@ -62,14 +53,16 @@ def main():
     fnt = psp2d.Font(os.path.join(RES_PATH, 'font_small.png'))
     dy = fnt.textHeight('') + 5
 
-    init_sound_fx()
+    # init hitsound
+    hitsound.init("default")
+    hitsound.set_volume(255)
 
+    # init music
     bgm = music.CMusic(os.path.join(SONG_PATH, "bgm.ogg"))
     bgm.set_volume(70)
     bgm.start()
-    
-    pspsnd.setSndFxVolume(255)
 
+    # yeah, start play
     while True:
         pad = psp2d.Controller()
         
@@ -80,15 +73,6 @@ def main():
             break
 
         scr.swap()
-
-# TODO: support diy hitsound
-def init_sound_fx():
-    global soundMap
-    snd = pspsnd.Sound(os.path.join(SFX_PATH, DON)+".wav")
-    snd2 = pspsnd.Sound(os.path.join(SFX_PATH, KA)+".wav")
-    soundMap[os.path.join(SFX_PATH,DON)+".wav"] = snd
-    soundMap[os.path.join(SFX_PATH,KA)+".wav"] = snd2
-    time.sleep(5)    
 
 if __name__ == '__main__':
     main()

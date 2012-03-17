@@ -52,3 +52,6 @@ def play(name=DON):
 def reset():
     _theme = None
     _sounds = {} # yeah, i don't know how to release sound instance.
+    
+def set_volume(vol):
+    pspsnd.setSndFxVolume(vol)
