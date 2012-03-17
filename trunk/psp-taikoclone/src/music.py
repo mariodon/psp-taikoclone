@@ -1,11 +1,10 @@
 # $Id$
-# -*- coding:gbk -*-
 import pspogg, pspmp3
 import os
 
 class UnsupportedError(Exception):
     def __init__(self, reason):
-        self.reason = reasosn
+        self.reason = reason
     def __repr__(self):
         return reason 
 
@@ -13,21 +12,22 @@ instance = None
 def CMusic(filename):
     global instance
     if instance is not None:
-        if os.path.abspath(instance.filename) != os.path.abspath(filename):
-            raise UnsupportedError("Loading Multiple Audio File(mp3/ogg \
-                    is not supported at the moment.")
-        return instance
-    if filename.endswith(".ogg"):
+        if os.path.abspath(instance.filename) == os.path.abspath(filename):
+            return instance
+        instance.stop()
+        instance = None
+    ext = filename.rsplit('.', 2)[-1]
+    if ext.lower() == "ogg":
         instance = CMusicOgg(filename)
-    elif filename.endswith(".mp3"):
+    elif ext.lower() == "mp3":
         instance = CMusicMp3(filename)
     else:
-        raise UnsupportedError("Only support mp3/ogg at the moment."
+        raise UnsupportedError("Only support mp3/ogg at the moment.")
     return instance
 
 class _CMusic(object):
     def __init__(self, filename):
-        pass
+        self.filename = filename
 
     def start(self):
         pass
@@ -44,6 +44,7 @@ class _CMusic(object):
 # a wrapper of pspogg
 class CMusicMp3(_CMusic):
     def __init__(self, filename):
+        super(CMusicMp3, self).__init__(filename)
         pspmp3.init(1)        
         pspmp3.load(filename)
 
@@ -52,17 +53,23 @@ class CMusicMp3(_CMusic):
 
     def pause(self):
         pspmp3.pause()
-        pass
 
     def stop(self):
         pspmp3.end()
 
     def get_millisec(self):
-        return self.mp3.get_millisec()
+        return pspmp3.get_millisec()
+
+    def get_volume(self):
+        return pspmp3.getvol()
+
+    def set_volume(self, vol):
+        return pspmp3.setvol(vol)
 
 # a wrapper of pspmp3
 class CMusicOgg(_CMusic):
     def __init__(self, filename):
+        super(CMusicOgg, self).__init__(filename)
         pspogg.init(2)
         pspogg.load(filename)
 
@@ -76,4 +83,10 @@ class CMusicOgg(_CMusic):
         pspogg.end()
 
     def get_millisec(self):
-        return self.ogg.get_millisec()
+        return pspogg.get_millisec()
+
+    def get_volume(self):
+        return pspogg.getvolume()
+
+    def set_volume(self, vol):
+        return pspogg.volume(vol)
