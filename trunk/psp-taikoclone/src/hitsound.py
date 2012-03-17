@@ -1,10 +1,9 @@
 # $Id$
-# -*- coding:gbk -*-
 import os
 import pspsnd
 
 # consts
-ROOT = "taiko/hitsound"
+ROOT = "taiko/hitsounds"
 
 DON = "don"
 KATSU = "katsu"
@@ -35,7 +34,7 @@ def init(theme="default"):
     
     # load hitsounds
     for name in ALL_HITSOUND_NAMES:
-        full_name = os.path.join(folder, name)
+        full_name = os.path.join(folder, name) + ".wav"
         assert os.path.isfile(full_name), "missing hitsound %s" % name
         _sounds[full_name] = pspsnd.Sound(full_name)
 
