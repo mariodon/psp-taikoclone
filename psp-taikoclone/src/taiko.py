@@ -5,18 +5,19 @@ import os
 import psp2d
 import hitsound
 import music
+import ui
 
 RES_PATH = "taiko/res/"
 SONG_PATH = "taiko/songs/"
 
 def on_left_down():
-    hitsound.play(hitsound.KA)
+    hitsound.play(hitsound.KATSU)
 def on_down_down():
     hitsound.play(hitsound.DON)
 def on_cross_down():
     hitsound.play(hitsound.DON)
 def on_circle_down():
-    hitsound.play(hitsound.KA)
+    hitsound.play(hitsound.KATSU)
 
 is_keybuffer_inited = False
 keybuffer = {"left":None, "down":None, "right":None, "up":None,
@@ -71,6 +72,9 @@ def main():
         if pad.start:
             bgm.stop()
             break
+
+        ui.draw_background(scr)
+        ui.draw_taiko(scr)
 
         scr.swap()
 
