@@ -53,4 +53,4 @@ def reset():
     _sounds = {} # yeah, i don't know how to release sound instance.
     
 def set_volume(vol):
-    pspsnd.setSndFxVolume(vol)
+    pspsnd.setSndFxVolume(int(2.55 * vol))
