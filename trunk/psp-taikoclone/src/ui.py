@@ -78,10 +78,39 @@ class _CTaikoFlash(object):
             color, dir = self._get_color_dir(i)
             draw_taiko_flash(scr, color, dir)
 
-def CSoulBar():
-    pass
+class SoulBar(object):
+    def __init__(self, min, max, norma):
+        self.min = min
+        self.max = max
+        self.norma = norma
+        self._value = min
+        self.tex = None
 
-class _SoulBar(object):
-    def __init__():
-        pass
+    def set_texture(self, name):
+        self.tex = get_texture(name)
 
+    def set_value(self, val):
+        val = max(self.min, min(val, self.max))
+        self._value = val
+
+    def get_value(self):
+        return self._value
+
+    value = property(get_value, set_value)
+
+    def draw(self, scr):
+        assert self.tex is not None
+        sx, sy, w, h = config.NORMA_GAUGE_EMPTY
+        dx, dy = config.NORMA_GAUGE_POS
+        scr.blit(self.tex, sx, sy, w, h, dx, dy, True) # draw empty gauge
+        
+        gauge = None
+        if self._value == self.max:
+            gauge = config.NORMA_GAUGE_FULL
+        elif self._value >= self.norma:
+            gauge = config.NORMA_GAUGE_NOT_FULL
+        else:
+            gauge = config.NORMA_GAUGE_NOT_CLEAR
+        sx, sy, w, h = gauge
+        w = int(1.0 * w * self._value / self.max)
+        scr.blit(self.tex, sx, sy, w, h, dx, dy, True)

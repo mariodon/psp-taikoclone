@@ -6,11 +6,13 @@ import psp2d
 import hitsound
 import music
 import ui
+import config
 
 RES_PATH = "taiko/res/"
 SONG_PATH = "taiko/songs/"
 
 taiko_flash = ui.CTaikoFlash() 
+soul_bar = ui.SoulBar(0, 240, 180)
 
 def on_up_down():
     taiko_flash.flash_duration += 0.01
@@ -21,15 +23,19 @@ def on_triangle_down():
 def on_left_down():
     taiko_flash.add("blue", "left")
     hitsound.play(hitsound.KATSU)
+    soul_bar.value -= 1
 def on_down_down():
     taiko_flash.add("red", "left")
     hitsound.play(hitsound.DON)
+    soul_bar.value += 1
 def on_cross_down():
     taiko_flash.add("red", "right")
     hitsound.play(hitsound.DON)
+    soul_bar.value += 1    
 def on_circle_down():
     taiko_flash.add("blue", "right")
     hitsound.play(hitsound.KATSU)
+    soul_bar.value -= 1    
 
 is_keybuffer_inited = False
 keybuffer = {"left":None, "down":None, "right":None, "up":None,
@@ -77,6 +83,9 @@ def main():
     bgm.set_volume(40)
     bgm.start()
 
+    # init misc
+    soul_bar.set_texture(config.NORMA_GAUGE)
+
     fps = 60.0
     t1 = -1
     # TODO: limit rendering framerate.
@@ -95,6 +104,7 @@ def main():
             ui.draw_taiko(scr)
             taiko_flash.update(t2 - t1)
             taiko_flash.draw(scr)
+            soul_bar.draw(scr)
             scr.swap()
             t1 = t2
 
