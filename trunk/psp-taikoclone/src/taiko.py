@@ -7,12 +7,14 @@ import hitsound
 import music
 import ui
 import config
+import tja_parser
 
 RES_PATH = "taiko/res/"
 SONG_PATH = "taiko/songs/"
 
 taiko_flash = ui.CTaikoFlash() 
 soul_bar = ui.SoulBar(0, 240, 180)
+noteflow = None
 
 def on_up_down():
     taiko_flash.flash_duration += 0.01
@@ -79,34 +81,70 @@ def main():
     hitsound.set_volume(100)
 
     # init music
-    bgm = music.CMusic(os.path.join(SONG_PATH, "bgm.ogg"))
+    bgm = music.CMusic(os.path.join(SONG_PATH, "aaa.mp3"))
     bgm.set_volume(40)
-    bgm.start()
 
     # init misc
     soul_bar.set_texture(config.NORMA_GAUGE)
 
+    # init fumen
+    tja_parser.debug_mode = True
+    tja_parser.tja2osu(os.path.join(SONG_PATH, "aaa.tja"))
+
+    # init note flow
+    global noteflow
+    offset = int(-tja_parser.OFFSET * 1000)
+    notes = tja_parser.HitObjects
+    start_x = config.NOTE_APPEAR_X
+    end_x = config.NOTE_DISAPPEAR_X
+    note_y = config.NOTE_Y
+    noteflow = ui.CNoteFlow(offset, notes, start_x, end_x, note_y)
+    # init images
+    ui.preload_textures()
+
+    # start play
+    bgm.start()
     fps = 60.0
+    input_fps = 120.0
     t1 = -1
+    t4 = -1
+    t0 = time.clock()
+    fps_cnt = 0
+
+    input_cost_max = -1
+    draw_cost_max = -1
     # TODO: limit rendering framerate.
     while True:
-        pad = psp2d.Controller()
-        
-        new_keybuffer = build_keybuffer(pad)
-        update_keybuffer(new_keybuffer)
-        if pad.start:
-            bgm.stop()
-            break
+
+        t3 = time.clock()
+        if t3 - t4 >= 1/input_fps:
+            tb = time.clock()
+            pad = psp2d.Controller()
+            
+            new_keybuffer = build_keybuffer(pad)
+            update_keybuffer(new_keybuffer)
+            if pad.start:
+                print "frame = %d, time = %f" % (fps_cnt, time.clock() - t0)
+                print "cost: input=%f, draw=%f" % (input_cost_max,
+                        draw_cost_max)
+                bgm.stop()
+                break
+            input_cost_max = max(input_cost_max, time.clock()-tb)
+            t4 = t3
     
         t2 = time.clock()
         if t2 - t1 >= 1/fps:
+            tb = time.clock()
+            fps_cnt += 1
             ui.draw_background(scr)
             ui.draw_taiko(scr)
             taiko_flash.update(t2 - t1)
             taiko_flash.draw(scr)
             soul_bar.draw(scr)
+            #noteflow.draw(scr, bgm.get_millisec())
             scr.swap()
             t1 = t2
+            draw_cost_max = max(draw_cost_max, time.clock() - tb)
 
 if __name__ == '__main__':
     main()
