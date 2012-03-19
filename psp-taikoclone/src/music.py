@@ -59,7 +59,7 @@ class CMusicMp3(_CMusic):
         pspmp3.end()
 
     def get_millisec(self):
-        return pspmp3.get_millisec()
+        return pspmp3.getmillisec()
 
     def get_volume(self):
         return pspmp3.getvol()
@@ -84,7 +84,7 @@ class CMusicOgg(_CMusic):
         pspogg.end()
 
     def get_millisec(self):
-        return pspogg.get_millisec()
+        return pspogg.getmillisec()
 
     def get_volume(self):
         return pspogg.getvolume()

@@ -7,6 +7,14 @@ ROOT = "taiko/res"
 
 _tex = {}
 
+def preload_textures():
+    get_texture(config.BG)
+    get_texture(config.TAIKO)
+    get_texture(config.TAIKO_FLASH_BLUE)
+    get_texture(config.TAIKO_FLASH_RED)
+    get_texture(config.NORMA_GAUGE)
+    get_texture(config.NOTES)
+
 def get_texture(name):
     global _tex
     full_name = os.path.join(ROOT, name)
@@ -114,3 +122,100 @@ class SoulBar(object):
         sx, sy, w, h = gauge
         w = int(1.0 * w * self._value / self.max)
         scr.blit(self.tex, sx, sy, w, h, dx, dy, True)
+
+class CNoteFlow(object):
+    def __init__(self, offset, notes, start_x, end_x, y):
+        self.notes = notes
+        self.offset = offset
+        self.time_passed = 0
+        self.start_x = start_x
+        self.end_x = end_x
+        self.note_dist = abs(end_x - start_x)
+        self.y = y
+        # global note spd
+        
+        #self.spd = 30 * 160 * 4 / (60000)
+        self.spd = 0.32
+
+        print "startx, end_x", self.start_x, self.end_x
+        print "y=", self.y
+        print "tm_pass_screen", int(self.note_dist / self.spd)        
+
+    def _is_insight(offset, play_time, spd=0):
+        return play_time + int(self.note_dist / spd) >= offset
+
+    def get_pos(self, offset, play_time, spd=0):
+        ret = self.end_x - (play_time + int(self.note_dist / spd) - offset) * spd
+
+        return ret
+    def update(self, play_time):
+        # remove earliest notes which is too late to hit
+        while self.notes:
+            first_note = self.notes[0]
+            note_offset = first_note[1]
+            if note_offset + self.offset >= play_time:
+                self.notes.pop(0)
+            else:
+                break
+
+        # update the position of all notes which should be seen
+        for i, note in enumerate(self.notes):
+            if not self._is_insight(note[1], play_time, self.spd):
+                pass
+
+    def draw(self, scr, play_time):
+        too_late_cnt = 0
+        # update the position of all notes which should be seen
+        for i, note in enumerate(self.notes):
+            x = self.get_pos(note[1], play_time, self.spd)
+            if x < self.end_x:
+                too_late_cnt += 1
+            elif x <= self.start_x:
+                draw_note(scr, note[0], int(x), self.y) 
+            else:
+                break
+        # TODO: show missed anim
+        if too_late_cnt > 0:
+            self.notes = self.notes[too_late_cnt:]
+
+DON = 1
+KATSU = 2
+BIG_DON = 3
+BIG_KATSU = 4
+YELLOW = 5 
+BIG_YELLOW = 6 
+BALLON = 7
+IMO = 9
+DURATION_END = 8
+
+# bar line can be treated as a special note
+def draw_note(screen, type, x, y):
+    tex = get_texture(config.NOTES)
+    area = None
+    if type == DON:
+        area = config.NOTE_DON
+    elif type == KATSU:
+        area = config.NOTE_KATSU
+    elif type == BIG_DON:
+        area = config.NOTE_BIG_DON
+    elif type == BIG_KATSU:
+        area = config.NOTE_BIG_KATSU
+    elif type == YELLOW:
+        area = config.NOTE_YELLOW_HEAD
+    elif type == BIG_YELLOW:
+        area = config.NOTE_BIG_YELLOW_HEAD
+    elif type == DURATION_END:
+        return
+
+    if type in (IMO, BALLON):
+        sx, sy, w, h = config.NOTE_BALLON
+        x -= config.NOTE_BALLON_CENTER[0]
+        y -= config.NOTE_BALLON_CENTER[1]
+    else:
+        assert area is not None
+        sx, sy, w, h = area
+        x -= w/2
+        y -= h/2
+
+    screen.blit(tex, sx, sy, w, h, x, y, True)
+    return
