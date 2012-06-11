@@ -1,1 +1,0 @@
-TODO: Use GoldWave Batch Processing Mode to convert audio file to WAVE PCM uncompressed mono sound.
