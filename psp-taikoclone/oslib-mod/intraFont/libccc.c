@@ -537,3 +537,30 @@ int cccCodetoUCS2(cccUCS2 * dst, size_t count, cccCode const * str, unsigned cha
 	return length;
 }
 
+int cccUSC2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str) {
+    int length = 0;
+    cccUCS2 *p = str;
+    
+    while (*p != 0) {
+        if (*p <= 0x7F && length + 1 <= count) {
+            dst[length ++] = *(p ++);
+        } else if (*p <= 0x7FF && length + 2 <= count) {
+            dst[length ++] = (0xC0 | (*(p ++) >> 6));
+            dst[length ++] = (0x80 | (*(p ++) & 0x3F));
+        } else if (length + 3 <= count) {
+            dst[length ++] = (0xE0 | (*(p ++) >> 12));
+            dst[length ++] = (0x80 | ((*(p ++) >> 6) & (0x3F)));
+            dst[length ++] = (0x80 | (*(p ++) & 0x3F));
+        }
+    }
+    return length;
+}
+
+int cccUSC2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str) {
+    int length = 0;
+    cccUCS2 *p = str;
+    
+    while(*p != 0) {
+        
+    }
+}
