@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <pspkernel.h>
 #include "fat.h"
-//#include "libminiconv.h"
+#include "libminiconv.h"
 
 static int fwVersion;
 static int fatfd = -1;
@@ -283,10 +283,10 @@ static int fat_get_longname(p_fat_entry entrys, u32 cur, char * longnamestr)
 	longname[255] = 0;
 	memset(longnamestr, 0, 256);
 
-	//char* temp = miniConvUTF16LEConv(longname);
-	//if(temp) {
-		strncpy(longnamestr, longname, 255);
-	//}
+	char* temp = miniConvUTF16LEConv(longname);
+	if(temp) {
+		strncpy(longnamestr, temp, 255);
+	}
 	return 1;
 }
 
@@ -446,16 +446,20 @@ static u32 fat_dir_clus(const char * dir, char * shortdir)
 		{
 			if(fat_locate(partname, shortdir, clus, &entry))
 			{
+                printf("locate ok!\n");
 				clus = entry.norm.clus_high;
 				clus = ((fat_type == fat32) ? (clus << 16) : 0) + entry.norm.clus;
 			}
 			else
 			{
+                printf("OH....\n");
 				fat_free_table();
 				return 0;
 			}
 		}
+        
 		partname = strtok(NULL, "/\\");
+        printf("partname %s\n", partname);
 	}
 	fat_free_table();
 	return clus;
@@ -465,7 +469,9 @@ u32 fat_readdir(const char * dir, char * sdir, p_fat_info * info)
 {
 	if(!fat_load_table() || fatfd < 0)
 		return INVALID;
+    printf("a\n");
 	u32 clus = fat_dir_clus(dir, sdir);
+    printf("%d\n", clus);
 	SceUID dl = 0;
 	if(clus == 0 || (dl = sceIoDopen(sdir)) < 0)
 	{
@@ -473,6 +479,7 @@ u32 fat_readdir(const char * dir, char * sdir, p_fat_info * info)
 		sceIoDclose(dl);
 		return INVALID;
 	}
+    printf("b\n");    
 	u32 ecount = 0;
 	p_fat_entry entrys;
 	if(!fat_dir_list(clus, &ecount, &entrys))
@@ -481,6 +488,7 @@ u32 fat_readdir(const char * dir, char * sdir, p_fat_info * info)
 		sceIoDclose(dl);
 		return INVALID;
 	}
+    printf("c\n");    
 	u32 count = 0, cur = 0, i;
 	for(i = 0; i < ecount; i ++)
 	{
@@ -495,6 +503,7 @@ u32 fat_readdir(const char * dir, char * sdir, p_fat_info * info)
 		sceIoDclose(dl);
 		return INVALID;
 	}
+    printf("d %d\n", ecount);    
 	SceIoDirent sid;
 	for(i = 0; i < ecount; i ++)
 	{
@@ -525,6 +534,7 @@ u32 fat_readdir(const char * dir, char * sdir, p_fat_info * info)
 	free(entrys);
 	fat_free_table();
 	sceIoDclose(dl);
+    printf("OK?\n");
 	return cur;
 }
 

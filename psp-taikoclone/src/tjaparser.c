@@ -129,7 +129,6 @@ int tjaparser_read_tja_header(tja_header_t *ret)
 
     printf("begin\n");
     for (metadata_def = &tja_header_defs[0]; metadata_def->name != NULL; ++ metadata_def) {
-        printf("at least i'm in\n");
         metadata_get_default(metadata_def, ret);
     }
 
@@ -166,12 +165,15 @@ int tjaparser_read_course_header(int idx, course_header_t *ret)
 
     printf("SEEK SUCCESS!\n");
     for (metadata_def = &course_header_defs[0]; metadata_def->name != NULL; ++ metadata_def) {
+        printf("================================\n");
+        printf("%s\n", metadata_def->name);
         metadata_get_default(metadata_def, ret);
     }
 
+    printf("init header def ok\n");
     while (!feof(fp)) {
         line = fgets(buf, MAX_LINE_WIDTH, fp);
-        //printf("before strip len=%d\n", strlen(line));
+        printf("before strip len=%d\n", strlen(line));
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
         printf("after  strip len=%d\n", strlen(line));        

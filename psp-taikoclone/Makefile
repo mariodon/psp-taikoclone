@@ -6,7 +6,12 @@ OBJS = src/test.o \
 	   src/tjaparser.o \
 	   src/ui/ui_utils.o \
 	   src/ui/song_select_ui.o \
-	   src/song_select.o
+	   src/song_select.o \
+	   src/helper/fat.o \
+	   src/helper/MiniConv.o \
+	   src/helper/mem64.o \
+	   src/helper/opendir.o \
+
 YOURLIBS = 
 BUILD_PRX = 1
 
