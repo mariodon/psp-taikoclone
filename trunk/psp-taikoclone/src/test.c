@@ -14,7 +14,8 @@ PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
 PSP_HEAP_SIZE_KB(-64*15); 
 
 int bgm_channel;
-char *tja_path = "tja/";
+//static char *tja_path = "ms0:/psp/game/taikoc/tja/";
+char *tja_path = "tja2/";
 
 void print_pf_value()
 {
@@ -31,7 +32,7 @@ int print_str_as_hex(char *str)
     char *p;
     puts("");
     for (p = str; *p != '\0'; ++ p) {
-        printf("%x", p);
+        printf("\\x%x", (unsigned char)(*p));
     }
     puts("");
 }
@@ -43,6 +44,8 @@ note_t *initFumen(char *root, char *filename)
     char buf[512];
     tja_header_t header;
     note_t *ret;
+    char len, buf3[512];
+    short buf2[512];    
     char *p;
 
     strcpy(buf, root);
@@ -56,7 +59,6 @@ note_t *initFumen(char *root, char *filename)
     }
 
     printf("%s\n", header.wave);
-    printf("cmp filename %d", strcmp(header.wave, test1));
     print_str_as_hex(header.wave);
 
     AalibInit();
@@ -71,6 +73,17 @@ note_t *initFumen(char *root, char *filename)
         bgm_channel = PSPAALIB_CHANNEL_WAV_3;
     }
     strcpy(buf, root);
+
+    len = cccGBKtoUCS2(buf2, 511, header.wave);
+    printf("%d len=", len);
+    buf2[len] = 0;
+
+    len = cccUSC2toSJIS(buf3, 511, buf2); 
+    printf("%d len=1", len);    
+    buf3[len] = 0;
+    
+    //strcpy(buf3, "\x82\xed\x82\xf1\x82\xc9\x82\xe1\x81[\x83\x8f\x81[\x83\x8b\x83h.ogg");
+    //strcat(buf, buf3);
     strcat(buf, header.wave);
     printf("Loading music ...\n");
     if (AalibLoad(buf, bgm_channel, FALSE, TRUE)) {
@@ -106,6 +119,25 @@ int main(int argc, char *argv[])
 
     OSL_CONTROLLER *pad;
 
+    float eps = 1e-4;
+    float delta = 0;
+    float play_pos = 0;
+    int selecting = TRUE; 
+
+    /* selected fumen info */
+    char *filename = malloc(512+1);
+    char *root = malloc(512+1);
+    int course_idx;
+
+    /* real time info display */
+    float fumen_offset;
+    int offset = 17; /* offset fix up */
+    int auto_play = TRUE;
+
+    /* debug process */
+    //char *debug_fumen = "\x82\xed\x82\xf1\x82\xc9\x82\xe1\x81[\x83\x8f\x81[\x83\x8b\x83h.tja";
+    char *debug_fumen = NULL; //file_list[file_list_len-2];    
+
     scePowerSetCpuClockFrequency(333);
 
     oslInit(0);
@@ -119,33 +151,13 @@ int main(int argc, char *argv[])
 
     oslSetFont(jpn0);
     
-    print_pf_value();
-    
-
-
-    float eps = 1e-4;
-    float delta = 0;
-    float play_pos = 0;
-    int selecting = TRUE; 
-
-    /* selected fumen info */
-    char filename[512+1];
-    char root[512+1];
-    int course_idx;
-
-    /* real time info display */
-    float fumen_offset;
-    int offset = 0; /* offset fix up */
-    int auto_play = TRUE;
-
-    /* debug process */
-    //char *debug_fumen = "venomous.tja";
-    char *debug_fumen = NULL; //file_list[file_list_len-2];
+    //print_pf_value();
 
     /* main loop */
     while (!osl_quit)
     {
         if (selecting) {
+            
             if (debug_fumen != NULL) {
                 strcpy(filename, debug_fumen);
                 strcpy(root, tja_path);
@@ -160,6 +172,8 @@ int main(int argc, char *argv[])
 
             printf("selected %s%s: %d\n", root, filename, course_idx);
             selecting = FALSE;
+
+            oslSetFont(jpn0);
 
             note = initFumen(root, filename);
             init_drawing(note);

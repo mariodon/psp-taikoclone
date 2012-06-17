@@ -20,6 +20,7 @@ static void* __table_ptr__[CCC_N_CP];
 static void* __table_end__[CCC_N_CP];
 static unsigned char __table_dyn__[CCC_N_CP];
 static cccUCS2 __error_char_ucs2__ = 0x0000U;
+static cccUCS2 *table = NULL;
 
 /* the following code is adapted from libLZR 0.11 (see http://www.psp-programming.com/benhur) */
 
@@ -539,7 +540,7 @@ int cccCodetoUCS2(cccUCS2 * dst, size_t count, cccCode const * str, unsigned cha
 
 int cccUSC2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str) {
     int length = 0;
-    cccUCS2 *p = str;
+    cccUCS2 const * p = str;
     
     while (*p != 0) {
         if (*p <= 0x7F && length + 1 <= count) {
@@ -558,9 +559,60 @@ int cccUSC2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str) {
 
 int cccUSC2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str) {
     int length = 0;
-    cccUCS2 *p = str;
+    cccUCS2 const * p = str;
     
-    while(*p != 0) {
-        
+    if (table == NULL) {
+    	SceUID fd = sceIoOpen("encodings/ucs2_cp932.dat", PSP_O_RDONLY, 0777);
+        if (fd < 0) return CCC_ERROR_FILE_READ;
+        unsigned int filesize = sceIoLseek(fd, 0, SEEK_END);
+        sceIoLseek(fd, 0, SEEK_SET);
+        table = (cccUCS2*)malloc(filesize);
+	    if (!table) {
+		    sceIoClose(fd);
+		    return CCC_ERROR_MEM_ALLOC;
+	    }
+        if (sceIoRead(fd, table, filesize) != filesize) {
+		    sceIoClose(fd);
+		    free(table);
+		    return CCC_ERROR_FILE_READ;
+	    }
+	    sceIoClose(fd);
+        printf("load table ok!\n");
+        printf("filesize=%d\n", filesize);
+        printf("header size =%d\n", table[0]);        
+        int j;
+        for (j=0;j<table[0];++j) {
+            printf("(%d, %d)\n", table[1+j*2], table[2+j*2]);
+        }
     }
+
+    while(*p != 0 && length < count) {
+        int i, id=0, flag=0, val;
+
+        for (i = 0; i < table[0]; ++ i) {
+            if (*p >= table[1+i*2] && *p <= table[1+i*2+1]) {
+                id += *p - table[1+i*2];
+                flag = 1;
+                break;
+            } else {
+                id += table[i*2+2] - table[i*2+1] + 1;
+            }
+        } 
+        if (! flag) {
+            dst[length ++] = 0;
+        } else {
+            val = table[1+table[0]*2+id];
+            if (val < 0x100) {
+                dst[length ++] = (cccCode)val;
+            } else if (length + 1 < count) {
+                dst[length ++] = (cccCode)(val >> 8);
+                dst[length ++] = (cccCode)(val & 0xFF);
+            } else {
+                dst[length ++] = 0;
+            }
+        }
+
+        ++ p;
+    }
+    return length;
 }
