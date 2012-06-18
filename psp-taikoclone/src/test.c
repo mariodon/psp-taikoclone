@@ -78,7 +78,7 @@ note_t *initFumen(char *root, char *filename)
     printf("%d len=", len);
     buf2[len] = 0;
 
-    len = cccUSC2toSJIS(buf3, 511, buf2); 
+    len = cccUCS2toSJIS(buf3, 511, buf2); 
     printf("%d len=1", len);    
     buf3[len] = 0;
     

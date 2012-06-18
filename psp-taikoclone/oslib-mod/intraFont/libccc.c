@@ -352,7 +352,7 @@ int cccStrlenUCS2(cccUCS2 const * str) {
 int cccSJIStoUCS2(cccUCS2 * dst, size_t count, cccCode const * str) {
 	if (!str || !dst) return 0;
 	if (!cccInitialized) cccInit();
-	if (!(__table_ptr__[CCC_CP932])) cccLoadTable("flash0:/vsh/etc/cptbl.dat", CCC_CP932);
+	if (!(__table_ptr__[CCC_CP932])) cccLoadTable("encodings/cptbl.dat", CCC_CP932);
 	
 	int i = 0, length = 0, j, code, id;
 	if (__table_ptr__[CCC_CP932]) { //table is present
@@ -383,7 +383,7 @@ int cccSJIStoUCS2(cccUCS2 * dst, size_t count, cccCode const * str) {
 int cccGBKtoUCS2(cccUCS2 * dst, size_t count, cccCode const * str) {
 	if (!str || !dst) return 0;
 	if (!cccInitialized) cccInit();
-	if (!(__table_ptr__[CCC_CP936])) cccLoadTable("flash0:/vsh/etc/cptbl.dat", CCC_CP936);
+	if (!(__table_ptr__[CCC_CP936])) cccLoadTable("encodings/cptbl.dat", CCC_CP936);
 
 	unsigned char* entry;
 	unsigned short code;
@@ -417,7 +417,7 @@ int cccGBKtoUCS2(cccUCS2 * dst, size_t count, cccCode const * str) {
 int cccKORtoUCS2(cccUCS2 * dst, size_t count, cccCode const * str) {
 	if (!str || !dst) return 0;
 	if (!cccInitialized) cccInit();
-	if (!(__table_ptr__[CCC_CP949])) cccLoadTable("flash0:/vsh/etc/cptbl.dat", CCC_CP949);
+	if (!(__table_ptr__[CCC_CP949])) cccLoadTable("encodings/cptbl.dat", CCC_CP949);
 
 	unsigned char* entry;
 	unsigned short code;
@@ -451,7 +451,7 @@ int cccKORtoUCS2(cccUCS2 * dst, size_t count, cccCode const * str) {
 int cccBIG5toUCS2(cccUCS2 * dst, size_t count, cccCode const * str) {
 	if (!str || !dst) return 0;
 	if (!cccInitialized) cccInit();
-	if (!(__table_ptr__[CCC_CP950])) cccLoadTable("flash0:/vsh/etc/cptbl.dat", CCC_CP950);
+	if (!(__table_ptr__[CCC_CP950])) cccLoadTable("encodings/cptbl.dat", CCC_CP950);
 
 	typedef struct {
 		unsigned short code;
@@ -522,7 +522,7 @@ int cccCodetoUCS2(cccUCS2 * dst, size_t count, cccCode const * str, unsigned cha
 		default: 
 			if (cp < CCC_N_CP) { //codepage in range?
 				if (!cccInitialized) cccInit();
-				if (!(__table_ptr__[cp]) && (cp > 0)) cccLoadTable("flash0:/vsh/etc/cptbl.dat", cp);
+				if (!(__table_ptr__[cp]) && (cp > 0)) cccLoadTable("encodings/cptbl.dat", cp);
 				while (str[length] && length < count) { //conversion: ASCII (if ASCII) or LUT-value (if LUT exists) or error_char (if LUT doesn't exist)
 					if (str[length] < 0x80) {
 						dst[length] = (cccUCS2)str[length];
@@ -538,7 +538,7 @@ int cccCodetoUCS2(cccUCS2 * dst, size_t count, cccCode const * str, unsigned cha
 	return length;
 }
 
-int cccUSC2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str) {
+int cccUCS2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str) {
     int length = 0;
     cccUCS2 const * p = str;
     
@@ -557,7 +557,7 @@ int cccUSC2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str) {
     return length;
 }
 
-int cccUSC2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str) {
+int cccUCS2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str) {
     int length = 0;
     cccUCS2 const * p = str;
     
@@ -577,13 +577,6 @@ int cccUSC2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str) {
 		    return CCC_ERROR_FILE_READ;
 	    }
 	    sceIoClose(fd);
-        printf("load table ok!\n");
-        printf("filesize=%d\n", filesize);
-        printf("header size =%d\n", table[0]);        
-        int j;
-        for (j=0;j<table[0];++j) {
-            printf("(%d, %d)\n", table[1+j*2], table[2+j*2]);
-        }
     }
 
     while(*p != 0 && length < count) {
