@@ -27,7 +27,7 @@ void print_pf_value()
     printf("OSL_PF_4BIT: %d\n", OSL_PF_4BIT);    
 }
 
-int print_str_as_hex(char *str)
+void print_str_as_hex(char *str)
 {
     char *p;
     puts("");
@@ -35,6 +35,7 @@ int print_str_as_hex(char *str)
         printf("\\x%x", (unsigned char)(*p));
     }
     puts("");
+    return;
 }
 
 char test1[500], test2[500];
@@ -43,11 +44,12 @@ note_t *initFumen(char *root, char *filename)
 {
     char buf[512];
     tja_header_t header;
-    note_t *ret;
-    char len, buf3[512];
-    short buf2[512];    
-    char *p;
-
+    note_t *ret; 
+    
+    int len;
+    cccCode buf3[512];
+    cccUCS2 buf2[512];
+    
     strcpy(buf, root);
     strcat(buf, filename);
     if (tjaparser_load(buf) == 0) {
@@ -74,7 +76,7 @@ note_t *initFumen(char *root, char *filename)
     }
     strcpy(buf, root);
 
-    len = cccGBKtoUCS2(buf2, 511, header.wave);
+    len = cccGBKtoUCS2(buf2, 511, (cccCode *)header.wave);
     printf("%d len=", len);
     buf2[len] = 0;
 
@@ -109,8 +111,9 @@ int main(int argc, char *argv[])
 
     int fps = 60;
     float tpf = 1000.0 / fps;
-    float tbeg, tend;
-    float t1 = -1, t2;
+    
+    clock_t tbeg, tend;
+    clock_t t1 = -1, t2;
 
     int music_started = 0;
 
