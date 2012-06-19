@@ -9,10 +9,6 @@
 #include "ui/song_select_ui.h"
 
 int inited = 0;
-char *file_list[256];
-int file_list_len;
-static char tja_path[512+1];
-
 static song_select_info_t *song_select_info = NULL;
 
 int song_select_init(char *root)
@@ -24,17 +20,12 @@ int song_select_init(char *root)
         song_select_destroy();
     }
 
-    strcpy(tja_path, root);
-    file_list_len = song_select_get_list(tja_path, file_list, 256);
-
 	fumen_num = song_select_get_list2("fumen.lst", &song_select_info);
-	if (fumen_num > 0) {
-		for (i = 0; i < fumen_num; ++ i) {
-			printf("%s\n", song_select_info[i].title);
-		}
-	}
+    if (fumen_num < 0) {
+        return -1;
+    }
 
-    init_song_select_ui((void *)file_list, file_list_len); 
+    init_song_select_ui((void *)song_select_info, fumen_num); 
     inited = 1;
     
     printf("song select init ok!\n");
@@ -62,7 +53,7 @@ int song_select_get_list2(char *fumen_lst, song_select_info_t **ret)
 	mem_size = fumen_count * sizeof(song_select_info_t);
 	*ret = malloc(mem_size);
 	if (*ret == NULL) {
-		printf("not enough memory for fumen info\n");
+		printf("not enough memory for fumen info %d\n", mem_size);
 		return -1;
 	}
 	
@@ -74,74 +65,49 @@ int song_select_get_list2(char *fumen_lst, song_select_info_t **ret)
 	return fumen_count;
 }
 
-int song_select_get_list(char *directory, char **ret, int max_len)
-{
-    SceIoDirent dir;
-    SceUID fd;
-    char *file_list[256];
-    int file_list_max_len = max_len > 256 ? 256 : max_len;
-    int file_list_len;
-
-    fd = sceIoDopen(directory);
-    if (fd < 0) {
-        printf("can't open tja folder, errcode=%d\n", fd);
-        return 0;
-    }
-
-    file_list_len = 0;
-    memset(&dir, 0, sizeof(dir));
-    while (file_list_len <= file_list_max_len && sceIoDread(fd, &dir) > 0) {
-        if (stricmp(dir.d_name+strlen(dir.d_name)-4, ".tja") == 0) {
-
-            file_list[file_list_len] = malloc(strlen(dir.d_name)+1);
-            strcpy(file_list[file_list_len], dir.d_name);
-
-            file_list_len ++;
-
-        }
-        memset(&dir, 0, sizeof(dir));
-    }
-
-    memcpy(ret, file_list, sizeof(char *) * file_list_len);
-    sceIoDclose(fd);    
-
-    return file_list_len;
-}
-
-void song_select_free_list(char **list, int list_len)
-{
-    int i;
-    for (i = 0; i < list_len; ++ i) {
-        free(list[i]);
-    }
-    return;
-}
-
-int song_select_select(char *path, char *file, int *course_idx)
+int song_select_select(char *tja_file, char *wave_file, int *course_idx)
 {
     OSL_CONTROLLER *pad;
-    char *filename = NULL;
+    song_select_info_t *info = NULL;
+    cccUCS2 buf[300];
+    int len;
 
     if (!inited) {
         printf("song select not inited!\n");
         return 0;
     }
 
-    while (filename == NULL) {
+    while (info == NULL) {
         pad = oslReadKeys();
         if (pad->pressed.start) {
             return 0;
         }
 
-        filename = song_select_ui_handle_input(pad);
+        info = song_select_ui_handle_input(pad);
         update_song_select_ui();
     }
 
-    //TODO: correct this
-    strcpy(path, tja_path);
-    strcpy(file, filename);
-    *course_idx = 0;
+    // tja file
+    /*
+    len = cccUTF8toUCS2(buf, 299, info->tja_file);
+    buf[len] = 0;
+    len = cccUCS2toSJIS(tja_file, 511, buf);
+    tja_file[len] = 0;
+    */
 
+    //wave file
+    /*
+    len = cccUTF8toUCS2(buf, 299, info->wave_file);
+    buf[len] = 0;
+    len = cccUCS2toSJIS(wave_file, 511, buf);
+    wave_file[len] = 0;
+    */
+
+    strcpy(tja_file, info->tja_file);
+    strcpy(wave_file, info->wave_file);
+
+    // course idx
+    *course_idx = info->course_info[7].seek_pos;
     return 1;
 }
 
@@ -151,9 +117,11 @@ int song_select_destroy()
         return 0;
     }
 
-    if (file_list_len > 0) {
-        song_select_free_list(file_list, file_list_len);
+    if (song_select_info != NULL) {
+        free(song_select_info);
+        song_select_info = NULL;
     }
+    
     inited = 0;
     return 1;
 }

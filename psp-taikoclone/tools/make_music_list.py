@@ -6,7 +6,6 @@ import os
 import os.path
 import sys
 import struct
-import unicodedata
 
 parser = optparse.OptionParser()
 parser.add_option("-d", "--directory", dest="path", default="..")
@@ -52,7 +51,7 @@ def get_tja_encoding(filename):
         return None
 
     encoding_list_valid_open = []
-    dirname = os.path.dirname(filename).decode("mbcs")
+    dirname = os.path.dirname(filename).decode(sys.getfilesystemencoding())
     
     for encoding in encoding_list:
         try:
@@ -126,8 +125,8 @@ def make_tja_info(tja_file, encoding):
 
     info["title"] = header["TITLE"].decode(encoding)
     info["subtitle"] = header["SUBTITLE"].decode(encoding)
-    info["wave_file"] = os.path.join(os.path.dirname(tja_file),
-            header["WAVE"]).decode(encoding)
+    info["wave_file"] = os.path.join(os.path.dirname(info["tja_file"]),
+            header["WAVE"].decode(encoding))
 
     return info
 
@@ -141,13 +140,13 @@ def pack_tja_info(info):
     
     # limit filenames to 100
     # padding if not enough
-    tja_file = info["tja_file"].encode("utf-8")
+    tja_file = info["tja_file"].encode("gbk")
     if len(tja_file) < 200:
         tja_file += "\0" * (200 - len(tja_file))
     else:
         return bad_data
         
-    wave_file = info["wave_file"].encode("utf-8")
+    wave_file = info["wave_file"].encode("gbk")
     if len(wave_file) < 200:
         wave_file += "\0" * (200 - len(wave_file))
     else:
@@ -167,15 +166,15 @@ def pack_tja_info(info):
         subtitle = subtitle[:99] + "\0"    
         
     # limit to 8 course
-    ret += struct.pack(">200s200s100s100sB", tja_file, wave_file, title, subtitle, info["course_cnt"])
+    ret += struct.pack("<200s200s100s100sI", tja_file, wave_file, title, subtitle, info["course_cnt"])
     course_cnt = min(8, info["course_cnt"])
     for i in xrange(8):
         if i < course_cnt:
-            ret += struct.pack(">II", info["course_levels"][i], info["seek_pos"][i])
+            ret += struct.pack("<II", info["course_levels"][i], info["seek_pos"][i])
         else:
-            ret += struct.pack(">II", 0, 0)
+            ret += struct.pack("<II", 0, 0)
     
-    assert len(ret) == 200 * 2 + 100 * 2 + 1 + 8 * (4 + 4), len(ret)
+    assert len(ret) == 200 * 2 + 100 * 2 + 4 + 8 * (4 + 4), len(ret)
     
     return ret
         
@@ -215,8 +214,6 @@ if __name__ == "__main__":
             print "Sorry,"    
             print "these files may contain some characters in them or filenames, python can't handle."
             print "Or, wave file is missing. Please check or rename"
-            
-    print "注意，会忽略路径名过长的文件"
     
 #    max_str_len = 0
 #    for datum in data:
@@ -227,7 +224,7 @@ if __name__ == "__main__":
 #        print datum
 #    print max_str_len
     f = open("fumen.lst", "wb")
-    f.write(struct.pack(">I", len(data)))
+    f.write(struct.pack("<I", len(data)))
     for datum in data:
         binary_data = pack_tja_info(datum)
         f.write(binary_data)

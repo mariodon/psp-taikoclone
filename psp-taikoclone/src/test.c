@@ -38,30 +38,17 @@ void print_str_as_hex(char *str)
     return;
 }
 
-char test1[500], test2[500];
-
-note_t *initFumen(char *root, char *filename)
+note_t *initFumen(char *tja_file, char *wave_file, int course_idx)
 {
-    char buf[512];
     tja_header_t header;
     note_t *ret; 
     
-    int len;
-    cccCode buf3[512];
-    cccUCS2 buf2[512];
-    
-    strcpy(buf, root);
-    strcat(buf, filename);
-    if (tjaparser_load(buf) == 0) {
+    if (tjaparser_load(tja_file) == 0) {
         return 0;
     }
-    tjaparser_load(buf);
     if (tjaparser_read_tja_header(&header) == 0) {
         return NULL;
     }
-
-    printf("%s\n", header.wave);
-    print_str_as_hex(header.wave);
 
     AalibInit();
     AalibLoad("snd/dong.wav", PSPAALIB_CHANNEL_WAV_1, TRUE, FALSE);
@@ -74,33 +61,20 @@ note_t *initFumen(char *root, char *filename)
     } else {
         bgm_channel = PSPAALIB_CHANNEL_WAV_3;
     }
-    strcpy(buf, root);
 
-    len = cccGBKtoUCS2(buf2, 511, (cccCode *)header.wave);
-    printf("%d len=", len);
-    buf2[len] = 0;
-
-    len = cccUCS2toSJIS(buf3, 511, buf2); 
-    printf("%d len=1", len);    
-    buf3[len] = 0;
-    
-    //strcpy(buf3, "\x82\xed\x82\xf1\x82\xc9\x82\xe1\x81[\x83\x8f\x81[\x83\x8b\x83h.ogg");
-    //strcat(buf, buf3);
-    strcat(buf, header.wave);
     printf("Loading music ...\n");
-    if (AalibLoad(buf, bgm_channel, FALSE, TRUE)) {
-        printf("loading music %s failed\n", buf);
+    if (AalibLoad(wave_file, bgm_channel, FALSE, TRUE)) {
+        printf("loading music %s failed\n", wave_file);
         return NULL;
     }
     printf("loading music ok!\n");
 
     printf("parsing fumen 0\n");
-    if (tjaparser_parse_course(0, &ret) == 0) {
+    if (tjaparser_parse_course(course_idx, &ret) == 0) {
         return NULL;
     }
     printf("parsing fumen ok!\n");
 
-    strcpy(test1, header.title);
     return ret;
 }
 
@@ -128,8 +102,8 @@ int main(int argc, char *argv[])
     int selecting = TRUE; 
 
     /* selected fumen info */
-    char *filename = malloc(512+1);
-    char *root = malloc(512+1);
+    char tja_file[512];
+    char wave_file[512];
     int course_idx;
 
     /* real time info display */
@@ -161,24 +135,21 @@ int main(int argc, char *argv[])
     {
         if (selecting) {
             
-            if (debug_fumen != NULL) {
-                strcpy(filename, debug_fumen);
-                strcpy(root, tja_path);
-                course_idx = 0;
+            if (FALSE && debug_fumen != NULL) {
             } else {
                 song_select_init(tja_path); 
-                if (! song_select_select(root, filename, &course_idx)) {
+                if (! song_select_select(tja_file, wave_file, &course_idx)) {
                     break;
                 }
                 song_select_destroy();
             }
 
-            printf("selected %s%s: %d\n", root, filename, course_idx);
+            printf("selected %s\n%s\n%d\n", tja_file, wave_file, course_idx);
             selecting = FALSE;
 
             oslSetFont(jpn0);
 
-            note = initFumen(root, filename);
+            note = initFumen(tja_file, wave_file, course_idx);
             init_drawing(note);
 
             // record basic info for display
@@ -277,7 +248,7 @@ int main(int argc, char *argv[])
         // draw debug info
         oslPrintf_xy(200, 150, "offset=%.3f(%c%d)", fumen_offset+offset, \
                 offset >= 0 ? '+' : '-', offset); 
-        oslDrawStringf(200, 130, test1);
+        //TODO:oslDrawStringf(200, 130, test1);
         
         oslEndDrawing();
         oslSyncFrameEx(0, 0, 0);

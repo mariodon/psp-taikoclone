@@ -6,7 +6,7 @@ typedef struct {
 	char wave_file[200];
 	char title[100];
 	char subtitle[100];
-	unsigned char course_cnt;
+	unsigned int course_cnt;
 	struct {
 		int course_level;
 		int seek_pos;		
