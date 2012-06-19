@@ -41,6 +41,7 @@ def get_tja_encoding(filename):
         for header_name in header.iterkeys():
             if line.startswith(header_name):
                 header[header_name] = line.split(":")[1].strip()
+    f.close()
 
     # encoding priority
     encoding_list = ["CP932", "GBK", "Big5", "UTF-8"]        
@@ -88,12 +89,52 @@ def get_tja_encoding(filename):
                     return None
         return ret
                 
-    
-    
+def make_tja_info(tja_file, encoding):
+    info = {"tja_file": tja_file, "wave_file":"", "title":"", "subtitle":"",
+            "course_cnt":0, "course_levels":[], "seek_pos":[], ""}
+
+    f = None
+    try:
+        f = open(tja_file, "r")
+    except IOError, ValueError:
+        return None
+
+    header = {"SUBTITLE":"", "TITLE": "", "WAVE":""}
+    course_header = {"COURSE":"Oni", "LEVEL":'9',}
+    last_seek_pos = 0
+    while True:
+        line = f.readline()
+        if line == "": break
+
+        if line.startswith("#START"):
+            info["course_cnt"] += 1
+            info["course_levels"].append(int(course_header["LEVEL"]))
+            info["seek_pos"].append(last_seek_pos)
+        elif line.startswith("#END"):
+            last_seek_pos = f.tell()
+            course_header = {"COURSE":"Oni", "LEVEL":'9'}
+
+        for header_name in header.iterkeys():
+            if line.startswith(header_name+':'):
+                header[header_name] = line.split(":")[1].strip()
+        for header_name in course_header.iterkeys():
+            if line.startswith(header_name+':'):
+                course_header[header_name] = line.split(":")[1].strip()
+    f.close()
+
+    info["title"] = header["TITLE"].decode(encoding)
+    info["subtitle"] = header["SUBTITLE"].decode(encoding)
+    info["wave_file"] = os.path.join(os.path.dirname(tja_file),
+            header["WAVE"]).decode(encoding)
+
+    return info
+
 if __name__ == "__main__":
     options, args = parser.parse_args()
     
     tja_files = get_tja_files(options.path, options.recursive)
+
+    data = []
     
     # guessing encoding test
     if options.debug:
@@ -103,9 +144,12 @@ if __name__ == "__main__":
         
 #        sys.stdout = codecs.open("a.txt", "w", encoding="gbk")
         for tja_file in tja_files:
-            if get_tja_encoding(tja_file) is None:
+            encoding = get_tja_encoding(tja_file)
+            if encoding is None:
                 failed_files.append(tja_file)
                 failed_cnt += 1
+            else:
+                data.append(make_tja_info(tja_file, encoding))
         
         print        
         print "all done"
@@ -120,7 +164,3 @@ if __name__ == "__main__":
             print "Sorry,"    
             print "these files may contain some characters in them or filenames, python can't handle."
             print "Or, wave file is missing. Please check or rename"
-            
-    # make music list offline test
-    if options.debug:
-        pass
