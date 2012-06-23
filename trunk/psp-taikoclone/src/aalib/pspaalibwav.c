@@ -238,7 +238,7 @@ int GetBufferWav(short* buf,int length,float amp,int channel)
 	return PSPAALIB_SUCCESS;
 }
 
-int LoadWav(char* filename,int channel,int loadToRam)
+int LoadWav(cccUCS2* filename,int channel,int loadToRam)
 {
 	if ((channel<0)||(channel>31))
 	{
@@ -250,7 +250,7 @@ int LoadWav(char* filename,int channel,int loadToRam)
 	char temp[5];
 	temp[4]='\0';
 	streamsWav[channel].loadToRam=loadToRam;
-	streamsWav[channel].file=sceIoOpen(filename,PSP_O_RDONLY,0777);
+	streamsWav[channel].file=sceIoOpenUCS2(filename,PSP_O_RDONLY,0777);
 	if (streamsWav[channel].file<=0) 
 	{
 		return PSPAALIB_ERROR_WAV_INVALID_FILE;

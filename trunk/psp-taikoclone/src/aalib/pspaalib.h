@@ -181,7 +181,7 @@ int AalibInit();
 //		Returns 0 on success,>0 on error.
 ////////////////////////////////////////////////
 
-int AalibLoad(char* filename,int channel,int loadToRam, int is_SRC);
+int AalibLoad(cccUCS2* filename,int channel,int loadToRam, int is_SRC);
 
 
 ////////////////////////////////////////////////

@@ -24,7 +24,7 @@ int PauseWav(int channel);
 int SeekWav(int time,int channel);
 int RewindWav(int channel);
 int GetBufferWav(short* buf,int length,float amp,int channel);
-int LoadWav(char* filename,int channel,int loadToRam);
+int LoadWav(cccUCS2* filename,int channel,int loadToRam);
 int UnloadWav(int channel);
 
 #endif

@@ -1,6 +1,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <oslib/oslib.h>
 #include "tjaparser.h"
 #include "helper/metadata_parser.h"
 
@@ -33,8 +34,10 @@ int tjaparser_handle_a_bar();
 branch_start_t *create_note_branch_start(char cond, float x, float y);
 dummy_t *create_note_dummy(int type);
 end_t *create_note_end(note_t *start_note);
+yellow_t *create_note_yellow(int type);
+balloon_t *create_note_balloon(int type, int hit_count);
 
-FILE *fp;
+SceUID fd;
 char buf[MAX_LINE_WIDTH];
 
 note_t *last;
@@ -55,6 +58,7 @@ float scroll;
 int ggt;
 float delay;
 int barlineon;
+int balloon_idx;
 
 //backups for branch
 float bk_offset;
@@ -65,10 +69,58 @@ int bk_ggt;
 float bk_delay;
 int bk_barlineon;
 
-int tjaparser_load(char *file)
+/*
+ * Try to open or create a file for reading or writing using a UCS2-encoded filename.
+ *
+ * @param filename - Pointer to a UCS2 string holding the name of the file to open.
+ * @param flags - Libc styled flags that are or'ed together.
+ * @param mode - File access mode. 
+ *
+ * @return A non-negative integer is a valid fd, anything else an error.
+ */
+SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
 {
-    fp = fopen(file, "r");
-    return fp != NULL;
+    cccCode filename_encoded[MAX_FILENAME];
+    int len;
+    SceUID fd;
+
+    /* try SJIS encoding*/
+    len = cccUCS2toSJIS(filename_encoded, MAX_FILENAME - 1, filename);
+    filename_encoded[len] = '\0';
+    fd = sceIoOpen((const char *)filename_encoded, flags, mode);
+    if (fd >= 0) {
+        return fd;
+    }
+
+    /* try GBK encoding */
+    len = cccUCS2toGBK(filename_encoded, MAX_FILENAME - 1, filename);
+    filename_encoded[len] = '\0';
+    fd = sceIoOpen((const char *)filename_encoded, flags, mode);
+    if (fd >= 0) {
+        return fd;
+    }
+
+    return fd;
+}
+
+int tjaparser_load(cccUCS2 *filename)
+{
+    fd = sceIoOpenUCS2(filename, PSP_O_RDONLY, 0777);
+    return (fd >= 0);
+}
+
+char * tjaparser_fgets(char * buf, int max_len, int fd) {
+	int i = 0, bytes = 0;
+	while( i < max_len && ( bytes = sceIoRead( fd, buf + i, 1 ) ) == 1 )
+	{
+		if ( buf[i] == -1 || buf[i] == '\n' )
+			break;
+		i ++;
+	}
+	buf[i] = 0;
+	if ( bytes != 1 && i == 0 )
+		return NULL;
+    return buf;
 }
 
 char *string_strip_inplace(char *line)
@@ -100,12 +152,12 @@ int tjaparser_seek_course(int idx)
     char *line;
 
     printf("SEEK START...\n");
-    fseek(fp, 0, SEEK_SET);
+    sceIoLseek32(fd, 0, SEEK_SET);
     i = 0;
-    while (i < idx && !feof(fp)) {
-        line = fgets(buf, MAX_LINE_WIDTH, fp);
-        if (feof(fp)) {
-            return 0;
+    while (i < idx) {
+        line = tjaparser_fgets(buf, MAX_LINE_WIDTH, fd);
+        if (line == NULL) {
+            break;
         }
         line = string_strip_inplace(line);
         printf("after strip, line = %s\n", line);
@@ -113,7 +165,8 @@ int tjaparser_seek_course(int idx)
             ++ i;
         }        
     }
-    if (feof(fp) || i < idx) {
+
+    if (i < idx) {
         return 0;
     }
     return 1;
@@ -125,7 +178,7 @@ int tjaparser_read_tja_header(tja_header_t *ret)
     char *start_cmd = "#START";
     metadata_def_t *metadata_def;
 
-    fseek(fp, 0, SEEK_SET);
+    sceIoLseek32(fd, 0, SEEK_SET);
 
     printf("begin\n");
     for (metadata_def = &tja_header_defs[0]; metadata_def->name != NULL; ++ metadata_def) {
@@ -133,8 +186,11 @@ int tjaparser_read_tja_header(tja_header_t *ret)
     }
 
     printf("load default header value ok!\n");
-    while (!feof(fp)) {
-        line = fgets(buf, MAX_LINE_WIDTH, fp);
+    while (1) {
+        line = tjaparser_fgets(buf, MAX_LINE_WIDTH, fd);
+        if (line == NULL) {
+            break;
+        }
         printf("before strip len=%d\n", strlen(line));
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
@@ -165,14 +221,15 @@ int tjaparser_read_course_header(int idx, course_header_t *ret)
 
     printf("SEEK SUCCESS!\n");
     for (metadata_def = &course_header_defs[0]; metadata_def->name != NULL; ++ metadata_def) {
-        printf("================================\n");
-        printf("%s\n", metadata_def->name);
         metadata_get_default(metadata_def, ret);
     }
 
     printf("init header def ok\n");
-    while (!feof(fp)) {
-        line = fgets(buf, MAX_LINE_WIDTH, fp);
+    while (1) {
+        line = tjaparser_fgets(buf, MAX_LINE_WIDTH, fd);
+        if (line == NULL) {
+            break;
+        }
         printf("before strip len=%d\n", strlen(line));
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
@@ -224,12 +281,17 @@ int tjaparser_parse_course(int idx, note_t **entry)
     ggt = 0;
     delay = 0;
     barlineon = 1;
+    
+    balloon_idx = 0;
 
     printf("parsing started up ok\n");
     last = (note_t *)create_note_dummy(NOTE_DUMMY);
     *entry = last;
-    while (!feof(fp)) {
-        line = fgets(buf, MAX_LINE_WIDTH, fp);
+    while (1) {
+        line = tjaparser_fgets(buf, MAX_LINE_WIDTH, fd);
+        if (line == NULL) {
+            break;
+        }
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
 
@@ -550,11 +612,22 @@ int tjaparser_handle_note(char *line) {
         note_type = *p - '0';
 
         //ignore all notes between a lasting note and a end note
-        if (lasting_note != NULL && note_type == NOTE_END) {
-            note = (note_t *)create_note_end(lasting_note);
-            lasting_note = NULL;
+        if (lasting_note != NULL) {
+            if (note_type == NOTE_END) {
+                note = (note_t *)create_note_end(lasting_note);
+                lasting_note = NULL;
+            } else {
+                note = (note_t *)create_note_dummy(NOTE_EMPTY);
+            }
         } else {
-            note = (note_t *)create_note_dummy(note_type);
+            if (note_type == NOTE_YELLOW || note_type == NOTE_LYELLOW){
+                note = (note_t *)create_note_yellow(note_type);
+            } else if (note_type == NOTE_BALLOON || note_type == NOTE_PHOTATO) {
+                note = (note_t *)create_note_balloon(note_type, course_header.balloon[++ balloon_idx]);
+                printf("============================%d\n", course_header.balloon[balloon_idx]);
+            } else {            
+                note = (note_t *)create_note_dummy(note_type);
+            }
         }
 
         note->offset = 1000.0 * 60 / bpm; //used to score current time per beat.
@@ -579,6 +652,11 @@ int tjaparser_handle_a_bar()
     float bcnt, tpb;
     note_t *note_barline = NULL;
 
+    if (note_buf_len == 0) {
+        note_buf[0] = (note_t *)create_note_dummy(NOTE_EMPTY);
+        note_buf[0]->offset = 1000.0 * 60 / bpm;
+        ++ note_buf_len;
+    }    
     if (barlineon) {
         note_barline = (note_t *)create_note_dummy(NOTE_BARLINE);
         note_barline->offset = offset;
@@ -595,9 +673,21 @@ int tjaparser_handle_a_bar()
         offset += bcnt * tpb;  
         if (note_buf[i]->type == NOTE_EMPTY) { // only add non empty
             free(note_buf[i]);
+        } else if (note_buf[i]->type == NOTE_END) {
+            if (((yellow_t *)(((end_t *)note_buf[i])->start_note))->type == NOTE_BALLOON) {
+                printf("balloon before %d\n", ((balloon_t *)(((end_t *)note_buf[i])->start_note))->hit_count);
+            }
+            ((yellow_t *)(((end_t *)note_buf[i])->start_note))->offset2 = note_buf[i]->offset;
+            if (((yellow_t *)(((end_t *)note_buf[i])->start_note))->type == NOTE_BALLOON) {
+                printf("balloon after %d\n", ((balloon_t *)(((end_t *)note_buf[i])->start_note))->hit_count);
+            }
+            free(note_buf[i]);
         } else {
             tjaparser_add_note(note_buf[i]);
             printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
+            if (note_buf[i]->type == NOTE_BALLOON) {
+                printf("when add %d\n", ((balloon_t *)note_buf[i])->hit_count);                
+            }
         }
         if (i == 0 && note_barline != NULL) {
             tjaparser_add_note(note_barline);
@@ -686,8 +776,31 @@ end_t *create_note_end(note_t *start_note) {
     fill_common_field((note_t *)ret);
 
     ret->start_note = start_note;
+
     return ret; 
 }
+
+yellow_t *create_note_yellow(int type)
+{
+    yellow_t *ret = (yellow_t *)malloc(sizeof(yellow_t));
+
+    ret->type = type;
+    fill_common_field((note_t *)ret);
+
+    return ret;
+}
+
+balloon_t *create_note_balloon(int type, int hit_count) 
+{
+    balloon_t *ret = (balloon_t *)malloc(sizeof(balloon_t));
+
+    ret->type = type;
+    ret->hit_count = hit_count;
+    fill_common_field((note_t *)ret);
+
+    return ret;
+}
+
 
 int tjaparser_go_branch(int id, note_t *beg) {
     note_t *p, *tmpp;
@@ -717,4 +830,5 @@ int tjaparser_go_branch(int id, note_t *beg) {
         }
     }  
     printf("\n");
+    return 1;
 }

@@ -189,7 +189,7 @@ int GetBufferSceMp3(short* buf,int length,float amp,int channel)
 	return PSPAALIB_SUCCESS;
 }
 
-int LoadSceMp3(char* filename,int channel)
+int LoadSceMp3(cccUCS2* filename,int channel)
 {
 	if ((channel<0)||(channel>1))
 	{
@@ -203,7 +203,7 @@ int LoadSceMp3(char* filename,int channel)
 	c[3]='\0';
 	streamsSceMp3[channel].mp3Buf=memalign(64,16*1024);
 	streamsSceMp3[channel].pcmBuf=memalign(64,8*1152);
-	streamsSceMp3[channel].file=sceIoOpen(filename,PSP_O_RDONLY,0777);
+	streamsSceMp3[channel].file=sceIoOpenUCS2(filename,PSP_O_RDONLY,0777);
 	if (!streamsSceMp3[channel].file)
 	{
 		free(streamsSceMp3[channel].mp3Buf);

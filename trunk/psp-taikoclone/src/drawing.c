@@ -1,12 +1,15 @@
+#include <math.h>
 #include "helper/iniparser.h"
 #include "load_texture.h"
 #include "taiko_flash.h"
 #include "const.h"
 #include <time.h>
 #include "tjaparser.h"
+#include "note.h"
 #include "aalib/pspaalib.h"
 
-dictionary *tex_conf;
+static judge_level_t judge = {217, 150, 50};
+static dictionary *tex_conf;
 
 //preloaded textures
 OSL_IMAGE *bg, *bg2;
@@ -47,10 +50,10 @@ void init_drawing(note_t *note)
 
     // init notes
     note_tex[NOTE_DON] = load_texture_config(tex_conf, "note_don");
-    note_tex[NOTE_DON]->flags &= (~OSL_IMAGE_AUTOSTRIP);
     note_tex[NOTE_KATSU] = load_texture_config(tex_conf, "note_katsu");
     note_tex[NOTE_LDON] = load_texture_config(tex_conf, "note_ldon");
     note_tex[NOTE_LKATSU] = load_texture_config(tex_conf, "note_lkatsu");    
+    note_tex[NOTE_BARLINE] = load_texture_config(tex_conf, "note_barline");
     
     //yellow texture
     yellow_tex[0] = load_texture_config(tex_conf, "note_yellowh");
@@ -65,7 +68,6 @@ void init_drawing(note_t *note)
     balloon_tex[0] = load_texture_config(tex_conf, "note_ballonh");
     balloon_tex[1] = load_texture_config(tex_conf, "note_ballont");    
 
-    barline_tex = load_texture_config(tex_conf, "note_barline");
     note_list = note;
 }
 
@@ -85,24 +87,96 @@ void drawing()
     int i, x;
     oslDrawImage(bg);
     oslDrawImage(soulbar_empty);
-
-    //oslDrawImage(taiko_flash0);
-     //   oslDrawImage(taiko_flash1);
-
-    //        oslDrawImage(taiko_flash2);
-      //          oslDrawImage(taiko_flash3);
- 
 }
 
 void draw_yellow(OSL_IMAGE **, int, int, int);
 int prev_disapper = -1;
 
-void update_drawing(float play_pos, int auto_play)
+
+int oslImageNeedDraw(OSL_IMAGE *img, int x)
 {
-    int i, x;
+    return (x - img->centerX < SCREEN_WIDTH) && (x + img->sizeX - img->centerX >= 0);
+}
+
+int need_update(note_t *p, float play_pos)
+{
+    int x, x2;
+
+
+    x = 106 + (p->offset - play_pos) * p->speed;
+
+    switch (p->type) {
+        case NOTE_DON:
+        case NOTE_KATSU:
+        case NOTE_LDON:
+        case NOTE_LKATSU:
+        case NOTE_BARLINE:
+            return oslImageNeedDraw(note_tex[p->type], x);
+
+        case NOTE_YELLOW:
+            x2 = 106 + (((yellow_t *)p)->offset2 - play_pos) * p->speed;
+            return !(x - yellow_tex[0]->centerX >= SCREEN_WIDTH || x2 + yellow_tex[2]->sizeX - yellow_tex[2]->centerX < 0);
+
+        case NOTE_LYELLOW:
+            x2 = 106 + (((yellow_t *)p)->offset2 - play_pos) * p->speed;
+            return !(x - lyellow_tex[0]->centerX >= SCREEN_WIDTH || x2 + lyellow_tex[2]->sizeX - lyellow_tex[2]->centerX < 0);
+
+        case NOTE_BALLOON: /* derive ? */
+            x2 = 106 + (((yellow_t *)p)->offset2 - play_pos) * p->speed;
+            return !(x - balloon_tex[0]->centerX >= SCREEN_WIDTH || x2 + balloon_tex[1]->sizeX - balloon_tex[1]->centerX < 0);
+
+        default:
+            return (x < SCREEN_WIDTH && x >= 0);
+    }
+}
+
+void update_note(note_t *p, float play_pos)
+{
+    int x, x2;
+
+    x = 106 + (p->offset - play_pos) * p->speed;
+
+    switch (p->type) {
+        case NOTE_DON:
+        case NOTE_KATSU:
+        case NOTE_LDON:
+        case NOTE_LKATSU:
+        case NOTE_BARLINE:
+            oslDrawImageSimpleXY(note_tex[p->type], x, 105);
+            return;
+
+        case NOTE_YELLOW:
+            x2 = 106 + (((yellow_t *)p)->offset2 - play_pos) * p->speed;
+            draw_yellow(yellow_tex, x, x2, 105);
+            return;
+
+        case NOTE_LYELLOW:
+            x2 = 106 + (((yellow_t *)p)->offset2 - play_pos) * p->speed;
+            draw_yellow(lyellow_tex, x, x2, 105);
+            return;
+
+        case NOTE_BALLOON:
+            x2 = 106 + (((yellow_t *)p)->offset2 - play_pos) * p->speed;
+            if (x >= 106) {
+                draw_balloon(balloon_tex, x, 105);
+            } else if (x2 >= 106) {
+                draw_balloon(balloon_tex, 106, 105);
+            } else {
+                draw_balloon(balloon_tex, x2, 105);
+            }
+            return;
+
+        default:
+            return;
+    }
+}
+
+void update_drawing(float play_pos, int auto_play, OSL_CONTROLLER *pad)
+{
+    int i, x, x2, t_delta;
     note_t *p, *tmpp;
     note_t *prev;
-    note_t *head;
+    static note_t *head = NULL, *tail = NULL, *cur_hit_obj=NULL;
     branch_start_t *pbs;
     float elapse_time;
     int id = 0;
@@ -111,115 +185,219 @@ void update_drawing(float play_pos, int auto_play)
     int bx;
     static int last_yellow = 0;
     int cn = 0;
-    static int hold_until_end = FALSE;
+
+    int hit_off = FALSE;
+    int hit_over = FALSE;
+    int hit_ok = FALSE;
+
+    play_input_t input;
 
     //update taiko flash 
     play_pos += offset; 
     elapse_time = 1000.0 / 60;
 
-    prev = NULL;
-    head = note_list;
-    for (p = note_list; p != NULL; prev = p, p = (note_t *)(p->next)) {
-        cn ++;
-        x = 106 + (p->offset - play_pos) * p->speed;        
-        //build prev link
-        if (p->prev == NULL) {
-            p->prev = prev;
-        }        
-        // handle branch
+    /* [head, tail], init update section */
+    if (head == NULL) {
+        head = tail = note_list;
+        head->prev = tail->prev = NULL;
+    }
+
+    //printf("before move tail forward, (%p, %p)\n", head, tail);
+    /* start from tail to see if we need update more notes. */
+    for (p = tail, prev = tail->prev; p != NULL;  prev = p, p = (note_t *)(p->next)) {
+
+        /* special~ influence note flow */
         if (p->type == NOTE_BRANCH_START) {
-            p->type = NOTE_DUMMY;
-            printf("\n[Branch %d]\n", id);
-            pbs = (branch_start_t *)p;
-            if (id == 0) {
-                tmpp = pbs->next;
-                pbs->next = pbs->fumen_e;
-                pbs->fumen_e_ed->next = tmpp;
-            } else if (id == 1) {
-                tmpp = pbs->next;
-                pbs->next = pbs->fumen_n;
-                pbs->fumen_n_ed->next = tmpp;                
-            } else if (id == 2) {
-                tmpp = pbs->next;
-                pbs->next = pbs->fumen_m;
-                pbs->fumen_m_ed->next = tmpp;
+            if (need_update(p, play_pos)) {
+                p->type = NOTE_DUMMY;
+                printf("\n[Branch %d]\n", id);
+                pbs = (branch_start_t *)p;
+                if (id == 0) {
+                    tmpp = pbs->next;
+                    pbs->next = pbs->fumen_e;
+                    pbs->fumen_e_ed->next = tmpp;
+                } else if (id == 1) {
+                    tmpp = pbs->next;
+                    pbs->next = pbs->fumen_n;
+                    pbs->fumen_n_ed->next = tmpp;                
+                } else if (id == 2) {
+                    tmpp = pbs->next;
+                    pbs->next = pbs->fumen_m;
+                    pbs->fumen_m_ed->next = tmpp;
+                }
+                tail = (note_t *)p;
+                cn = 0;
+            } else {
+                break;
             }
-        } else if (p->type == NOTE_YELLOW || p->type == NOTE_LYELLOW || p->type == NOTE_BALLOON || p->type == NOTE_PHOTATO) {
-            hold_until_end = TRUE;
-        } else if (p->type == NOTE_END && x <= 490) {
-            hold_until_end = FALSE;
-        }       
-        // if out of screen, then we get all the note we need for this update.
-        // special case: lasting note
-        if (p->next == NULL) {
-            break;
         }
 
-        if (cn < 10) {
-            continue;
+        if (need_update(p, play_pos)) {
+            tail = (note_t *)p;
+            cn = 0;
+        } else {
+            cn ++;
+            if (cn >= 5) {
+                break;
+            }
         }
 
-        if (x > 490 && (p->type == NOTE_END || ! hold_until_end)) {
-            break;
-        }
+        // work out reverse link
+        p->prev = prev;
 
+        //find the first hit obj
+        if (cur_hit_obj == NULL && (p->type == NOTE_DON \
+            || p->type == NOTE_LDON || p->type == NOTE_KATSU \
+            || p->type == NOTE_LKATSU || p->type == NOTE_YELLOW \
+            || p->type == NOTE_LYELLOW || p->type == NOTE_BALLOON)) {
+            cur_hit_obj = p;
+        }
     }
 
-    printf("cn=%d\n", cn);
-    for (; p != NULL && p != head->prev; p = (note_t *)p->prev) {
-        x = 106 + (p->offset - play_pos) * p->speed;
-
-        if (p->type == NOTE_DON || p->type == NOTE_KATSU || p->type == NOTE_LDON || p->type == NOTE_LKATSU) {
-            oslDrawImageSimpleXY(note_tex[p->type], x, 105);            
-        } else if (p->type == NOTE_END) {
-            note_t *start_note = ((end_t *)p)->start_note;
-            int start_x = 106 + (start_note->offset - play_pos) * start_note->speed;
-            if (start_note->type == NOTE_YELLOW) {
-                draw_yellow(yellow_tex, start_x, x, 105);
-            } else if (start_note->type == NOTE_LYELLOW) {
-                draw_yellow(lyellow_tex, start_x, x, 105);
-            }
-        } else if (p->type == NOTE_BALLOON) {
-            draw_balloon(balloon_tex, x, 105);
-        } else if (p->type == NOTE_BARLINE) {
-            oslDrawImageSimpleXY(barline_tex, x, 105);
-        }
-
-
-        if (x < 106 && (p->type == NOTE_YELLOW || p->type == NOTE_LYELLOW)) {
-            last_yellow = 0;
-        }
-    
-        if (p->type == NOTE_END && x >= 106) {
-            note_t *start_note = ((end_t *)p)->start_note;
-            int start_x = 106 + (start_note->offset - play_pos) * start_note->speed;
-
-            if (auto_play && !played && (start_note->type == NOTE_YELLOW || start_note->type == NOTE_LYELLOW) && start_x < 106) {
-                if (!last_yellow) {
-                    AalibRewind(PSPAALIB_CHANNEL_WAV_1);            
-                    AalibPlay(PSPAALIB_CHANNEL_WAV_1);                
-                    played = TRUE;                
-                }
-                last_yellow = (last_yellow + 1) % 3;
-            }
-        } else if (x < 106) {
-
-
-            if (auto_play && ! played) {
-                if (p->type == NOTE_DON || p->type == NOTE_LDON) {
-                    AalibRewind(PSPAALIB_CHANNEL_WAV_1);            
-                    AalibPlay(PSPAALIB_CHANNEL_WAV_1);                
-                    played = TRUE;
-                } else if (p->type == NOTE_KATSU || p->type == NOTE_LKATSU) {
-                    AalibRewind(PSPAALIB_CHANNEL_WAV_2);            
-                    AalibPlay(PSPAALIB_CHANNEL_WAV_2);                
-                    played = TRUE;
-                }
-            }
-            note_list = (note_t *)(p->next);
-        }        
+    memset(&input, 0, sizeof(input));
+    if (! auto_play) {
+        input.left_don = (pad->pressed.right || pad->pressed.down);
+        input.right_don = (pad->pressed.square || pad->pressed.cross);
+        input.left_katsu = (pad->pressed.up || pad->pressed.left);
+        input.right_katsu = (pad->pressed.triangle || pad->pressed.circle);
+        input.big_don = (input.left_don && input.right_don);
+        input.big_katsu = (input.left_katsu && input.right_katsu);
     }
 
+    /* generate auto play input */
+    if (cur_hit_obj != NULL) {
+        t_delta = cur_hit_obj->offset - play_pos;
+        x = 106 + t_delta * cur_hit_obj->speed;        
+        switch(cur_hit_obj->type) {
+            case NOTE_DON:
+            case NOTE_LDON:
+            case NOTE_KATSU:
+            case NOTE_LKATSU:
+                hit_over = (hit_over || -t_delta > judge.bad);
+                if (hit_over) {
+                    break;
+                }
+                if (auto_play && x <= 106) {
+                    if (cur_hit_obj->type == NOTE_DON) {
+                        input.left_don = 1;
+                    } 
+                    if (cur_hit_obj->type == NOTE_LDON) {
+                        input.left_don = input.right_don = 1;
+                    }
+                    if (cur_hit_obj->type == NOTE_KATSU) {
+                        input.left_katsu = 1;
+                    }
+                    if (cur_hit_obj->type == NOTE_LKATSU) {
+                        input.right_katsu = input.left_katsu = 1;
+                    }                    
+                }
+
+                if (((input.left_don || input.right_don) && (cur_hit_obj->type == NOTE_DON || cur_hit_obj->type == NOTE_LDON)) \
+                       || ((input.left_katsu || input.right_katsu) && (cur_hit_obj->type == NOTE_KATSU || cur_hit_obj->type == NOTE_LKATSU))) {
+                    if (abs(t_delta) <= judge.bad) {
+                        hit_ok = TRUE;
+                        hit_off = TRUE;
+                        hit_over = TRUE;
+                    }
+                }
+                break;
+            
+            case NOTE_YELLOW:
+            case NOTE_LYELLOW:
+                x2 = 106 + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
+                if (auto_play && x <= 106 && x2 >= 106) {
+                    if (!last_yellow) {
+                        input.left_don = 1;
+                    }
+                    last_yellow = (last_yellow + 1) % 3;
+                }
+
+                if (x <= 106 && x2 >= 106 && (input.left_don || input.right_don || input.right_katsu || input.left_katsu)) {
+                    hit_ok = TRUE;
+                } else if (x2 < 106) {
+                    hit_over = TRUE;
+                }
+                break;
+            case NOTE_BALLOON:
+                x2 = 106 + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
+                if (auto_play && x<= 106 && x2 >= 106) {
+                    if (!last_yellow) {
+                        input.left_don = 1;
+                    }
+                    last_yellow = (last_yellow + 1) % 3;
+                }
+
+                if (x <= 106 && x2 >= 106 && (input.left_don || input.right_don)) {
+                    (((balloon_t *)cur_hit_obj)->hit_count) -= input.left_don + input.right_don;
+                    hit_ok = TRUE;
+                    if ((((balloon_t *)cur_hit_obj)->hit_count) <= 0) {
+                        hit_over = hit_off = TRUE;
+                    }
+                } else if (x2 < 106) {
+                    hit_over = TRUE;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (input.left_don || input.right_don) {
+        AalibRewind(PSPAALIB_CHANNEL_WAV_1);
+        AalibPlay(PSPAALIB_CHANNEL_WAV_1);
+    }
+    if (input.left_katsu || input.right_katsu) {
+        AalibRewind(PSPAALIB_CHANNEL_WAV_2);
+        AalibPlay(PSPAALIB_CHANNEL_WAV_2);
+    }
+
+    if (hit_off) {
+        if (cur_hit_obj->type == NOTE_BALLOON) {
+            AalibRewind(PSPAALIB_CHANNEL_WAV_3);
+            AalibPlay(PSPAALIB_CHANNEL_WAV_3);
+        }
+        cur_hit_obj->type = NOTE_DUMMY;
+    }
+
+    if (hit_over) {
+        for (p = cur_hit_obj->next; tail == NULL ? p != tail : p != tail->next; p = (note_t *)p->next) {
+            if (p->type == NOTE_DON \
+                || p->type == NOTE_LDON || p->type == NOTE_KATSU \
+                || p->type == NOTE_LKATSU || p->type == NOTE_YELLOW \
+                || p->type == NOTE_LYELLOW || p->type == NOTE_BALLOON) {
+                cur_hit_obj = p;
+                hit_over = FALSE;
+                break;
+            }
+        }
+        // not find
+        if (hit_over) {
+            cur_hit_obj = NULL;
+        }
+    }
+
+    //printf("after move tail forward, (%p, %p)\n", head, tail);    
+    /* start from head to see if anyone doesn't need update any more*/
+    for (p = head; p != tail; p = (note_t *)(p->next)) {
+
+        if (!need_update(p, play_pos)) {
+            head = p->next;
+        } else {
+            break;
+        }
+    }
+
+    //printf("after move head forward, (%p, %p)\n", head, tail);
+
+    /* start from tail to head to do a full update & render */
+    for (p = tail; p != head->prev; p = (note_t *)p->prev) {
+        if (need_update(p, play_pos)) {
+            update_note(p, play_pos);
+        }
+        //printf("update %d ", p->type);
+    }
+
+    //printf("\n");
     oslDrawImage(taiko);    
     update_taiko_flash(elapse_time);    
 }

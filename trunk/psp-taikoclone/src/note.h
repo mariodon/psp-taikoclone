@@ -16,4 +16,16 @@ struct {
 int can_be_seen_don(note_t *note, float play_pos)
 {
 }
+
+typedef struct {
+    unsigned char left_don, right_don;
+    unsigned char left_katsu, right_katsu;
+    unsigned char big_don, big_katsu;
+} play_input_t;
+
+typedef struct {
+    unsigned short bad;
+    unsigned short good;
+    unsigned short great;
+} judge_level_t;
 #endif

@@ -290,7 +290,7 @@ int GetBufferOgg(short* buf,int length,float amp,int channel)
 	return PSPAALIB_SUCCESS;
 }
 
-int LoadOgg(char* filename,int channel,int loadToRam)
+int LoadOgg(cccUCS2* filename,int channel,int loadToRam)
 {
 	if ((channel<0)||(channel>9))
 	{
@@ -303,7 +303,7 @@ int LoadOgg(char* filename,int channel,int loadToRam)
     //what the fuck, I got lagged, when streaming ogg, so I'll try the on ram
     //mode
 	//loadToRam=FALSE;//////Something wrong with the seek/read function.Can't rewind when on ram.
-	streamsOgg[channel].file=sceIoOpen(filename,PSP_O_RDONLY,0777);
+	streamsOgg[channel].file=sceIoOpenUCS2(filename,PSP_O_RDONLY,0777);
 	if (!streamsOgg[channel].file)
 	{
 		return PSPAALIB_ERROR_OGG_INVALID_FILE;

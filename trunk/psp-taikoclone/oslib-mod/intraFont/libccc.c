@@ -20,7 +20,6 @@ static void* __table_ptr__[CCC_N_CP];
 static void* __table_end__[CCC_N_CP];
 static unsigned char __table_dyn__[CCC_N_CP];
 static cccUCS2 __error_char_ucs2__ = 0x0000U;
-static cccUCS2 *table = NULL;
 
 /* the following code is adapted from libLZR 0.11 (see http://www.psp-programming.com/benhur) */
 
@@ -558,6 +557,7 @@ int cccUCS2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str) {
 }
 
 int cccUCS2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str) {
+    static cccUCS2 *table = NULL;
     int length = 0;
     cccUCS2 const * p = str;
     
@@ -597,15 +597,59 @@ int cccUCS2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str) {
             val = table[1+table[0]*2+id];
             if (val < 0x100) {
                 dst[length ++] = (cccCode)val;
-            } else if (length + 1 < count) {
-                dst[length ++] = (cccCode)(val >> 8);
-                dst[length ++] = (cccCode)(val & 0xFF);
             } else {
-                dst[length ++] = 0;
+                if (length + 1 < count) {
+                    dst[length ++] = (cccCode)(val >> 8);
+                    dst[length ++] = (cccCode)(val & 0xFF);
+                } else {
+                    break;
+                }
             }
         }
 
         ++ p;
     }
+    return length;
+}
+
+int cccUCS2toGBK(cccCode * dest, size_t count, cccUCS2 const * str) {
+    int length = 0;
+    cccUCS2 const * p = str;
+    cccUCS2 code;
+    static cccUCS2 *table = NULL;
+
+    if (table == NULL) {
+    	SceUID fd = sceIoOpen("encodings/ucs2_gbk.dat", PSP_O_RDONLY, 0777);
+        if (fd < 0) return CCC_ERROR_FILE_READ;
+        unsigned int filesize = sceIoLseek(fd, 0, SEEK_END);
+        sceIoLseek(fd, 0, SEEK_SET);
+        table = (cccUCS2*)malloc(filesize);
+	    if (!table) {
+		    sceIoClose(fd);
+		    return CCC_ERROR_MEM_ALLOC;
+	    }
+        if (sceIoRead(fd, table, filesize) != filesize) {
+		    sceIoClose(fd);
+		    free(table);
+		    return CCC_ERROR_FILE_READ;
+	    }
+	    sceIoClose(fd);        
+    }
+
+    while (*p != 0 && length < count) {
+        code = table[*p];
+        if (code <= 0x80) {
+            dest[length ++] = (cccCode)code;
+        } else {
+            if (length + 1 < count) {
+                dest[length ++] = (cccCode)(code >> 8);
+                dest[length ++] = (cccCode)(code & 0xFF);
+            } else {
+                break;
+            }
+        }
+        ++ p;
+    }    
+
     return length;
 }

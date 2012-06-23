@@ -183,7 +183,7 @@ int GetBufferAt3(short* buf,int length,float amp,int channel)
 	return PSPAALIB_SUCCESS;
 }
 
-int LoadAt3(char* filename,int channel)
+int LoadAt3(cccUCS2* filename,int channel)
 {
 	if ((channel<0)||(channel>1))
 	{
@@ -193,7 +193,7 @@ int LoadAt3(char* filename,int channel)
 	{
 		UnloadAt3(channel);
 	}
-	SceUID file=sceIoOpen(filename,PSP_O_RDONLY,0777);
+	SceUID file=sceIoOpenUCS2(filename,PSP_O_RDONLY,0777);
 	if (file<=0)
 	{
 		return PSPAALIB_ERROR_AT3_INVALID_FILE;

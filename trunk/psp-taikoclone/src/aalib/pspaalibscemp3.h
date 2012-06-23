@@ -23,7 +23,7 @@ int StopSceMp3(int channel);
 int PauseSceMp3(int channel);
 int RewindSceMp3(int channel);
 int GetBufferSceMp3(short* buf,int length,float amp,int channel);
-int LoadSceMp3(char* filename,int channel);
+int LoadSceMp3(cccUCS2* filename,int channel);
 int UnloadSceMp3(int channel);
 int InitSceMp3();
 

@@ -23,6 +23,8 @@
 #include <pspatrac3.h>
 #include <tremor/ivorbiscodec.h>
 #include <tremor/ivorbisfile.h>
+#include <oslib/oslib.h>
+#include "../tjaparser.h"
 //#include "../../include/luaplayer.h"
 
 //typedef int bool;

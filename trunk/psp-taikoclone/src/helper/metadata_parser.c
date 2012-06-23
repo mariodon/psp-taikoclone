@@ -6,10 +6,6 @@
 //input string should be stripped
 int metadata_convert(char *str, char *type, void *dest)
 {
-    printf("convert 1%p\n", str);
-    printf("%s\n", str);
-    printf("%s\n", type);    
-    printf("%p\n", dest); 
     char *p, *q, ch;
     int cnt, *pi;
     if (strcmp(type, "f") == 0) {
@@ -17,7 +13,6 @@ int metadata_convert(char *str, char *type, void *dest)
     } else if (strcmp(type, "i") == 0) {
         *((int *)dest) = strtol(str, NULL, 0);
     } else if (strcmp(type, "s") == 0 || strcmp(type, "sjis") == 0) {
-        printf("%s\n", str);
         *((char **)dest) = (char *)malloc(strlen(str)+1);
         strcpy(*((char **)dest), str);
     } else if (strcmp(type, "ia") == 0) {
@@ -55,7 +50,6 @@ int metadata_convert(char *str, char *type, void *dest)
 
 int metadata_get_default(metadata_def_t *def, void *dest)
 {
-    printf("def val %s, val_type %s\n", def->def_val, def->val_type);
     return metadata_convert(def->def_val, def->val_type, 
             (void *)((char *)dest + def->offset));
 }

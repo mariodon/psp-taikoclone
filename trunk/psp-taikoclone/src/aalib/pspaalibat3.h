@@ -23,7 +23,7 @@ int StopAt3(int channel);
 int PauseAt3(int channel);
 int RewindAt3(int channel);
 int GetBufferAt3(short* buf,int length,float amp,int channel);
-int LoadAt3(char* filename,int channel);
+int LoadAt3(cccUCS2* filename,int channel);
 int UnloadAt3(int channel);
 int InitAt3();
 

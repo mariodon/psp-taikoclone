@@ -149,8 +149,8 @@ void *song_select_ui_handle_input(OSL_CONTROLLER *pad)
         is_dirty = 1;
         return NULL;
     } else if (pad->pressed.circle) {
-        if (data[selected_idx].tja_file[0] == '\0' \
-                || data[selected_idx].wave_file[0] == '\0') {
+        if (data[selected_idx].tja_file[0] == 0 \
+                || data[selected_idx].wave_file[0] == 0) {
             return NULL;
         }
         data[selected_idx].course_info[7].seek_pos = course_idx;

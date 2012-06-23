@@ -87,6 +87,7 @@ int cccCodetoUCS2(cccUCS2 * dst, size_t count, cccCode const * str, unsigned cha
 
 int cccUCS2toUTF8(cccCode * dst, size_t count, cccUCS2 const * str);
 int cccUCS2toSJIS(cccCode * dst, size_t count, cccUCS2 const * str);
+int cccUCS2toGBK(cccCode * dst, size_t count, cccUCS2 const * str);
 /**
  * Set error character (character that's used for code points where conversion failed)
  *
