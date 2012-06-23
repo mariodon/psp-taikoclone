@@ -2,6 +2,7 @@
 #define _TJAPARSER_H_
 
 #include <stdio.h>
+#include "const.h"
 #include "helper/metadata_parser.h"
 
 #define MAX_LINE_WIDTH  512
@@ -30,7 +31,7 @@
 #define NOTE_BARLINE    15 //yet another visible object
 #define MAX_NOTE        16
 
-int tjaparser_load(char *file);
+int tjaparser_load(cccUCS2 *file);
 int tjaparser_seek_course(int idx);
 
 typedef struct {
@@ -79,7 +80,7 @@ typedef struct {
     /* extra */
     float offset2;
     int hit_count;
-} ballon_t;
+} balloon_t;
 
 typedef struct {
     int type;
@@ -173,4 +174,7 @@ typedef struct {
 } end_t;
 int tjaparser_parse_course(int idx, note_t **entry);
 int tjaparser_go_branch(int id, note_t *start);
+
+SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode);
+
 #endif

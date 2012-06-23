@@ -15,9 +15,10 @@ parser.add_option("-D", "--debug", action="store_true", dest="debug", default=Fa
 
 # scan root (recursively) to get a list of tja_files
 def get_tja_files(root, recursive):
+    root = root.decode("gbk")
     ret = []
     for path, folders, filenames in os.walk(root):
-        tja_filenames = filter(lambda x:x.endswith(".tja"), filenames)
+        tja_filenames = filter(lambda x:x.endswith(u".tja"), filenames)
         tja_full_filenames = map(lambda x:os.path.join(path, x), tja_filenames)
         ret.extend(tja_full_filenames)
         if not recursive:
@@ -51,7 +52,7 @@ def get_tja_encoding(filename):
         return None
 
     encoding_list_valid_open = []
-    dirname = os.path.dirname(filename).decode(sys.getfilesystemencoding())
+    dirname = os.path.dirname(filename)
     
     for encoding in encoding_list:
         try:
@@ -91,7 +92,7 @@ def get_tja_encoding(filename):
         return ret
                 
 def make_tja_info(tja_file, encoding):
-    info = {"tja_file": tja_file.decode(sys.getfilesystemencoding()), "wave_file":"", "title":"", "subtitle":"",
+    info = {"tja_file": tja_file, "wave_file":"", "title":"", "subtitle":"",
             "course_cnt":0, "course_levels":[], "seek_pos":[], }
 
     f = None
@@ -129,44 +130,54 @@ def make_tja_info(tja_file, encoding):
             header["WAVE"].decode(encoding))
 
     return info
-
-bad_data = "\0" * (200 * 2 + 100 * 2 + 1 + 8 * (4 + 4))
     
+def pack_unicode_string(uni_str):
+    ret = ""
+    for s in uni_str:
+        ret += struct.pack("<H", ord(s))
+    return ret
+
 def pack_tja_info(info):
 
     ret = ""
     
-    # pack all data in utf8
-    
-    # limit filenames to 100
-    # padding if not enough
-    tja_file = info["tja_file"].encode("gbk")
-    if len(tja_file) < 200:
-        tja_file += "\0" * (200 - len(tja_file))
+    MAX_FILENAME = 256
+    MAX_FILENAME_UCS2 = MAX_FILENAME / 2
+
+    MAX_TITLE = 100
+    MAX_SUBTITLE = 100
+
+    # pack filenames in UCS2
+    if len(info["tja_file"]) < MAX_FILENAME_UCS2:
+        tja_file = pack_unicode_string(info["tja_file"])
+        tja_file += "\0\0" * (MAX_FILENAME_UCS2 - len(info["tja_file"]))
     else:
-        return bad_data
-        
-    wave_file = info["wave_file"].encode("gbk")
-    if len(wave_file) < 200:
-        wave_file += "\0" * (200 - len(wave_file))
+        tja_file = pack_unicode_string(info["tja_file"][:MAX_FILENAME_UCS2-1])
+        tja_file += "\0\0"
+
+    if len(info["wave_file"]) < MAX_FILENAME_UCS2:
+        wave_file = pack_unicode_string(info["wave_file"])
+        wave_file += "\0\0" * (MAX_FILENAME_UCS2 - len(info["wave_file"]))
     else:
-        return bad_data
-    
-    # limit title and subtitle to 50 
+        wave_file = pack_unicode_string(info["wave_file"][:MAX_FILENAME_UCS2-1])
+        wave_file += "\0\0"        
+
+    # pack title and subtitle in utf8
     title = info["title"].encode("utf-8")
-    if len(title) < 100:
-        title += "\0" * (100 - len(title))
+    if len(title) < MAX_TITLE:
+        title += "\0" * (MAX_TITLE - len(title))
     else:
-        title = title[:99] + "\0"
+        title = title[:MAX_TITLE-1] + "\0"
         
     subtitle = info["subtitle"].encode("utf-8")
-    if len(subtitle) < 100:
-        subtitle += "\0" * (100 - len(subtitle))
+    if len(subtitle) < MAX_SUBTITLE:
+        subtitle += "\0" * (MAX_SUBTITLE - len(subtitle))
     else:
-        subtitle = subtitle[:99] + "\0"    
+        subtitle = subtitle[:MAX_SUBTITLE-1] + "\0"    
         
     # limit to 8 course
-    ret += struct.pack("<200s200s100s100sI", tja_file, wave_file, title, subtitle, info["course_cnt"])
+    ret += struct.pack("<%ds%ds%ds%dsI" % (MAX_FILENAME, MAX_FILENAME,
+        MAX_TITLE, MAX_SUBTITLE), tja_file, wave_file, title, subtitle, info["course_cnt"])
     course_cnt = min(8, info["course_cnt"])
     for i in xrange(8):
         if i < course_cnt:
@@ -174,7 +185,7 @@ def pack_tja_info(info):
         else:
             ret += struct.pack("<II", 0, 0)
     
-    assert len(ret) == 200 * 2 + 100 * 2 + 4 + 8 * (4 + 4), len(ret)
+    assert len(ret) == MAX_FILENAME * 2 + MAX_TITLE + MAX_SUBTITLE + 4 + 8 * (4 + 4), len(ret)
     
     return ret
         

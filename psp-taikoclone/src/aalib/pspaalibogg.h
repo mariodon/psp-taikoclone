@@ -24,7 +24,7 @@ int PauseOgg(int channel);
 int RewindOgg(int channel);
 int SeekOgg(int channel,int time);
 int GetBufferOgg(short* buf,int length,float amp,int channel);
-int LoadOgg(char* filename,int channel,int loadToRam);
+int LoadOgg(cccUCS2* filename,int channel,int loadToRam);
 int UnloadOgg(int channel);
 
 #endif

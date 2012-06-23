@@ -146,14 +146,14 @@ void GetProcessedBuffer(void* abuf,unsigned int length,int channel)
 	}
 	else
 	{
-        int raw_buffer_ok = GetRawBuffer(buf,length,channels[channel].ampValue,channel);
+        GetRawBuffer(buf,length,channels[channel].ampValue,channel);
 	}
 }
 
 int AalibGetPlayPosition(int channel) {
     int inputSamples = channels[channel].playPosition / 4;
     //int restSamples = sceAudioGetChannelRestLen(channels[channel].hardwareChannel);
-    return 0;
+    return inputSamples;
     //return (inputSamples - restSamples) / 44.1;
 }
 
@@ -528,7 +528,7 @@ int AalibLoadEx(char *filename, int channel, int flags)
 {
 }
 
-int AalibLoad(char* filename,int channel,int loadToRam, int is_SRC)
+int AalibLoad(cccUCS2* filename,int channel,int loadToRam, int is_SRC)
 {
 	if ((channel<1)||(channel>48))
 	{

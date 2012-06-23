@@ -16,5 +16,9 @@
 #define SCROLL     15
 #define BPMCHANGE  16
 
+#define MAX_FILENAME    256
+#define MAX_FILENAME_UCS2   (MAX_FILENAME >> 1)
+#define MAX_TITLE   100
+#define MAX_SUBTITLE    100
 
 #endif

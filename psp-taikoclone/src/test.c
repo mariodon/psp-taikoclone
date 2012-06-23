@@ -38,21 +38,32 @@ void print_str_as_hex(char *str)
     return;
 }
 
-note_t *initFumen(char *tja_file, char *wave_file, int course_idx)
+note_t *initFumen(cccUCS2 *tja_file, cccUCS2 *wave_file, int course_idx)
 {
     tja_header_t header;
     note_t *ret; 
+    cccUCS2 sound_file[MAX_FILENAME_UCS2];
+    int len;
     
     if (tjaparser_load(tja_file) == 0) {
-        return 0;
+        oslFatalError("can't open tjafile");
+        return NULL;
     }
     if (tjaparser_read_tja_header(&header) == 0) {
+        oslFatalError("can't read tja header");        
         return NULL;
     }
 
     AalibInit();
-    AalibLoad("snd/dong.wav", PSPAALIB_CHANNEL_WAV_1, TRUE, FALSE);
-    AalibLoad("snd/ka.wav", PSPAALIB_CHANNEL_WAV_2, TRUE, FALSE);    
+    len = cccGBKtoUCS2(sound_file, MAX_FILENAME_UCS2-1, "snd/dong.wav");
+    sound_file[len] = 0;
+    AalibLoad(sound_file, PSPAALIB_CHANNEL_WAV_1, TRUE, FALSE);
+    len = cccGBKtoUCS2(sound_file, MAX_FILENAME_UCS2-1, "snd/ka.wav");
+    sound_file[len] = 0;    
+    AalibLoad(sound_file, PSPAALIB_CHANNEL_WAV_2, TRUE, FALSE);    
+    len = cccGBKtoUCS2(sound_file, MAX_FILENAME_UCS2-1, "snd/balloon.wav");
+    sound_file[len] = 0;    
+    AalibLoad(sound_file, PSPAALIB_CHANNEL_WAV_3, TRUE, FALSE);        
     
     if (strcmp(".mp3", header.wave+strlen(header.wave)-4) == 0) {
         bgm_channel = PSPAALIB_CHANNEL_SCEMP3_1;
@@ -64,14 +75,14 @@ note_t *initFumen(char *tja_file, char *wave_file, int course_idx)
 
     printf("Loading music ...\n");
     if (AalibLoad(wave_file, bgm_channel, FALSE, TRUE)) {
-        printf("loading music %s failed\n", wave_file);
-        return NULL;
+        oslFatalError("loading music %s failed\n", wave_file);
+        return NULL;            
     }
     printf("loading music ok!\n");
 
     printf("parsing fumen 0\n");
     if (tjaparser_parse_course(course_idx, &ret) == 0) {
-        return NULL;
+        oslFatalError("parsing fumen %s failed\n", tja_file);        
     }
     printf("parsing fumen ok!\n");
 
@@ -101,9 +112,10 @@ int main(int argc, char *argv[])
     float play_pos = 0;
     int selecting = TRUE; 
 
+    //sceIoChdir("ms0:/PSP/GAME/TAIKOC");
     /* selected fumen info */
-    char tja_file[512];
-    char wave_file[512];
+    cccUCS2 tja_file[MAX_FILENAME_UCS2];
+    cccUCS2 wave_file[MAX_FILENAME_UCS2];
     int course_idx;
 
     /* real time info display */
@@ -114,6 +126,8 @@ int main(int argc, char *argv[])
     /* debug process */
     //char *debug_fumen = "\x82\xed\x82\xf1\x82\xc9\x82\xe1\x81[\x83\x8f\x81[\x83\x8b\x83h.tja";
     char *debug_fumen = NULL; //file_list[file_list_len-2];    
+
+    //sceIoChdir("ms0:/PSP/GAME/TAIKOC");
 
     scePowerSetCpuClockFrequency(333);
 
@@ -138,18 +152,21 @@ int main(int argc, char *argv[])
             if (FALSE && debug_fumen != NULL) {
             } else {
                 song_select_init(tja_path); 
-                if (! song_select_select(tja_file, wave_file, &course_idx)) {
+                if (!song_select_select(tja_file, wave_file, &course_idx)) {
                     break;
                 }
                 song_select_destroy();
-            }
 
-            printf("selected %s\n%s\n%d\n", tja_file, wave_file, course_idx);
+            }
             selecting = FALSE;
 
             oslSetFont(jpn0);
 
             note = initFumen(tja_file, wave_file, course_idx);
+            if (note == NULL) {
+                printf("init fumen erro!\n");
+                break;
+            }
             init_drawing(note);
 
             // record basic info for display
@@ -202,27 +219,6 @@ int main(int argc, char *argv[])
             break;
         }
         pad = oslReadKeys();
-        if (pad->pressed.left || pad->pressed.up) {
-            refresh_taiko_flash(TAIKO_FLASH_BLUE, TAIKO_FLASH_LEFT);
-            AalibRewind(PSPAALIB_CHANNEL_WAV_2);            
-            AalibPlay(PSPAALIB_CHANNEL_WAV_2);
-        }
-        if (pad->pressed.circle || pad->pressed.triangle) {
-            refresh_taiko_flash(TAIKO_FLASH_BLUE, TAIKO_FLASH_RIGHT);
-            AalibRewind(PSPAALIB_CHANNEL_WAV_2);
-            AalibPlay(PSPAALIB_CHANNEL_WAV_2);
-        }
-        if (pad->pressed.down || pad->pressed.right) {
-            refresh_taiko_flash(TAIKO_FLASH_RED, TAIKO_FLASH_LEFT);
-            AalibRewind(PSPAALIB_CHANNEL_WAV_1);            
-            AalibPlay(PSPAALIB_CHANNEL_WAV_1);
-        }
-        if (pad->pressed.cross || pad->pressed.square) {
-            refresh_taiko_flash(TAIKO_FLASH_RED, TAIKO_FLASH_RIGHT);
-            AalibRewind(PSPAALIB_CHANNEL_WAV_1);                        
-            AalibPlay(PSPAALIB_CHANNEL_WAV_1);            
-        }
-
 
         if (pad->pressed.L) {
             offset -= 1;
@@ -241,13 +237,14 @@ int main(int argc, char *argv[])
         }
 
         oslStartDrawing();
+        oslClearScreen(RGB(0,0,0));
         drawing();
 
-        update_drawing(time_passed+offset, auto_play);
+        update_drawing(time_passed+offset, auto_play, pad);
 
         // draw debug info
         oslPrintf_xy(200, 150, "offset=%.3f(%c%d)", fumen_offset+offset, \
-                offset >= 0 ? '+' : '-', offset); 
+                offset > 0 ? '+' : '\0', offset); 
         //TODO:oslDrawStringf(200, 130, test1);
         
         oslEndDrawing();
@@ -255,6 +252,7 @@ int main(int argc, char *argv[])
         //oslSwapBuffers();
 
         ++ frame;
+        //if (1) {
         if (!music_started) {
             time_passed += tpf;
         } else {
@@ -274,5 +272,6 @@ int main(int argc, char *argv[])
     oslEndGfx();
     oslIntraFontShutdown();
     oslQuit();
+
     return 0;
 }
