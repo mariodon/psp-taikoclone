@@ -89,7 +89,7 @@ int selected_idx = 0;
 int item_per_page = 8;
 int item_height = 272 / 8;
 int is_dirty = 1;
-OSL_FONT *fnt, *alt_fnt;
+static OSL_FONT *fnt=NULL, *alt_fnt=NULL;
 
 // a simple and tmp version
 void *song_select_ui_handle_input(OSL_CONTROLLER *pad)
@@ -211,10 +211,12 @@ void init_song_select_ui(void *_data, int data_length)
     item_count = data_length;
     data = (song_select_info_t *)_data;
 
-    fnt = oslLoadIntraFontFile("flash0:/font/jpn0.pgf", INTRAFONT_STRING_UTF8 | INTRAFONT_CACHE_LARGE);
-    alt_fnt = oslLoadIntraFontFile("flash0:/font/gb3s1518.bwfon", INTRAFONT_STRING_UTF8 | INTRAFONT_CACHE_LARGE);
-    intraFontSetAltFont(fnt->intra, alt_fnt->intra);
-    oslSetFont(fnt);
+    if (fnt == NULL) {
+        fnt = oslLoadIntraFontFile("flash0:/font/jpn0.pgf", INTRAFONT_STRING_UTF8 | INTRAFONT_CACHE_LARGE);
+        alt_fnt = oslLoadIntraFontFile("flash0:/font/gb3s1518.bwfon", INTRAFONT_STRING_UTF8 | INTRAFONT_CACHE_LARGE);
+        intraFontSetAltFont(fnt->intra, alt_fnt->intra);
+    }
+    oslSetFont(fnt);    
 
     is_dirty = 1;
 }

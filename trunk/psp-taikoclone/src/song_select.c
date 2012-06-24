@@ -73,7 +73,7 @@ int song_select_get_list2(char *fumen_lst, song_select_info_t **ret)
 		return -1;
 	}
 
-    printf("%s\n", (*ret)[2].title);
+    printf("%s\n", (*ret)[3].title);
     close(fd);
 
 	return fumen_count;
@@ -99,11 +99,12 @@ int song_select_select(cccUCS2 *tja_file, cccUCS2 *wave_file, int *course_idx)
         update_song_select_ui();
     }
 
-    memcpy(tja_file, info->tja_file, cccStrlenUCS2(info->tja_file) * sizeof(cccUCS2));
-    memcpy(wave_file, info->wave_file, cccStrlenUCS2(info->wave_file) * sizeof(cccUCS2));
+    memcpy(tja_file, info->tja_file, (1+cccStrlenUCS2(info->tja_file)) * sizeof(cccUCS2));
+    memcpy(wave_file, info->wave_file, (1+cccStrlenUCS2(info->wave_file)) * sizeof(cccUCS2));
 
     // course idx
     *course_idx = info->course_info[7].seek_pos;
+    printf("selected %s\n", info->title);
     return 1;
 }
 

@@ -11,6 +11,7 @@ OBJS = src/test.o \
 	   src/helper/MiniConv.o \
 	   src/helper/mem64.o \
 	   src/helper/opendir.o \
+	   src/note.o \
 
 YOURLIBS = 
 BUILD_PRX = 1

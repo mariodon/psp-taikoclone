@@ -45,6 +45,11 @@ note_t *last;
 note_t *note_buf[MAX_LINE_WIDTH];
 int note_buf_len = 0;
 
+note_t *lasting_note;
+note_t *lasting_note_e;
+note_t *lasting_note_n;
+note_t *lasting_note_m;
+
 // for branches
 int branch_started = 0;
 note_t **which_branch = NULL;
@@ -84,9 +89,11 @@ SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
     int len;
     SceUID fd;
 
+    printf("orgin filename len = %d\n", cccStrlenUCS2(filename));
     /* try SJIS encoding*/
     len = cccUCS2toSJIS(filename_encoded, MAX_FILENAME - 1, filename);
     filename_encoded[len] = '\0';
+    printf("first: %s\n", filename_encoded);
     fd = sceIoOpen((const char *)filename_encoded, flags, mode);
     if (fd >= 0) {
         return fd;
@@ -95,6 +102,7 @@ SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
     /* try GBK encoding */
     len = cccUCS2toGBK(filename_encoded, MAX_FILENAME - 1, filename);
     filename_encoded[len] = '\0';
+    printf("second; %s\n", filename_encoded);
     fd = sceIoOpen((const char *)filename_encoded, flags, mode);
     if (fd >= 0) {
         return fd;
@@ -281,8 +289,18 @@ int tjaparser_parse_course(int idx, note_t **entry)
     ggt = 0;
     delay = 0;
     barlineon = 1;
+
+    lasting_note = NULL;
+    lasting_note_e = lasting_note_n = lasting_note_m = NULL;
     
     balloon_idx = 0;
+
+    last = NULL;
+    note_buf_len = 0;
+
+    // for branches
+    branch_started = 0;
+    which_branch = NULL;
 
     printf("parsing started up ok\n");
     last = (note_t *)create_note_dummy(NOTE_DUMMY);
@@ -597,8 +615,6 @@ int tjaparser_handle_command(char *line) {
 }
 
 int tjaparser_handle_note(char *line) {
-    static note_t *lasting_note = NULL;
-
     char *p;
     note_t *note;
     int note_type;
@@ -612,7 +628,28 @@ int tjaparser_handle_note(char *line) {
         note_type = *p - '0';
 
         //ignore all notes between a lasting note and a end note
-        if (lasting_note != NULL) {
+        if (branch_started && lasting_note_e != NULL && *which_branch == last_E) {
+            if (note_type == NOTE_END) {
+                note = (note_t *)create_note_end(lasting_note_e);
+                lasting_note_e = NULL;
+            } else {
+                note = (note_t *)create_note_dummy(NOTE_EMPTY);
+            }            
+        } else if (lasting_note_n != NULL && *which_branch == last_N) {
+            if (note_type == NOTE_END) {
+                note = (note_t *)create_note_end(lasting_note_n);
+                lasting_note_n = NULL;
+            } else {
+                note = (note_t *)create_note_dummy(NOTE_EMPTY);
+            }            
+        } else if (lasting_note_m != NULL && *which_branch == last_M) {
+            if (note_type == NOTE_END) {
+                note = (note_t *)create_note_end(lasting_note_m);
+                lasting_note_m = NULL;
+            } else {
+                note = (note_t *)create_note_dummy(NOTE_EMPTY);
+            }            
+        } else if (lasting_note != NULL && !branch_started) {
             if (note_type == NOTE_END) {
                 note = (note_t *)create_note_end(lasting_note);
                 lasting_note = NULL;
@@ -624,7 +661,6 @@ int tjaparser_handle_note(char *line) {
                 note = (note_t *)create_note_yellow(note_type);
             } else if (note_type == NOTE_BALLOON || note_type == NOTE_PHOTATO) {
                 note = (note_t *)create_note_balloon(note_type, course_header.balloon[++ balloon_idx]);
-                printf("============================%d\n", course_header.balloon[balloon_idx]);
             } else {            
                 note = (note_t *)create_note_dummy(note_type);
             }
@@ -633,8 +669,18 @@ int tjaparser_handle_note(char *line) {
         note->offset = 1000.0 * 60 / bpm; //used to score current time per beat.
         note_buf[note_buf_len ++] = note;
 
+        //update note type
+        note_type = note->type;
         if (note_type == NOTE_YELLOW || note_type == NOTE_LYELLOW || note_type == NOTE_BALLOON || note_type == NOTE_PHOTATO) {
-            lasting_note = note;
+            if (!branch_started) {
+                lasting_note = note;
+            } else if (*which_branch == last_E) {
+                lasting_note_e = note;
+            } else if (*which_branch == last_N) {
+                lasting_note_n = note;
+            } else if (*which_branch == last_M) {
+                lasting_note_m = note;
+            }
         }
     }
 
@@ -666,7 +712,7 @@ int tjaparser_handle_a_bar()
     bcnt = 1.0 * measure / note_buf_len;
 
     //add all notes to queue
-    printf("[");
+    //printf("[");
     for (i = 0; i < note_buf_len; ++ i) {
         tpb = note_buf[i]->offset;
         note_buf[i]->offset = offset;
@@ -674,26 +720,17 @@ int tjaparser_handle_a_bar()
         if (note_buf[i]->type == NOTE_EMPTY) { // only add non empty
             free(note_buf[i]);
         } else if (note_buf[i]->type == NOTE_END) {
-            if (((yellow_t *)(((end_t *)note_buf[i])->start_note))->type == NOTE_BALLOON) {
-                printf("balloon before %d\n", ((balloon_t *)(((end_t *)note_buf[i])->start_note))->hit_count);
-            }
             ((yellow_t *)(((end_t *)note_buf[i])->start_note))->offset2 = note_buf[i]->offset;
-            if (((yellow_t *)(((end_t *)note_buf[i])->start_note))->type == NOTE_BALLOON) {
-                printf("balloon after %d\n", ((balloon_t *)(((end_t *)note_buf[i])->start_note))->hit_count);
-            }
             free(note_buf[i]);
         } else {
             tjaparser_add_note(note_buf[i]);
-            printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
-            if (note_buf[i]->type == NOTE_BALLOON) {
-                printf("when add %d\n", ((balloon_t *)note_buf[i])->hit_count);                
-            }
+            //printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
         }
         if (i == 0 && note_barline != NULL) {
             tjaparser_add_note(note_barline);
         }
     }
-    printf("]\n");
+    //printf("]\n");
 
     //clear up queue
     note_buf_len = 0;
@@ -831,4 +868,9 @@ int tjaparser_go_branch(int id, note_t *beg) {
     }  
     printf("\n");
     return 1;
+}
+
+int tjaparser_unload()
+{
+    sceIoClose(fd);
 }
