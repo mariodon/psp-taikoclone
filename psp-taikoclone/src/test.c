@@ -8,12 +8,12 @@
 #include "taiko_flash.h"
 #include "tjaparser.h"
 #include "song_select.h"
+#include "note.h"
 
 PSP_MODULE_INFO("Taiko No Tatsujin", 0, 1, 1);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
 PSP_HEAP_SIZE_KB(-64*15); 
 
-int bgm_channel;
 //static char *tja_path = "ms0:/psp/game/taikoc/tja/";
 char *tja_path = "tja2/";
 
@@ -38,23 +38,13 @@ void print_str_as_hex(char *str)
     return;
 }
 
-note_t *initFumen(cccUCS2 *tja_file, cccUCS2 *wave_file, int course_idx)
-{
-    tja_header_t header;
-    note_t *ret; 
+/*
+ * preload sound. can be used in menu and game
+ * */
+void init_hitsound() {
     cccUCS2 sound_file[MAX_FILENAME_UCS2];
     int len;
-    
-    if (tjaparser_load(tja_file) == 0) {
-        oslFatalError("can't open tjafile");
-        return NULL;
-    }
-    if (tjaparser_read_tja_header(&header) == 0) {
-        oslFatalError("can't read tja header");        
-        return NULL;
-    }
 
-    AalibInit();
     len = cccGBKtoUCS2(sound_file, MAX_FILENAME_UCS2-1, "snd/dong.wav");
     sound_file[len] = 0;
     AalibLoad(sound_file, PSPAALIB_CHANNEL_WAV_1, TRUE, FALSE);
@@ -63,34 +53,71 @@ note_t *initFumen(cccUCS2 *tja_file, cccUCS2 *wave_file, int course_idx)
     AalibLoad(sound_file, PSPAALIB_CHANNEL_WAV_2, TRUE, FALSE);    
     len = cccGBKtoUCS2(sound_file, MAX_FILENAME_UCS2-1, "snd/balloon.wav");
     sound_file[len] = 0;    
-    AalibLoad(sound_file, PSPAALIB_CHANNEL_WAV_3, TRUE, FALSE);        
-    
-    if (strcmp(".mp3", header.wave+strlen(header.wave)-4) == 0) {
+    AalibLoad(sound_file, PSPAALIB_CHANNEL_WAV_3, TRUE, FALSE);
+}
+
+/*
+ * load a bgm.
+ *
+ * @return channel id on success, <0 on error */
+int load_bgm(cccUCS2 *wave_file, char *ext) {
+    int bgm_channel;
+
+    if (strcmp(".mp3", ext) == 0) {
         bgm_channel = PSPAALIB_CHANNEL_SCEMP3_1;
-    } else if (strcmp(".ogg", header.wave+strlen(header.wave)-4) == 0) {
+    } else if (strcmp(".ogg", ext) == 0) {
         bgm_channel = PSPAALIB_CHANNEL_OGG_1;
-    } else {
+    } else if (strcmp(".wav", ext) == 0) {
         bgm_channel = PSPAALIB_CHANNEL_WAV_3;
+    } else {
+        return -1;
     }
 
-    printf("Loading music ...\n");
+            int len;
+        char bytes[MAX_FILENAME];
+        len=cccUCS2toGBK(bytes, MAX_FILENAME-1, wave_file);
+        bytes[len] = '\0';
+    printf("Loading music ... %s\n", bytes);
     if (AalibLoad(wave_file, bgm_channel, FALSE, TRUE)) {
-        oslFatalError("loading music %s failed\n", wave_file);
-        return NULL;            
+
+        oslFatalError("loading music %s failed\n", bytes);
+        return -1;            
     }
     printf("loading music ok!\n");
+
+    return bgm_channel;
+}
+
+void unload_bgm(int channel) {
+    AalibUnload(channel);
+}
+
+note_t *parse_fumen(cccUCS2 *tja_file, int course_idx, tja_header_t *header)
+{
+    note_t *ret; 
+
+    if (tjaparser_load(tja_file) == 0) {
+        oslFatalError("can't open tjafile");
+        return NULL;
+    }
+    if (tjaparser_read_tja_header(header) == 0) {
+        oslFatalError("can't read tja header");        
+        return NULL;
+    }
 
     printf("parsing fumen 0\n");
     if (tjaparser_parse_course(course_idx, &ret) == 0) {
         oslFatalError("parsing fumen %s failed\n", tja_file);        
     }
-    printf("parsing fumen ok!\n");
+    printf("parsing fumen ok! %p\n", ret);
 
-    return ret;
+    tjaparser_unload();
+    return ret;    
 }
 
 int main(int argc, char *argv[])
 {
+    int bgm_channel;
     //OSL_IMAGE *bg;
     int frame = 0;
 
@@ -123,10 +150,14 @@ int main(int argc, char *argv[])
     int offset = 17; /* offset fix up */
     int auto_play = TRUE;
 
+    tja_header_t tja_header;
+
     /* debug process */
     //char *debug_fumen = "\x82\xed\x82\xf1\x82\xc9\x82\xe1\x81[\x83\x8f\x81[\x83\x8b\x83h.tja";
     char *debug_fumen = NULL; //file_list[file_list_len-2];    
 
+    bool fumen_over;
+    bool music_over;
     //sceIoChdir("ms0:/PSP/GAME/TAIKOC");
 
     scePowerSetCpuClockFrequency(333);
@@ -136,7 +167,13 @@ int main(int argc, char *argv[])
     oslInitConsole();    
     oslIntraFontInit(INTRAFONT_CACHE_LARGE);
 
-    
+    AalibInit();
+
+    //preload images needed for drawing
+    init_drawing();
+    init_hitsound();
+
+
     OSL_FONT *jpn0 = oslLoadIntraFontFile("flash0:/font/jpn0.pgf", INTRAFONT_STRING_GBK | INTRAFONT_CACHE_LARGE);
     //oslIntraFontSetStyle(jpn0, 1.0f,0x0000000, 0xFFFFFFFF, INTRAFONT_ALIGN_LEFT);
 
@@ -159,16 +196,25 @@ int main(int argc, char *argv[])
 
             }
             selecting = FALSE;
+            music_started = FALSE;
 
             oslSetFont(jpn0);
 
-            note = initFumen(tja_file, wave_file, course_idx);
+            note = parse_fumen(tja_file, course_idx, &tja_header);
             if (note == NULL) {
                 printf("init fumen erro!\n");
                 break;
             }
-            init_drawing(note);
 
+            printf("selected %s\n", tja_header.title);
+            //TODO: fix ext problem
+            bgm_channel = load_bgm(wave_file, (tja_header.wave+strlen(tja_header.wave)-4));
+            if (bgm_channel < 0) {
+                oslFatalError("can't load bgm!");
+            }
+            note_init(note);
+
+            fumen_over = music_over = FALSE;
             // record basic info for display
             fumen_offset = note->offset;
 
@@ -177,28 +223,15 @@ int main(int argc, char *argv[])
             time_passed = note->offset - 480 / note->speed;
             printf("note_offset! %f\n", time_passed);
             if (time_passed < 0) {
-                time_passed = -((int)(-time_passed / tpf) + 1) * tpf;
+                time_passed = -((int)(-time_passed / tpf) + 2) * tpf;
             } else {
-                time_passed = 0;
+                time_passed = -2 * tpf;
             }      
             printf("time_passed init %f\n", time_passed);            
             tbeg = clock();
             continue;
         }       
 
-        
-
-
-        if (!music_started) {
-            printf("time_passed %f\n", time_passed);
-        } else {
-            play_pos = (float)AalibGetPlayPosition(bgm_channel);
-            delta = time_passed - play_pos;
-            //printf("time_passed vs play_time, %f, %f, %f\n", time_passed, play_pos, delta);            
-            if (delta > 100) {
-                //break;
-            }
-        }
         if (!music_started && eps + time_passed >= 0) {
             music_started = 1;
             AalibPlay(bgm_channel);
@@ -213,10 +246,8 @@ int main(int argc, char *argv[])
         //    t1 = clock();
         //    printf("music thread move to play status at %f\n", t1);
        // }
-        if (t1 > 0 && AalibGetStatus(bgm_channel) == PSPAALIB_STATUS_STOPPED) {
-            printf("when music stopped %f\n", (float)AalibGetPlayPosition(bgm_channel));
-            printf("clock = %f\n", (clock() - t1));            
-            break;
+        if (!music_over && t1 > 0 && AalibGetStatus(bgm_channel) == PSPAALIB_STATUS_STOPPED) {
+            music_over = TRUE;
         }
         pad = oslReadKeys();
 
@@ -231,16 +262,19 @@ int main(int argc, char *argv[])
             offset += 1;
         }
 
-        if (pad->pressed.start) {
+        if (pad->pressed.start || (music_over && fumen_over)) {
+            note_destroy();
             AalibStop(bgm_channel);    
-            break;
+            AalibUnload(bgm_channel);
+            selecting = TRUE;
+            continue;
         }
 
         oslStartDrawing();
         oslClearScreen(RGB(0,0,0));
         drawing();
 
-        update_drawing(time_passed+offset, auto_play, pad);
+        fumen_over = !note_update(time_passed+offset, auto_play, pad);
 
         // draw debug info
         oslPrintf_xy(200, 150, "offset=%.3f(%c%d)", fumen_offset+offset, \

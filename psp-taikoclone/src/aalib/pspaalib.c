@@ -241,7 +241,6 @@ Play:
     }
 Release:
     sceAudioSRCChRelease();
-    sceKernelTerminateThread(threads[8]);
     return 0;
 }
 
@@ -250,6 +249,7 @@ int SRCChPlayThread(SceSize argsize, void* args)
 {
     void *tmpBuf;
     int channel = hardwareChannels[8];
+    int stopReason;
     int t1, t2;
     //printf("SRC Play thread started %d\n", clock());
 
@@ -266,9 +266,10 @@ int SRCChPlayThread(SceSize argsize, void* args)
         sceAudioSRCOutputBlocking(PSP_AUDIO_VOLUME_MAX, backBuf);
         //t2 = clock();
         //printf("output cost %d %d %d\n", t2 - t1, t1, t2);
-        
+        if (AalibGetStopReason(channel) < 0) {
+            break;
+        }
     }
-    sceIoClose(f);
 	sceKernelExitThread(0);
 	return 0;    
 }
@@ -579,6 +580,17 @@ int AalibLoad(cccUCS2* filename,int channel,int loadToRam, int is_SRC)
     } else {
         if (channels[channel].is_SRC) {
             printf("try to preload 2048 samples\n");
+
+            if (sceKernelPollSema(decode_sema, 0) > 0) {
+                sceKernelSignalSema(decode_sema, 1);
+            }
+            if (sceKernelPollSema(play_sema, 1) > 0) {
+                sceKernelSignalSema(play_sema, 1);
+            }
+            if (sceKernelPollSema(predecode_done_sema, 1) > 0) {
+                sceKernelSignalSema(predecode_done_sema, 1);
+            }
+
             //printf("set music to play status = %d\n", PlayOgg(channel - PSPAALIB_CHANNEL_OGG_1));
             int arg = - channel;
             sceKernelStartThread(decode_thread, sizeof(int), ((void *)(&channel)));

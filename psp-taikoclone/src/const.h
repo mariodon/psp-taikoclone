@@ -21,4 +21,12 @@
 #define MAX_TITLE   100
 #define MAX_SUBTITLE    100
 
+#ifndef TRUE
+#define TRUE    1
+#endif
+
+#ifndef FALSE
+#define FALSE   0
+#endif
+
 #endif

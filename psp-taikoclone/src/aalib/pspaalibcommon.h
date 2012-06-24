@@ -28,8 +28,13 @@
 //#include "../../include/luaplayer.h"
 
 //typedef int bool;
+#ifndef FALSE
 #define FALSE 0
+#endif
+
+#ifndef TRUE
 #define TRUE !FALSE
+#endif
 
 #define PI 3.14159265358979
 

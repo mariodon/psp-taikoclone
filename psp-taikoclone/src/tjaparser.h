@@ -29,10 +29,12 @@
 #define NOTE_LEVELHOLD  13
 #define NOTE_BRANCH_END 14
 #define NOTE_BARLINE    15 //yet another visible object
-#define MAX_NOTE        16
+#define NOTE_FREED      16
+#define MAX_NOTE        17
 
 int tjaparser_load(cccUCS2 *file);
 int tjaparser_seek_course(int idx);
+int tjaparser_unload();
 
 typedef struct {
     char *title;
@@ -174,6 +176,7 @@ typedef struct {
 } end_t;
 int tjaparser_parse_course(int idx, note_t **entry);
 int tjaparser_go_branch(int id, note_t *start);
+
 
 SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode);
 
