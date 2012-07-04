@@ -90,7 +90,10 @@ OSL_IMAGE *oslLoadImageFilePNG(char *filename, int location, int pixelFormat)
    		//S'il y a besoin d'une palette...
 		if (osl_pixelWidth[pixelFormat] <= 8)				{
 
-			img->palette = oslCreatePalette(oslMin(pPngInfo->num_palette, 1 << osl_paletteSizes[pixelFormat]), OSL_PF_8888);
+            num_palette = oslMin(pPngInfo->num_palette, 1 << osl_paletteSizes[pixelFormat]);
+            if (num_palette % 8 != 0) num_palette += (8 - num_palette % 8);
+
+			img->palette = oslCreatePalette(num_palette, OSL_PF_8888);
 			if (img->palette)			{
 			   //Make sure to not use too much colors!
 			   pPngInfo->num_palette = oslMin(pPngInfo->num_palette, img->palette->nElements);
@@ -104,6 +107,9 @@ OSL_IMAGE *oslLoadImageFilePNG(char *filename, int location, int pixelFormat)
 				   //Color key?
 				   if (osl_colorKeyEnabled && RGBA(pPngInfo->palette[i].red, pPngInfo->palette[i].green, pPngInfo->palette[i].blue, 0) == (osl_colorKeyValue & 0x00ffffff))
 					   a = 0;
+                   else if (i < pPngInfo->num_trans)
+                       a = pPngInfo->trans[i];
+
 				   ((u32*)img->palette->data)[i] = RGBA(r, g, b, a);
 			   }
 			   oslUncachePalette(img->palette);
@@ -190,6 +196,13 @@ OSL_IMAGE *oslLoadImageFilePNG(char *filename, int location, int pixelFormat)
 				else if (pixelFormat == OSL_PF_4BIT)				{
 					p_dest1[x >> 1] &= ~(15 << ((x & 1) << 2));
 					p_dest1[x >> 1] |= (pixel_value & 15) << ((x & 1) << 2);
+  //                  if (y == 68) {
+ //                      printf("pixel val = %d\n", pixel_value);
+//                    }
+        //            if (x & 1) {
+//                        pixel_cnt[p_dest1[x >> 1] & 0xF] ++;
+  //                      pixel_cnt[p_dest1[x >> 1] >> 4] ++;
+         //           }
 				}
 			}
 
