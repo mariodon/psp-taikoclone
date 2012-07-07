@@ -74,6 +74,17 @@ int bk_ggt;
 float bk_delay;
 int bk_barlineon;
 
+void print_str_as_hex3(char *str)
+{
+    char *p;
+    puts("");
+    for (p = str; *p != '\0'; ++ p) {
+        printf("\\x%x", (unsigned char)(*p));
+    }
+    puts("");
+    return;
+}
+
 /*
  * Try to open or create a file for reading or writing using a UCS2-encoded filename.
  *
@@ -94,6 +105,7 @@ SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
     len = cccUCS2toSJIS(filename_encoded, MAX_FILENAME - 1, filename);
     filename_encoded[len] = '\0';
     printf("first: %s\n", filename_encoded);
+    print_str_as_hex3(filename_encoded);
     fd = sceIoOpen((const char *)filename_encoded, flags, mode);
     if (fd >= 0) {
         return fd;
@@ -103,6 +115,17 @@ SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
     len = cccUCS2toGBK(filename_encoded, MAX_FILENAME - 1, filename);
     filename_encoded[len] = '\0';
     printf("second; %s\n", filename_encoded);
+    print_str_as_hex3(filename_encoded);    
+    fd = sceIoOpen((const char *)filename_encoded, flags, mode);
+    if (fd >= 0) {
+        return fd;
+    }
+
+    /* try UTF8 encoding */
+    len = cccUCS2toUTF8(filename_encoded, MAX_FILENAME - 1, filename);
+    filename_encoded[len] = '\0';
+    printf("third; %s\n", filename_encoded);
+    print_str_as_hex3(filename_encoded);    
     fd = sceIoOpen((const char *)filename_encoded, flags, mode);
     if (fd >= 0) {
         return fd;
@@ -313,7 +336,7 @@ int tjaparser_parse_course(int idx, note_t **entry)
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
 
-        //printf("after fix line, %s\n", line);
+        printf("after fix line, %s\n", line);
         if (!has_started && tjaparser_check_command(line, "#START")) {
             has_started = 1;
             continue;
@@ -375,7 +398,8 @@ int tjaparser_handle_command(char *line) {
     if (note_buf_len > 0) {
         if (line[0] == '#' 
             && 0 == tjaparser_check_command(line, "#BPMCHANGE")
-            && 0 == tjaparser_check_command(line, "#SCROLL")) {
+            && 0 == tjaparser_check_command(line, "#SCROLL")
+            && 0 == tjaparser_check_command(line, "#DELAY")) {
             printf("[ERROR]can't do cmd %s during a bar.", line);
             return 0;
         }
@@ -712,7 +736,7 @@ int tjaparser_handle_a_bar()
     bcnt = 1.0 * measure / note_buf_len;
 
     //add all notes to queue
-    //printf("[");
+    printf("[");
     for (i = 0; i < note_buf_len; ++ i) {
         tpb = note_buf[i]->offset;
         note_buf[i]->offset = offset;
@@ -724,13 +748,13 @@ int tjaparser_handle_a_bar()
             free(note_buf[i]);
         } else {
             tjaparser_add_note(note_buf[i]);
-            //printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
+            printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
         }
         if (i == 0 && note_barline != NULL) {
             tjaparser_add_note(note_barline);
         }
     }
-    //printf("]\n");
+    printf("]\n");
 
     //clear up queue
     note_buf_len = 0;

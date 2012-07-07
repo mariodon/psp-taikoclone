@@ -24,7 +24,7 @@ int note_need_update(note_t *note, float play_pos)
     int x, x2;
     int left, right;
 
-    x = 106 + (note->offset - play_pos) * note->speed;
+    x = NOTE_FIT_X + (note->offset - play_pos) * note->speed;
     get_note_left_right(note, x, &left, &right);
     //balloon is special
     if (note->type == NOTE_BALLOON) {
@@ -37,7 +37,7 @@ int note_need_update(note_t *note, float play_pos)
 
 void note_update_note(note_t *p, float play_pos)
 {
-    int x = 106 + (p->offset - play_pos) * p->speed;
+    int x = NOTE_FIT_X + (p->offset - play_pos) * p->speed;
     int x2;
 
     switch(p->type) {
@@ -48,16 +48,16 @@ void note_update_note(note_t *p, float play_pos)
         case NOTE_BARLINE:
         case NOTE_YELLOW:
         case NOTE_LYELLOW:
-            draw_note(p, x, 105);
+            draw_note(p, x, NOTE_Y);
             break;
         case NOTE_BALLOON:
             x2 = x + (((yellow_t *)p)->offset2 - p->offset) * p->speed;
-            if (x >= 106) {
-                draw_note(p, x, 105);
-            } else if (x2 >= 106) {
-                draw_note(p, 106, 105);
+            if (x >= NOTE_FIT_X) {
+                draw_note(p, x, NOTE_Y);
+            } else if (x2 >= NOTE_FIT_X) {
+                draw_note(p, NOTE_FIT_X, NOTE_Y);
             } else {
-                draw_note(p, x2, 105);
+                draw_note(p, x2, NOTE_Y);
             }
         default:
             break;
@@ -154,7 +154,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
     /* generate auto play input */
     if (cur_hit_obj != NULL) {
         t_delta = cur_hit_obj->offset - play_pos;
-        x = 106 + t_delta * cur_hit_obj->speed;        
+        x = NOTE_FIT_X + t_delta * cur_hit_obj->speed;        
         switch(cur_hit_obj->type) {
             case NOTE_DON:
             case NOTE_LDON:
@@ -164,7 +164,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
                 if (hit_over) {
                     break;
                 }
-                if (auto_play && x <= 106) {
+                if (auto_play && x <= NOTE_FIT_X) {
                     if (cur_hit_obj->type == NOTE_DON) {
                         input.left_don = 1;
                     } 
@@ -191,36 +191,36 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
             
             case NOTE_YELLOW:
             case NOTE_LYELLOW:
-                x2 = 106 + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
-                if (auto_play && x <= 106 && x2 >= 106) {
+                x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
+                if (auto_play && x <= NOTE_FIT_X && x2 >= NOTE_FIT_X) {
                     if (!last_yellow) {
                         input.left_don = 1;
                     }
                     last_yellow = (last_yellow + 1) % 3;
                 }
 
-                if (x <= 106 && x2 >= 106 && (input.left_don || input.right_don || input.right_katsu || input.left_katsu)) {
+                if (x <= NOTE_FIT_X && x2 >= NOTE_FIT_X && (input.left_don || input.right_don || input.right_katsu || input.left_katsu)) {
                     hit_ok = TRUE;
-                } else if (x2 < 106) {
+                } else if (x2 < NOTE_FIT_X) {
                     hit_over = TRUE;
                 }
                 break;
             case NOTE_BALLOON:
-                x2 = 106 + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
-                if (auto_play && x<= 106 && x2 >= 106) {
+                x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
+                if (auto_play && x<= NOTE_FIT_X && x2 >= NOTE_FIT_X) {
                     if (!last_yellow) {
                         input.left_don = 1;
                     }
                     last_yellow = (last_yellow + 1) % 3;
                 }
 
-                if (x <= 106 && x2 >= 106 && (input.left_don || input.right_don)) {
+                if (x <= NOTE_FIT_X && x2 >= NOTE_FIT_X && (input.left_don || input.right_don)) {
                     (((balloon_t *)cur_hit_obj)->hit_count) -= input.left_don + input.right_don;
                     hit_ok = TRUE;
                     if ((((balloon_t *)cur_hit_obj)->hit_count) <= 0) {
                         hit_over = hit_off = TRUE;
                     }
-                } else if (x2 < 106) {
+                } else if (x2 < NOTE_FIT_X) {
                     hit_over = TRUE;
                 }
                 break;
@@ -298,19 +298,23 @@ void note_free_note_list(note_t *p)
     int note_type;
     note_t *next;
 
-    if (p == NULL || p->type == NOTE_FREED) {
+    if (p == NULL) {
         return;
     }
 
-    note_type = p->type;
-    p->type = NOTE_FREED;
-
-    if (note_type == NOTE_BRANCH_START) {
+    if (p->type == NOTE_BRANCH_START) {
         branch_start_t *pbs = (branch_start_t *)p;
-        note_free_note_list(pbs->next);
-        note_free_note_list(pbs->fumen_e);
-        note_free_note_list(pbs->fumen_n);
-        note_free_note_list(pbs->fumen_m);
+
+        note_free_note_list(pbs->next);        
+        if (pbs->next != pbs->fumen_e) {
+            note_free_note_list(pbs->fumen_e);
+        }
+        if (pbs->next != pbs->fumen_n && pbs->fumen_e != pbs->fumen_n) {
+            note_free_note_list(pbs->fumen_n);
+        }
+        if (pbs->next != pbs->fumen_m && pbs->fumen_e != pbs->fumen_m && pbs->fumen_n != pbs->fumen_m) {        
+            note_free_note_list(pbs->fumen_m);
+        }
     } else {
         note_free_note_list(p->next);
     }

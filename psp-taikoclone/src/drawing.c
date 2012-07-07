@@ -12,7 +12,7 @@ static dictionary *tex_conf;
 
 //preloaded textures
 static bool is_texture_preloaded = FALSE;
-OSL_IMAGE *bg, *bg2;
+OSL_IMAGE *bg, *note_bg, *hit_circle, *donchan;
 OSL_IMAGE *taiko;
 OSL_IMAGE *soulbar_empty;
 OSL_IMAGE *soulbar_full;
@@ -20,6 +20,83 @@ OSL_IMAGE *taiko_flash[4];
 
 static OSL_IMAGE *note_tex[MAX_NOTE][4];
 
+float format_t(float t)
+{
+    if (t < 0)
+        t += 1.0;
+    else if (t > 1)
+        t -= 1.0;
+    return t;
+}
+
+float calc_color_comp(float t, float p, float q)
+{
+    if (t < 1.0 / 6)
+        return p + ((q - p) * 6.0 * t);
+    else if (t < 0.5)
+        return q;
+    else if (t < 2.0 / 3)
+        return p + ((q - p) * 6.0 * (2.0 / 3 - t));
+    else
+        return p;
+}
+
+void hsl_to_rgb(float h, float s, float l, float *r, float *g, float *b)
+{
+    float p, q, hk;
+    float tr, tg, tb;
+
+    if (s == 0) {
+        *r = *g = *b = l;
+    } else {
+        if (l < 0.5)
+            q = l * (1 + s);
+        else
+            q = l + s - l * s;
+        p = 2 * l - q;
+        hk = h / 360.0;
+        tr = format_t(hk + 1.0 / 3);
+        tg = format_t(hk);
+        tb = format_t(hk - 1.0 / 3);
+        *r = calc_color_comp(tr, p, q);
+        *g = calc_color_comp(tg, p, q);
+        *b = calc_color_comp(tb, p, q);
+    }
+}
+
+void colorize_palette(OSL_IMAGE *img)
+{
+    OSL_PALETTE *palette = img->palette;
+    int i;
+    int r, g, b, a;
+    float rf, gf, bf;
+    float lum, h, s, l;
+    float lightness;
+    
+    h = 63;
+    s = 0.5;
+    lightness = 52;
+
+    for (i = 0; i < palette->nElements; ++ i) {
+		r = (((u32*)palette->data)[i]) & 0xff;
+		g = ((((u32*)palette->data)[i]) >> 8) & 0xff;
+		b = ((((u32*)palette->data)[i]) >> 16) & 0xff;
+    	a = ((((u32*)palette->data)[i]) >> 24) & 0xff;        
+        lum = r * 0.2126 + g * 0.7152 + b * 0.0722;
+        if (lightness < 0)
+            lum *= (lightness + 100) / 100.0;
+        else
+            lum = lum + lightness * (255 - lum) / 100.0;
+        l = lum / 255.0;
+
+        hsl_to_rgb(h, s, l, &rf, &gf, &bf);
+
+        r = (int)(255 * rf);
+        g = (int)(255 * gf);
+        b = (int)(255 * bf);
+        ((u32*)palette->data)[i] = (a << 24) + (b << 16) + (g << 8) + r;
+    }
+}
 /*
  * preload textures.
  * */
@@ -34,6 +111,12 @@ void init_drawing()
 
     tex_conf = iniparser_load("config/texture.ini");
     bg = load_texture_config(tex_conf, "bg");
+
+    donchan = load_texture_config(tex_conf, "donchan");
+    colorize_palette(donchan);
+
+    note_bg = load_texture_config(tex_conf, "note_bg");
+    hit_circle = load_texture_config(tex_conf, "hit_circle");
     taiko = load_texture_config(tex_conf, "taiko");
 
     // init taiko flash
@@ -67,6 +150,20 @@ void init_drawing()
 
     is_texture_preloaded = TRUE;
 
+}
+
+void draw_bg_upper(OSL_IMAGE *img)
+{
+    int i;
+    for (i = 0; i * img->sizeX < SCREEN_WIDTH; ++ i) {
+        oslDrawImageSimpleXY(img, i * img->sizeX, 0);
+    }
+}
+
+void draw_bg_note(OSL_IMAGE *img)
+{
+    img->stretchX = SCREEN_WIDTH;
+    oslDrawImageXY(img, 0, 78);
 }
 
 void draw_note(note_t *note, int x, int y)
@@ -134,8 +231,18 @@ void draw_image_tiles(OSL_IMAGE *img, int start_x, int start_y, int end_x, int e
 
 void drawing()
 {
-    oslDrawImage(bg);
-    oslDrawImage(soulbar_empty);
+    draw_bg_upper(bg);        
+    oslDrawImageSimple(donchan);
+    draw_bg_note(note_bg);
+
+    oslDrawImageSimpleXY(hit_circle, NOTE_FIT_X, NOTE_Y);
+    //
+//    oslDrawImage(soulbar_empty);
+}
+
+void drawing_after_note()
+{
+    oslDrawImageSimple(taiko);
 }
 
 void draw_yellow(OSL_IMAGE **textures, int x1, int x2, int y)

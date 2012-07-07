@@ -22,6 +22,7 @@ OSL_IMAGE *oslLoadImageFilePNG(char *filename, int location, int pixelFormat)
 	VIRTUAL_FILE *f;
 	//We only keep the location bits
 	int imgLocation = location & OSL_LOCATION_MASK;
+    int num_palette;
 	int i;
 	
 	f = VirtualFileOpen((void*)filename, 0, VF_AUTO, VF_O_READ);

@@ -129,6 +129,12 @@ def make_tja_info(tja_file, encoding):
     info["wave_file"] = os.path.join(os.path.dirname(info["tja_file"]),
             header["WAVE"].decode(encoding))
 
+    # normalize
+    info["wave_file"] = os.path.relpath(info["wave_file"])
+    info["tja_file"] = os.path.relpath(info["tja_file"])    
+    print repr(info["wave_file"])
+    print repr(info["tja_file"])
+
     return info
     
 def pack_unicode_string(uni_str):

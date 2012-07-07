@@ -22,6 +22,9 @@ int note_destroy();
 
 #define NOTE_APPEAR_X   (SCREEN_WIDTH - 1)
 #define NOTE_DISAPPEAR_X 80
+#define NOTE_Y 109 
+#define NOTE_FIT_X  104
+
 //TODO: change this to taiko pic's right
 
 #endif
