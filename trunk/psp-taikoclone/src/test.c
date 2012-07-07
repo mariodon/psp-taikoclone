@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
 
     /* real time info display */
     float fumen_offset;
-    int offset = 17; /* offset fix up */
+    int offset = 5; /* offset fix up */
     int auto_play = TRUE;
 
     tja_header_t tja_header;
@@ -160,10 +160,10 @@ int main(int argc, char *argv[])
     bool music_over;
     //sceIoChdir("ms0:/PSP/GAME/TAIKOC");
 
-    scePowerSetCpuClockFrequency(333);
+    scePowerSetCpuClockFrequency(222);
 
     oslInit(0);
-    oslInitGfx(TAIKO_PF, 1);
+    oslInitGfx(OSL_PF_8888, 1);
     oslInitConsole();    
     oslIntraFontInit(INTRAFONT_CACHE_LARGE);
 
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
             music_started = 1;
             AalibPlay(bgm_channel);
             //AalibSetAutoloop(bgm_channel, TRUE);
-            AalibSetVolume(bgm_channel, (AalibVolume){0.3, 0.3});            
+            AalibSetVolume(bgm_channel, (AalibVolume){1.0, 1.0});           
             printf("when music start, time_passed = %f\n", time_passed);
             t1 = clock();
             printf("clock = %d\n", clock());
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
 
         if (pad->pressed.start || (music_over && fumen_over)) {
             note_destroy();
-            AalibStop(bgm_channel);    
+            printf("note_destroy!\n");
             AalibUnload(bgm_channel);
             selecting = TRUE;
             continue;
@@ -276,6 +276,7 @@ int main(int argc, char *argv[])
 
         fumen_over = !note_update(time_passed+offset, auto_play, pad);
 
+        drawing_after_note();
         // draw debug info
         oslPrintf_xy(200, 150, "offset=%.3f(%c%d)", fumen_offset+offset, \
                 offset > 0 ? '+' : '\0', offset); 

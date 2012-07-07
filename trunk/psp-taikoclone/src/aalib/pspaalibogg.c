@@ -243,7 +243,7 @@ int SeekOgg(int channel,int time)
 	}
 	int tempPause=streamsOgg[channel].paused;
 	streamsOgg[channel].paused=TRUE;
-	ov_pcm_seek(&(streamsOgg[channel].oggVorbisFile),time*44100);
+	ov_pcm_seek(&(streamsOgg[channel].oggVorbisFile),time*streamsOgg[channel].hz);
 	streamsOgg[channel].paused=tempPause;
 	return PSPAALIB_SUCCESS;
 }
@@ -300,8 +300,6 @@ int LoadOgg(cccUCS2* filename,int channel,int loadToRam)
 	{
 		UnloadOgg(channel);
 	}
-    //what the fuck, I got lagged, when streaming ogg, so I'll try the on ram
-    //mode
 	//loadToRam=FALSE;//////Something wrong with the seek/read function.Can't rewind when on ram.
 	streamsOgg[channel].file=sceIoOpenUCS2(filename,PSP_O_RDONLY,0777);
 	if (!streamsOgg[channel].file)

@@ -175,17 +175,25 @@ int GetBufferSceMp3(short* buf,int length,float amp,int channel)
 			FillBuffer(channel);
 		}
 		short* decodeBuf;
-		unsigned int bytesDecoded=sceMp3Decode(streamsSceMp3[channel].handle,&decodeBuf);
+		int bytesDecoded=sceMp3Decode(streamsSceMp3[channel].handle,&decodeBuf);
+        if (bytesDecoded <= 0) break; 
 		streamsSceMp3[channel].buf=(u8*)realloc(streamsSceMp3[channel].buf,streamsSceMp3[channel].bufSize+bytesDecoded);
 		memcpy(streamsSceMp3[channel].buf+streamsSceMp3[channel].bufSize,decodeBuf,bytesDecoded);
 		streamsSceMp3[channel].bufSize+=bytesDecoded;
 	}
+    
+    unsigned char byte1, byte2;
+    int how_many = (streamsSceMp3[channel].bufSize > byteLength ? byteLength : streamsSceMp3[channel].bufSize);
 	for (i=0;i<2*length;i++)
 	{
-		buf[i]=((short)(streamsSceMp3[channel].buf[2*i] | streamsSceMp3[channel].buf[2*i+1]<<8))*amp;
+        byte1 = (2*i >= how_many) ? 0 : streamsSceMp3[channel].buf[2*i];
+        byte2 = (2*i+1 >= how_many) ? 0 : streamsSceMp3[channel].buf[2*i+1];
+
+		buf[i]=((short)(byte1 | byte2<<8))*amp;
 	}
-	streamsSceMp3[channel].bufSize-=byteLength;
-	memmove(streamsSceMp3[channel].buf,streamsSceMp3[channel].buf+byteLength,streamsSceMp3[channel].bufSize);
+
+	streamsSceMp3[channel].bufSize-=how_many;
+	memmove(streamsSceMp3[channel].buf,streamsSceMp3[channel].buf+how_many,streamsSceMp3[channel].bufSize);
 	return PSPAALIB_SUCCESS;
 }
 
