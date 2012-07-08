@@ -336,7 +336,7 @@ int tjaparser_parse_course(int idx, note_t **entry)
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
 
-        printf("after fix line, %s\n", line);
+        //printf("after fix line, %s\n", line);
         if (!has_started && tjaparser_check_command(line, "#START")) {
             has_started = 1;
             continue;
@@ -439,7 +439,11 @@ int tjaparser_handle_command(char *line) {
 
     cmd = "#DELAY";
     if (tjaparser_check_command(line, cmd)) {
-        offset += atof(line+strlen(cmd)) * 1000;
+        if (note_buf_len > 0) {
+            delay += atof(line+strlen(cmd)) * 1000;
+        } else {
+            offset += atof(line+strlen(cmd)) * 1000;
+        }
         return 1;
     }
 
@@ -463,16 +467,6 @@ int tjaparser_handle_command(char *line) {
     if (tjaparser_check_command(line, cmd)) {        
         ggt = 0;
         return 0;
-    }
-
-    cmd = "#DELAY";
-    if (tjaparser_check_command(line, cmd)) {        
-        fval = atof(line + strlen(cmd));
-        if (fval < 0) {
-            return 0;
-        }
-        delay += fval;
-        return 1;
     }
 
     cmd = "#SECTION";
@@ -736,25 +730,29 @@ int tjaparser_handle_a_bar()
     bcnt = 1.0 * measure / note_buf_len;
 
     //add all notes to queue
-    printf("[");
+    //printf("[");
     for (i = 0; i < note_buf_len; ++ i) {
         tpb = note_buf[i]->offset;
-        note_buf[i]->offset = offset;
-        offset += bcnt * tpb;  
+        note_buf[i]->offset = offset + note_buf[i]->extra;
+        offset += bcnt * tpb;
         if (note_buf[i]->type == NOTE_EMPTY) { // only add non empty
             free(note_buf[i]);
         } else if (note_buf[i]->type == NOTE_END) {
-            ((yellow_t *)(((end_t *)note_buf[i])->start_note))->offset2 = note_buf[i]->offset;
+            yellow_t *jij = ((yellow_t *)(((end_t *)note_buf[i])->start_note));            
+            jij->offset2 = note_buf[i]->offset;
+            printf("offset = %f, offset2 = %f\n", jij->offset, jij->offset2);
             free(note_buf[i]);
         } else {
             tjaparser_add_note(note_buf[i]);
-            printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
+     //       printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
         }
         if (i == 0 && note_barline != NULL) {
             tjaparser_add_note(note_barline);
         }
     }
-    printf("]\n");
+    offset += delay;
+    delay = 0;
+    //printf("]\n");
 
     //clear up queue
     note_buf_len = 0;
@@ -799,6 +797,7 @@ int fill_common_field(note_t *note)
     note->speed = scroll * NOTE_MARGIN / (1000.0 * 60 / (bpm * 4));
     note->next = NULL;
     note->prev = NULL;
+    note->extra = delay;
     note->ggt = ggt;
     return 1;
 }

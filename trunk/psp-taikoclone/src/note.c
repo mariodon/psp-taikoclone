@@ -32,7 +32,26 @@ int note_need_update(note_t *note, float play_pos)
         x2 = x + (((yellow_t *)note)->offset2 - note->offset) * note->speed;
         get_note_left_right(note, x2, &dummy_left, &right);
     } 
+    //if (note->type == NOTE_YELLOW || note->type == NOTE_LYELLOW) {
+    //    printf("(left, right) = (%d, %d)\n", left, right);
+    //}
     return !(left > NOTE_APPEAR_X || right < NOTE_DISAPPEAR_X);
+}
+
+int note_need_update2(note_t *note, float play_pos)
+{
+    int x, x2;
+    int left, right;
+
+    x = NOTE_FIT_X + (note->offset - play_pos) * note->speed;
+    get_note_left_right(note, x, &left, &right);
+    //balloon is special
+    if (note->type == NOTE_BALLOON) {
+        int dummy_left;
+        x2 = x + (((yellow_t *)note)->offset2 - note->offset) * note->speed;
+        get_note_left_right(note, x2, &dummy_left, &right);
+    } 
+    return right >= NOTE_DISAPPEAR_X;
 }
 
 void note_update_note(note_t *p, float play_pos)
@@ -191,7 +210,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
             
             case NOTE_YELLOW:
             case NOTE_LYELLOW:
-                x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
+                x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * cur_hit_obj->speed;        
                 if (auto_play && x <= NOTE_FIT_X && x2 >= NOTE_FIT_X) {
                     if (!last_yellow) {
                         input.left_don = 1;
@@ -206,7 +225,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
                 }
                 break;
             case NOTE_BALLOON:
-                x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * head->speed;        
+                x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * cur_hit_obj->speed;        
                 if (auto_play && x<= NOTE_FIT_X && x2 >= NOTE_FIT_X) {
                     if (!last_yellow) {
                         input.left_don = 1;
@@ -267,7 +286,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
     /* start from head to see if anyone doesn't need update any more*/
     for (p = head; p != tail; p = (note_t *)(p->next)) {
 
-        if (!note_need_update(p, play_pos)) {
+        if (!note_need_update2(p, play_pos)) {
             head = p->next;
         } else {
             break;
