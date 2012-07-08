@@ -70,6 +70,7 @@ typedef struct {
     void *next;
     void *prev;
     int ggt;
+    float extra;
 } note_t;
 
 typedef struct {
@@ -79,6 +80,7 @@ typedef struct {
     void *next;
     void *prev;
     int ggt;
+    float extra;    
     /* extra */
     float offset2;
     int hit_count;
@@ -91,6 +93,7 @@ typedef struct {
     void *next;
     void *prev;
     int ggt;    
+    float extra;    
     /* extra */
     float offset2;
 } yellow_t;
@@ -102,6 +105,7 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
+    float extra;    
     /* extra */
     float offset2;
     int hit_count;
@@ -114,6 +118,7 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
+    float extra;    
     /* extra */
     int visible;
     int is_branch;
@@ -126,6 +131,7 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
+    float extra;    
     /* extra */
     char cond;
     float x, y;
@@ -141,6 +147,7 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
+    float extra;    
     /* extra */
 } branch_end_t;
 
@@ -151,6 +158,7 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;
+    float extra;    
     /* extra */
 } section_t;
 
@@ -161,6 +169,7 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;
+    float extra;    
     /* extra */
 } dummy_t;
 
@@ -171,6 +180,7 @@ typedef struct {
     void *next;
     void *prev;
     int ggt;
+    float extra;    
     /* extra */
     note_t *start_note; 
 } end_t;
