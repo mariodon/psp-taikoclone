@@ -68,7 +68,7 @@ int load_bgm(cccUCS2 *wave_file, char *ext) {
     } else if (strcmp(".ogg", ext) == 0) {
         bgm_channel = PSPAALIB_CHANNEL_OGG_1;
     } else if (strcmp(".wav", ext) == 0) {
-        bgm_channel = PSPAALIB_CHANNEL_WAV_3;
+        bgm_channel = PSPAALIB_CHANNEL_WAV_4;
     } else {
         return -1;
     }
@@ -263,6 +263,7 @@ int main(int argc, char *argv[])
         }
 
         if (pad->pressed.start || (music_over && fumen_over)) {
+            //TODO: disable destroy note atm.
             note_destroy();
             printf("note_destroy!\n");
             AalibUnload(bgm_channel);

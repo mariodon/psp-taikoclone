@@ -32,6 +32,15 @@
 #define NOTE_FREED      16
 #define MAX_NOTE        17
 
+/* max num of line a bar can spread.
+ * example:
+ * 0000
+ * #DELAY -0.01
+ * 1111,
+ *
+ * This bar spread for 3 lines. */
+#define MAX_DEFERRED_LINE 10
+
 int tjaparser_load(cccUCS2 *file);
 int tjaparser_seek_course(int idx);
 int tjaparser_unload();
@@ -70,7 +79,6 @@ typedef struct {
     void *next;
     void *prev;
     int ggt;
-    float extra;
 } note_t;
 
 typedef struct {
@@ -80,7 +88,6 @@ typedef struct {
     void *next;
     void *prev;
     int ggt;
-    float extra;    
     /* extra */
     float offset2;
     int hit_count;
@@ -93,7 +100,6 @@ typedef struct {
     void *next;
     void *prev;
     int ggt;    
-    float extra;    
     /* extra */
     float offset2;
 } yellow_t;
@@ -105,7 +111,6 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
-    float extra;    
     /* extra */
     float offset2;
     int hit_count;
@@ -118,9 +123,7 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
-    float extra;    
     /* extra */
-    int visible;
     int is_branch;
 } barline_t;
 
@@ -131,13 +134,12 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
-    float extra;    
     /* extra */
     char cond;
     float x, y;
-    note_t *fumen_e, *fumen_e_ed; //Futsu - easy
-    note_t *fumen_n, *fumen_n_ed; //Kurouto - normal
-    note_t *fumen_m, *fumen_m_ed; //Tatsujin - mad
+    note_t *fumen_e; //Kurouto - Expert
+    note_t *fumen_n; //Futsu - Normal
+    note_t *fumen_m; //Tatsujin - Master
 } branch_start_t;
 
 typedef struct {
@@ -147,7 +149,6 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;    
-    float extra;    
     /* extra */
 } branch_end_t;
 
@@ -158,7 +159,6 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;
-    float extra;    
     /* extra */
 } section_t;
 
@@ -169,25 +169,27 @@ typedef struct {
     void *next;
     void *prev;    
     int ggt;
-    float extra;    
     /* extra */
 } dummy_t;
 
-typedef struct {
-    int type;
-    float offset;
-    float speed;
-    void *next;
-    void *prev;
-    int ggt;
-    float extra;    
-    /* extra */
-    note_t *start_note; 
-} end_t;
 int tjaparser_parse_course(int idx, note_t **entry);
-int tjaparser_go_branch(int id, note_t *start);
 
 
 SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode);
+
+// parse data for a fumen(Normal, Expert, Master)
+typedef struct {
+    float bpm;
+    float scroll;
+    float measure;
+    float offset;
+    bool barline_on;
+    bool is_ggt;
+    int balloon_idx;
+    note_t *head, *tail;
+    yellow_t *lasting_note;
+
+    bool first_bar_after_branch;
+} parse_data_t;
 
 #endif
