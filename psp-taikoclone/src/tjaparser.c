@@ -1,5 +1,6 @@
 #include <string.h>
 #include <ctype.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <oslib/oslib.h>
 #include "tjaparser.h"
@@ -26,53 +27,89 @@ metadata_def_t tja_header_defs[] = {
     {NULL, NULL, 0, NULL},
 };
 
-int tjaparser_check_command(char *line, char *cmd);
-int tjaparser_handle_command(char *line);
-int tjaparser_handle_note(char *line);
-int tjaparser_add_note(note_t *note);
-int tjaparser_handle_a_bar();
-branch_start_t *create_note_branch_start(char cond, float x, float y);
-dummy_t *create_note_dummy(int type);
-end_t *create_note_end(note_t *start_note);
-yellow_t *create_note_yellow(int type);
-balloon_t *create_note_balloon(int type, int hit_count);
+//all commands implemented
+static char *all_cmd[] = {"#BPMCHANGE", "#SCROLL", "#START", "#END", \
+    "#E", "#M", "#N", "#DELAY", "#GOGOSTART", "#GOGOEND", "#BRANCHSTART", \
+    "#BRACHEND", "#SECTION", "#LEVELHOLD", "#MEASURE", "BARLINEON", "BARLINEOFF", NULL};
+//all commands allowed within a bar
+static char *all_cmd_within[] = {"#DELAY", "#SCROLL", "#BPMCHANGE", NULL};
+
+bool tjaparser_is_bar_complete(const char *line);
+bool tjaparser_is_note(const char *line);
+int tjaparser_handle_command_per_fumen(const char *line, parse_data_t *fumen);
+int tjaparser_handle_note_per_fumen(char **lines, int count, parse_data_t *fumen);
+int tjaparser_feed_line(const char *line);
+bool tjaparser_is_command(const char *line);
+int tjaparser_check_command(const char *line, char *cmd);
+int tjaparser_handle_command(const char *line);
+int tjaparser_handle_note(char **lines, int count);
+int tjaparser_add_note(parse_data_t *fumen, note_t *note);
+branch_start_t *create_note_branch_start(parse_data_t *fumen, char cond, float x, float y);
+dummy_t *create_note_dummy(parse_data_t *fumen, int type);
+yellow_t *create_note_yellow(parse_data_t *fumen, int type);
+balloon_t *create_note_balloon(parse_data_t *fumen, int type, int hit_count);
+barline_t *create_note_barline(parse_data_t *fumen, int is_branch_start);
 
 SceUID fd;
+
+/* line buff */
 char buf[MAX_LINE_WIDTH];
 
-note_t *last;
-// for gathering a bar
-note_t *note_buf[MAX_LINE_WIDTH];
-int note_buf_len = 0;
+/* defer lines for later parsing. */
+char *deferred_line[MAX_DEFERRED_LINE];
+unsigned char num_deferred_line; 
 
-note_t *lasting_note;
-note_t *lasting_note_e;
-note_t *lasting_note_n;
-note_t *lasting_note_m;
+/* current parsing status of three fumens. */
+parse_data_t N_fumen, E_fumen, M_fumen;
+unsigned char num_fumen;
+parse_data_t *curr_fumen;
+bool branch_started;
 
-// for branches
-int branch_started = 0;
-note_t **which_branch = NULL;
-note_t *last_E, *last_N, *last_M; //pointer for branch link list
+/*
+ * init parse status with course header
+ * */
+void init_parse_data(parse_data_t *data, tja_header_t *tja_header)
+{
+    data->bpm = tja_header->bpm;    
+    data->scroll = 1.0f;    
+    data->measure = 4.0f;    
+    data->offset = -tja_header->offset * 1000.0f;  //unit:ms
+    data->barline_on = TRUE;
+    data->is_ggt = FALSE;
+    data->head = data->tail = NULL;
+    data->lasting_note = NULL;
+    data->first_bar_after_branch = FALSE;
+    data->balloon_idx = 0;
+}
 
-// global variables 
-float offset; 
-float bpm;
-float measure;
-float scroll;
-int ggt;
-float delay;
-int barlineon;
-int balloon_idx;
+/*
+ * sync parse status.
+ * */
+void sync_parse_data(parse_data_t **data_arr, int count)
+{
+    parse_data_t *ruler = NULL, *data;
+    int i;
 
-//backups for branch
-float bk_offset;
-float bk_bpm;
-float bk_measure;
-float bk_scroll;
-int bk_ggt;
-float bk_delay;
-int bk_barlineon;
+    // find a ruler
+    for (i = 0; i < count; ++ i) {
+        if (i == 0 || ruler->offset < data_arr[i]->offset) {
+            ruler = data_arr[i];
+        }
+    }
+    assert(ruler != NULL);
+
+    // adjust all fumen to the same ruler
+    for (i = 0; i < count; ++ i) {
+        data = data_arr[i];
+        if (ruler == data) continue;
+        data->bpm = ruler->bpm;
+        data->scroll = ruler->scroll;
+        data->measure = ruler->measure;
+        data->offset = ruler->offset;
+        data->barline_on = ruler->barline_on;
+        data->is_ggt = ruler->is_ggt;
+    }
+}
 
 void print_str_as_hex3(char *str)
 {
@@ -105,7 +142,7 @@ SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
     len = cccUCS2toSJIS(filename_encoded, MAX_FILENAME - 1, filename);
     filename_encoded[len] = '\0';
     printf("first: %s\n", filename_encoded);
-    print_str_as_hex3(filename_encoded);
+    //print_str_as_hex3(filename_encoded);
     fd = sceIoOpen((const char *)filename_encoded, flags, mode);
     if (fd >= 0) {
         return fd;
@@ -115,7 +152,7 @@ SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
     len = cccUCS2toGBK(filename_encoded, MAX_FILENAME - 1, filename);
     filename_encoded[len] = '\0';
     printf("second; %s\n", filename_encoded);
-    print_str_as_hex3(filename_encoded);    
+    //print_str_as_hex3(filename_encoded);    
     fd = sceIoOpen((const char *)filename_encoded, flags, mode);
     if (fd >= 0) {
         return fd;
@@ -125,7 +162,7 @@ SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode)
     len = cccUCS2toUTF8(filename_encoded, MAX_FILENAME - 1, filename);
     filename_encoded[len] = '\0';
     printf("third; %s\n", filename_encoded);
-    print_str_as_hex3(filename_encoded);    
+    //print_str_as_hex3(filename_encoded);    
     fd = sceIoOpen((const char *)filename_encoded, flags, mode);
     if (fd >= 0) {
         return fd;
@@ -284,7 +321,7 @@ course_header_t course_header;
 int tjaparser_parse_course(int idx, note_t **entry)
 {
     char *line;
-    int has_started = 0;
+    bool has_started = FALSE;
 
     printf("read header begin\n");
     if (!tjaparser_read_tja_header(&tja_header)) {
@@ -304,31 +341,23 @@ int tjaparser_parse_course(int idx, note_t **entry)
         return 0;
     }
 
-    printf("seek course ok...\n");    
-    offset = -tja_header.offset * 1000;  //unit:ms
-    bpm = tja_header.bpm;
-    measure = 4;
-    scroll = 1;
-    ggt = 0;
-    delay = 0;
-    barlineon = 1;
+    printf("seek course ok...\n");
 
-    lasting_note = NULL;
-    lasting_note_e = lasting_note_n = lasting_note_m = NULL;
-    
-    balloon_idx = 0;
+    /* init globals */
+    num_deferred_line = 0;
+    branch_started = FALSE;
+    curr_fumen = NULL;
 
-    last = NULL;
-    note_buf_len = 0;
-
-    // for branches
-    branch_started = 0;
-    which_branch = NULL;
+    /* init fumen status */
+    init_parse_data(&N_fumen, &tja_header);
+    init_parse_data(&E_fumen, &tja_header);
+    init_parse_data(&M_fumen, &tja_header);
 
     printf("parsing started up ok\n");
-    last = (note_t *)create_note_dummy(NOTE_DUMMY);
-    *entry = last;
-    while (1) {
+
+    while (TRUE) {
+
+        //format line
         line = tjaparser_fgets(buf, MAX_LINE_WIDTH, fd);
         if (line == NULL) {
             break;
@@ -336,9 +365,9 @@ int tjaparser_parse_course(int idx, note_t **entry)
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
 
-        //printf("after fix line, %s\n", line);
+        printf("after fix line, %s\n", line);
         if (!has_started && tjaparser_check_command(line, "#START")) {
-            has_started = 1;
+            has_started = TRUE;
             continue;
         }
 
@@ -347,83 +376,306 @@ int tjaparser_parse_course(int idx, note_t **entry)
         }
 
         if (tjaparser_check_command(line, "#END")) {
-
-            if (branch_started) {
-                tjaparser_handle_command("#BRANCHEND");
-            }
             break;
         }
 
-        if (tjaparser_handle_command(line) || tjaparser_handle_note(line) == 0) {
-            // unhandled line
-            continue;
+        if (! tjaparser_feed_line(line)) {
+            return FALSE;
         }
+
     }
 
-    //remove dummy note
-    while (*entry != NULL && (*entry)->type == NOTE_DUMMY && (*entry)->next != NULL) {
-        *entry = (note_t *)((*entry)->next);
+    if (branch_started) {
+        if (! tjaparser_feed_line("#BRANCHEND")) {
+            return FALSE;
+        }
+        branch_started = FALSE;
     }
 
-    return 1;
+    *entry = N_fumen.head;
+
+    return TRUE;
 }
 
-int tjaparser_get_command(char *line, char **cmd, char **params)
+int clear_deferred_line()
 {
-    return 1;
+    int i;
+    //clear deferred line buf    
+    for (i = 0; i < num_deferred_line; ++ i) { // don't free the last line(not copied)
+        free(deferred_line[i]);
+    }
+    num_deferred_line = 0;    
+    return TRUE;
 }
 
-int tjaparser_check_command(char *line, char *cmd) {
+int tjaparser_feed_line(const char *line)
+{
+    bool is_cmd;
+    bool is_note;
+    bool is_complete_bar;
+
+    is_cmd = tjaparser_is_command(line);
+    is_complete_bar = tjaparser_is_bar_complete(line);    
+    is_note = (tjaparser_is_note(line) || is_complete_bar);
+
+
+    printf("feed line %d %d %d %d\n", is_cmd, is_note, is_complete_bar, num_deferred_line);
+    if (! is_cmd && ! is_note) {
+        return TRUE;
+    }
+
+    printf("feed ok!\n");
+    if (num_deferred_line == 0 && is_cmd) { // single line command
+        return tjaparser_handle_command(line);
+    }
+
+    if (num_deferred_line == 0 && is_complete_bar) { // single note
+        printf("handle single note\n");
+        return tjaparser_handle_note((char **)&line, 1);
+    }
+
+    if (!is_complete_bar) { // begin/continue to defer line
+        ++ num_deferred_line;
+        deferred_line[num_deferred_line - 1] = malloc(strlen(line)+1);
+        if (deferred_line[num_deferred_line - 1] == NULL) {
+            -- num_deferred_line;
+            goto error;
+        }
+        strcpy(deferred_line[num_deferred_line - 1], line);
+    } else { // handle deferred lines
+        printf("handle mixed note and command!\n");
+        ++ num_deferred_line;
+        deferred_line[num_deferred_line - 1] = line;
+        if (!tjaparser_handle_note(deferred_line, num_deferred_line)) {
+            -- num_deferred_line;
+            goto error;
+        }
+        -- num_deferred_line;
+        clear_deferred_line();
+    }
+    return TRUE;
+error:
+    clear_deferred_line();
+    return FALSE;
+}
+
+int tjaparser_check_command(const char *line, char *cmd) {
     int start_with = (strncmp(line, cmd, strlen(cmd)) == 0);
-    char *p;
+    const char *p;
 
     if (!start_with)
-        return 0;
+        return FALSE;
 
     p = line + strlen(cmd);
     if (*p == '\0' || isspace(*p))
-        return 1;
+        return TRUE;
 
-    return 0;
+    return FALSE;
 }
 
-int tjaparser_handle_command(char *line) {
-    char *cmd, *p;
-    float new_bpm = -1;
-    float new_measure, a = -1, b = -1;
-    float new_scroll, fval;
-
-    // you can't do any command in the middle of a bar, except #BPMCHANGE and
-    // #SCROLL
-    if (note_buf_len > 0) {
-        if (line[0] == '#' 
-            && 0 == tjaparser_check_command(line, "#BPMCHANGE")
-            && 0 == tjaparser_check_command(line, "#SCROLL")
-            && 0 == tjaparser_check_command(line, "#DELAY")) {
-            printf("[ERROR]can't do cmd %s during a bar.", line);
-            return 0;
+bool tjaparser_is_command(const char *line)
+{
+    int i;
+    char *p;
+    for (i = 0; ; ++ i) {
+        p = all_cmd[i];
+        if (p == NULL) {
+            break;
+        }
+        if (tjaparser_check_command(line, p)) {
+            return TRUE;
         }
     }
+    return FALSE;
+}
+
+bool tjaparser_is_command_within(const char *line)
+{
+    int i;
+    char *p;
+    for (i = 0; ; ++ i) {
+        p = all_cmd_within[i];
+        if (p == NULL) {
+            break;
+        }
+        if (tjaparser_check_command(line, p)) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+bool tjaparser_is_note(const char *line)
+{
+    const char *p;
+    if (tjaparser_is_command(line)) {
+        return FALSE;
+    }
+    for (p = line; *p != '\0'; ++ p) {
+        if (isdigit(*p)) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+bool tjaparser_is_bar_complete(const char *line)
+{
+    return line[strlen(line) - 1] == ',';
+}
+
+int tjaparser_handle_command(const char *line)
+{
+    char *cmd;
+    const char *p;
+    float a, b;
+
+    // handle command #BRANCHSTART
+    cmd = "#BRANCHSTART";
+    if (tjaparser_check_command(line, cmd)) {
+
+        // finish previous branch
+        if (branch_started) {
+            tjaparser_handle_command("#BRANCHEND");
+        }
+        assert(! branch_started);
+
+        // parse #BRANCHSTART command
+        char cond;
+        for (p = line + strlen(cmd); *p != '\0' && isspace(*p); ++ p)
+            ;
+        cond = *p;
+        a = atof(p+1);
+        for (++ p; *p != '\0' && *p != ','; ++ p)
+            ;
+        if (*p == '\0') {
+            return FALSE;
+        }
+        for (++ p; *p != '\0' && *p != ','; ++ p)
+            ;
+        b = atof(p+1);
+        printf("branch command %c,%f,%f\n", cond, a, b);
+        
+        // create 3 branch_start_t note for 3 branches and add link
+        branch_start_t *note_N = create_note_branch_start(&N_fumen, cond, a, b);
+        branch_start_t *note_E = create_note_branch_start(&E_fumen, cond, a, b);
+        branch_start_t *note_M = create_note_branch_start(&M_fumen, cond, a, b);
+        note_N->fumen_e = note_E->fumen_e = note_M->fumen_e = (note_t *)note_E;
+        note_N->fumen_n = note_E->fumen_n = note_M->fumen_n = (note_t *)note_N;
+        note_N->fumen_m = note_E->fumen_m = note_M->fumen_m = (note_t *)note_M;
+
+        // add note to three branches
+        tjaparser_add_note(&N_fumen, (note_t *)note_N);
+        tjaparser_add_note(&E_fumen, (note_t *)note_E);
+        tjaparser_add_note(&M_fumen, (note_t *)note_M);
+
+        // set flag for a yellow barline
+        N_fumen.first_bar_after_branch = TRUE;
+        E_fumen.first_bar_after_branch = TRUE;
+        M_fumen.first_bar_after_branch = TRUE;
+
+        branch_started = TRUE;
+
+        return TRUE;
+    }
+
+    // handle command #BRANCHEND
+    cmd = "#BRANCHEND";
+    if (tjaparser_check_command(line, cmd)) {
+        assert(branch_started);
+
+        // sync parse data, in case some fumen is missing
+        parse_data_t *data_arr[3];
+        data_arr[0] = &N_fumen;
+        data_arr[1] = &N_fumen;
+        data_arr[2] = &N_fumen;
+        sync_parse_data(data_arr, 3);
+
+        curr_fumen = NULL;
+        // mark ended.
+        branch_started = FALSE;
+        return TRUE;
+    }    
+
+    //handle command #N
+    cmd = "#N";
+    if (tjaparser_check_command(line, cmd)) {
+        if (! branch_started) {
+            return FALSE;
+        }
+
+        curr_fumen = &N_fumen;
+        return TRUE;
+    }
+
+    //handle command #E
+    cmd = "#E";
+    if (tjaparser_check_command(line, cmd)) {
+        if (! branch_started) {
+            return FALSE;
+        }
+
+        curr_fumen = &E_fumen;
+        return TRUE;
+    }    
+
+    //handle command #M
+    cmd = "#M";
+    if (tjaparser_check_command(line, cmd)) {
+        if (! branch_started) {
+            return FALSE;
+        }
+
+        curr_fumen = &M_fumen;
+        return TRUE;        
+    }
+
+    //handle command per fumen
+    if (!branch_started) {
+        if (!tjaparser_handle_command_per_fumen(line, &N_fumen)) return FALSE;
+        if (!tjaparser_handle_command_per_fumen(line, &E_fumen)) return FALSE;
+        if (!tjaparser_handle_command_per_fumen(line, &M_fumen)) return FALSE;
+        return TRUE;
+    } else {
+        if (curr_fumen == NULL) {
+            printf("fumen started, but not decide which fumen, but has a command %s\n", line);
+            return FALSE;
+        }
+        if (!tjaparser_handle_command_per_fumen(line, curr_fumen)) return FALSE;
+        return TRUE;
+    }
+    return TRUE;
+}
+
+int tjaparser_handle_command_per_fumen(const char *line, parse_data_t *fumen)
+{
+    char *cmd;
+    char buf2[MAX_LINE_WIDTH];
+    char *p;
+    float new_bpm = -1;
+    float new_measure, a = -1, b = -1;
+    float new_scroll;
 
     cmd = "#BPMCHANGE";
     if (tjaparser_check_command(line, cmd)) {
         new_bpm = atof(line+strlen(cmd));
         if (new_bpm > 0) {
-            bpm = new_bpm;
-            return 1;
+            fumen->bpm = new_bpm;
+            return TRUE;
         }
-        return 0;
+        return FALSE;
     }
 
     cmd = "#MEASURE";
     if (tjaparser_check_command(line, cmd)) {
-        for (p = line+strlen(cmd); *p != '/' && *p != '\0'; ++ p)
+        strcpy(buf2, line);
+        for (p = buf2+strlen(cmd); *p != '/' && *p != '\0'; ++ p)
             ;
         if (*p != '/') {
             return 0;
         }
         *p = '\0';
-        a = strtol(line+strlen(cmd), NULL, 0);
+        a = strtol(buf2+strlen(cmd), NULL, 0);
         b = strtol(p+1, NULL, 0);
         if (a <= 0 || b <= 0) {
             return 0;
@@ -433,17 +685,13 @@ int tjaparser_handle_command(char *line) {
             return 0;
         }
         //printf("measure %f/%f\n", a, b);
-        measure = new_measure;
+        fumen->measure = new_measure;
         return 1;
     } 
 
     cmd = "#DELAY";
     if (tjaparser_check_command(line, cmd)) {
-        if (note_buf_len > 0) {
-            delay += atof(line+strlen(cmd)) * 1000;
-        } else {
-            offset += atof(line+strlen(cmd)) * 1000;
-        }
+        fumen->offset += atof(line+strlen(cmd)) * 1000;
         return 1;
     }
 
@@ -451,7 +699,7 @@ int tjaparser_handle_command(char *line) {
     if (tjaparser_check_command(line, cmd)) {
         new_scroll = atof(line+strlen(cmd));
         if (new_scroll > 0) {
-            scroll = new_scroll;
+            fumen->scroll = new_scroll;
             return 1;
         }
         return 0;
@@ -459,441 +707,240 @@ int tjaparser_handle_command(char *line) {
 
     cmd = "#GOGOSTART";
     if (tjaparser_check_command(line, cmd)) {        
-        ggt = 1;
+        fumen->is_ggt = TRUE;
         return 1;
     }
 
     cmd = "#GOGOEND";
     if (tjaparser_check_command(line, cmd)) {        
-        ggt = 0;
-        return 0;
+        fumen->is_ggt = FALSE;
+        return TRUE;
     }
 
     cmd = "#SECTION";
     if (tjaparser_check_command(line, cmd)) {        
-        note_t *note = (note_t *)create_note_dummy(NOTE_SECTION);
-        tjaparser_add_note(note);
-        return 1;
-    }
-
-    cmd = "#BRANCHSTART";
-    if (tjaparser_check_command(line, cmd)) {        
-        if (branch_started) {
-            tjaparser_handle_command("#BRANCHEND");
-        }
-
-        char cond;
-        for (p = line + strlen(cmd); *p != '\0' && isspace(*p); ++ p)
-            ;
-        cond = *p;
-        a = atof(p+1);
-        for (++ p; *p != '\0' && *p != ','; ++ p)
-            ;
-        if (*p == '\0') {
-            return 0;
-        }
-        for (++ p; *p != '\0' && *p != ','; ++ p)
-            ;
-        b = atof(p+1);
-        printf("branch command %c,%f,%f\n", cond, a, b);
-        branch_start_t *note = create_note_branch_start(cond,a,b);
-        tjaparser_add_note((note_t *)note);
-
-        branch_started = 1;
-        which_branch = NULL;
-        last_E = note->fumen_e;
-        last_N = note->fumen_n;
-        last_M = note->fumen_m;
-        return 1;
-    }
-
-    cmd = "#BRANCHEND";
-    if (tjaparser_check_command(line, cmd)) {        
-        if (! branch_started) {
-            printf("branch end before branch start\n");
-            return 0;
-        }
-
-        //finish up the nearest branch start
-        branch_started = 0;
-        which_branch = NULL;
-        ((branch_start_t *)last)->fumen_e_ed = last_E;
-        ((branch_start_t *)last)->fumen_n_ed = last_N;
-        ((branch_start_t *)last)->fumen_m_ed = last_M;        
-        last_E = last_N = last_M = NULL;
-
-        // add branch end note
-        note_t *note = (note_t *)create_note_dummy(NOTE_BRANCH_END);
-        tjaparser_add_note(note);
-        printf("branch end!");
-        return 1;
-    }
-
-    cmd = "#E";
-    if (tjaparser_check_command(line, cmd)) {                
-        if (!branch_started) {
-            return 0;
-        }
-        printf("Efumen start\n");
-        if (which_branch == NULL) {
-            bk_offset = offset;
-            bk_bpm = bpm;
-            bk_measure = measure;
-            bk_scroll = scroll;
-            bk_ggt = ggt;
-            bk_delay = delay;
-            bk_barlineon = barlineon;
-        } else {
-            offset = bk_offset;
-            bpm = bk_bpm;
-            measure = bk_measure;
-            scroll = bk_scroll;
-            ggt = bk_ggt;
-            delay = bk_delay;
-            barlineon = bk_barlineon;
-        }
-        which_branch = &last_E;
-        return 1;
-    }
-
-    cmd = "#N";
-    if (tjaparser_check_command(line, cmd)) {        
-        if (!branch_started) {
-            return 0;
-        }
-        printf("Nfumen start\n");
-        if (which_branch == NULL) {
-            bk_offset = offset;
-            bk_bpm = bpm;
-            bk_measure = measure;
-            bk_scroll = scroll;
-            bk_ggt = ggt;
-            bk_delay = delay;
-            bk_barlineon = barlineon;
-        } else {
-            offset = bk_offset;
-            bpm = bk_bpm;
-            measure = bk_measure;
-            scroll = bk_scroll;
-            ggt = bk_ggt;
-            delay = bk_delay;
-            barlineon = bk_barlineon;
-        }        
-        which_branch = &last_N;
-        return 1;
-    }
-
-    cmd = "#M";
-    if (tjaparser_check_command(line, cmd)) {                
-        if (!branch_started) {
-            return 0;
-        }
-        printf("Mfumen start\n");
-        if (which_branch == NULL) {
-            bk_offset = offset;
-            bk_bpm = bpm;
-            bk_measure = measure;
-            bk_scroll = scroll;
-            bk_ggt = ggt;
-            bk_delay = delay;
-            bk_barlineon = barlineon;
-        } else {
-            offset = bk_offset;
-            bpm = bk_bpm;
-            measure = bk_measure;
-            scroll = bk_scroll;
-            ggt = bk_ggt;
-            delay = bk_delay;
-            barlineon = bk_barlineon;
-        }        
-        which_branch = &last_M;
+        note_t *note = (note_t *)create_note_dummy(fumen, NOTE_SECTION);
+        tjaparser_add_note(fumen, note);
         return 1;
     }
 
     cmd = "#LEVELHOLD";
     if (tjaparser_check_command(line, cmd)) {                
-        note_t *note = (note_t *)create_note_dummy(NOTE_LEVELHOLD);
-        tjaparser_add_note(note);
+        note_t *note = (note_t *)create_note_dummy(fumen, NOTE_LEVELHOLD);
+        tjaparser_add_note(fumen, note);
         return 1;
     }
 
     cmd = "#BARLINEOFF";
     if (tjaparser_check_command(line, cmd)) {        
-        barlineon = 0;
+        fumen->barline_on = FALSE;
         return 1;
     }
 
     cmd = "#BARLINEON";
     if (tjaparser_check_command(line, cmd)) {                
-        barlineon = 1;
+        fumen->barline_on = TRUE;
         return 1;
     }
 
     return 0;
 }
 
-int tjaparser_handle_note(char *line) {
-    char *p;
-    note_t *note;
-    int note_type;
-
-    for (p = line; *p != '\0' && *p != ','; ++ p) {
-
-        if (! isdigit(*p)) {
-            continue;
+int tjaparser_handle_note(char **lines, int count)
+{
+    if (!branch_started) {
+        if (!tjaparser_handle_note_per_fumen(lines, count, &N_fumen)) return FALSE;
+        if (!tjaparser_handle_note_per_fumen(lines, count, &E_fumen)) return FALSE;
+        if (!tjaparser_handle_note_per_fumen(lines, count, &M_fumen)) return FALSE;
+        printf("handle all fumen over!\n");
+        return TRUE;
+    } else  {
+        if (curr_fumen == NULL) {
+            printf("fumen started, but not decide which fumen, but has to handle note!\n");
+            return FALSE;
         }
-
-        note_type = *p - '0';
-
-        //ignore all notes between a lasting note and a end note
-        if (branch_started && lasting_note_e != NULL && *which_branch == last_E) {
-            if (note_type == NOTE_END) {
-                note = (note_t *)create_note_end(lasting_note_e);
-                lasting_note_e = NULL;
-            } else {
-                note = (note_t *)create_note_dummy(NOTE_EMPTY);
-            }            
-        } else if (lasting_note_n != NULL && *which_branch == last_N) {
-            if (note_type == NOTE_END) {
-                note = (note_t *)create_note_end(lasting_note_n);
-                lasting_note_n = NULL;
-            } else {
-                note = (note_t *)create_note_dummy(NOTE_EMPTY);
-            }            
-        } else if (lasting_note_m != NULL && *which_branch == last_M) {
-            if (note_type == NOTE_END) {
-                note = (note_t *)create_note_end(lasting_note_m);
-                lasting_note_m = NULL;
-            } else {
-                note = (note_t *)create_note_dummy(NOTE_EMPTY);
-            }            
-        } else if (lasting_note != NULL && !branch_started) {
-            if (note_type == NOTE_END) {
-                note = (note_t *)create_note_end(lasting_note);
-                lasting_note = NULL;
-            } else {
-                note = (note_t *)create_note_dummy(NOTE_EMPTY);
-            }
-        } else {
-            if (note_type == NOTE_YELLOW || note_type == NOTE_LYELLOW){
-                note = (note_t *)create_note_yellow(note_type);
-            } else if (note_type == NOTE_BALLOON || note_type == NOTE_PHOTATO) {
-                note = (note_t *)create_note_balloon(note_type, course_header.balloon[++ balloon_idx]);
-            } else {            
-                note = (note_t *)create_note_dummy(note_type);
-            }
-        }
-
-        note->offset = 1000.0 * 60 / bpm; //used to score current time per beat.
-        note_buf[note_buf_len ++] = note;
-
-        //update note type
-        note_type = note->type;
-        if (note_type == NOTE_YELLOW || note_type == NOTE_LYELLOW || note_type == NOTE_BALLOON || note_type == NOTE_PHOTATO) {
-            if (!branch_started) {
-                lasting_note = note;
-            } else if (*which_branch == last_E) {
-                lasting_note_e = note;
-            } else if (*which_branch == last_N) {
-                lasting_note_n = note;
-            } else if (*which_branch == last_M) {
-                lasting_note_m = note;
-            }
-        }
+        if (!tjaparser_handle_note_per_fumen(lines, count, curr_fumen)) return FALSE;
+        //Note: sync balloon idx
+        N_fumen.balloon_idx = E_fumen.balloon_idx = M_fumen.balloon_idx = curr_fumen->balloon_idx;
+        return TRUE;        
     }
-
-    if (*p == ',') {
-        return tjaparser_handle_a_bar();
-    }
-
-    return 0;
+    return TRUE;
 }
 
-
-int tjaparser_handle_a_bar()
+int tjaparser_count_total_note(char **lines, int count)
 {
     int i;
-    float bcnt, tpb;
-    note_t *note_barline = NULL;
+    char *line, *p;
+    int ret = 0;
 
-    if (note_buf_len == 0) {
-        note_buf[0] = (note_t *)create_note_dummy(NOTE_EMPTY);
-        note_buf[0]->offset = 1000.0 * 60 / bpm;
-        ++ note_buf_len;
-    }    
-    if (barlineon) {
-        note_barline = (note_t *)create_note_dummy(NOTE_BARLINE);
-        note_barline->offset = offset;
-        note_barline->speed = note_buf[0]->speed;
-    }
-    //calculate offset for all notes
-    bcnt = 1.0 * measure / note_buf_len;
-
-    //add all notes to queue
-    //printf("[");
-    for (i = 0; i < note_buf_len; ++ i) {
-        tpb = note_buf[i]->offset;
-        note_buf[i]->offset = offset + note_buf[i]->extra;
-        offset += bcnt * tpb;
-        if (note_buf[i]->type == NOTE_EMPTY) { // only add non empty
-            free(note_buf[i]);
-        } else if (note_buf[i]->type == NOTE_END) {
-            yellow_t *jij = ((yellow_t *)(((end_t *)note_buf[i])->start_note));            
-            jij->offset2 = note_buf[i]->offset;
-            printf("offset = %f, offset2 = %f\n", jij->offset, jij->offset2);
-            free(note_buf[i]);
-        } else {
-            tjaparser_add_note(note_buf[i]);
-     //       printf("%c,%f\n", note_buf[i]->type+'0', note_buf[i]->offset);
+    for (i = 0; i < count; ++ i) {
+        line = lines[i];
+        if (tjaparser_is_command(line)) {
+            continue;
         }
-        if (i == 0 && note_barline != NULL) {
-            tjaparser_add_note(note_barline);
+        for (p = line; *p != '\0'; ++ p) {
+            if (isdigit(*p)) {
+                ++ ret;
+            }
         }
     }
-    offset += delay;
-    delay = 0;
-    //printf("]\n");
 
-    //clear up queue
-    note_buf_len = 0;
-    return 1;
+    return ret;
 }
 
-int tjaparser_add_note(note_t *note)
-{
-    note_t **note_to_append;
+int tjaparser_handle_note_per_fumen(char **lines, int count, parse_data_t *fumen) {
+    int note_cnt;
+    char *p, *line;
+    int i;
+    note_t *note;
+    barline_t *barlinenote = NULL;
+    
+    int note_type;
 
-    if (note == NULL) {
-        return 0;
+    //add barline
+    if (fumen->barline_on || fumen->first_bar_after_branch) {
+        barlinenote = create_note_barline(fumen, fumen->first_bar_after_branch);
+    }
+    fumen->first_bar_after_branch = FALSE;
+
+    // handle completely empty bar
+    note_cnt = tjaparser_count_total_note(lines, count);
+    if (note_cnt == 0) {
+        if (barlinenote != NULL) {
+            tjaparser_add_note(fumen, (note_t *)barlinenote);
+        }
+        fumen->offset += (1000.0 * 60.0 / fumen->bpm) * fumen->measure;
+        return TRUE; 
     }
 
-    if (! branch_started) {
-        note_to_append = &last;
-    } else if (which_branch == NULL) {
-        //or add note to all branch
-        //printf("[ERROR]don't know which branch to add note %d.\n", note->type);
-        last_E->next = last_N->next = last_M->next = note;
-        last_E = last_N = last_M = note;
-        return 0;
+    // handle command mixed note
+    for (i = 0; i < count; ++ i) {
+        line = lines[i];
+        if (tjaparser_is_command(line)) {
+            tjaparser_handle_command_per_fumen(line, fumen);
+            continue;
+        }
+        for (p = line; *p != '\0' && *p != ','; ++ p) {
+            if (! isdigit(*p)) {
+                continue;
+            }
+            note_type = *p - '0';
+            //special case for lasting note
+            if (fumen->lasting_note != NULL) {
+                if (note_type == NOTE_END) {
+                    fumen->lasting_note->offset2 = fumen->offset;
+                    fumen->lasting_note = NULL;
+                }
+            // create and add normal note
+            } else if (note_type != NOTE_EMPTY) {
+                if (note_type == NOTE_YELLOW || note_type == NOTE_LYELLOW) {
+                    note = (note_t *)create_note_yellow(fumen, note_type);
+                    fumen->lasting_note = (yellow_t *)note;
+                } else if (note_type == NOTE_BALLOON || note_type == NOTE_PHOTATO) {
+                    //TODO: implement photato!
+                    note = (note_t *)create_note_balloon(fumen, NOTE_BALLOON, course_header.balloon[++ fumen->balloon_idx]);
+                    fumen->lasting_note = (yellow_t *)note;
+                } else {            
+                    note = (note_t *)create_note_dummy(fumen, note_type);
+                }
+                tjaparser_add_note(fumen, note);
+            }
+            if (barlinenote != NULL) {
+                tjaparser_add_note(fumen, (note_t *)barlinenote);
+                barlinenote = NULL;
+            }
+            // advance in time
+            fumen->offset += (1.0 * fumen->measure / note_cnt) * (1000.0 * 60.0 / fumen->bpm);
+        }
+        printf("handle %s ok\n", line);
+    }
+
+    return TRUE;
+}
+
+int tjaparser_add_note(parse_data_t *data, note_t *note)
+{
+
+    if (data->tail == NULL) {
+        assert(data->head == NULL);
+
+        data->head = data->tail = note;
     } else {
-        note_to_append = which_branch;
+        assert(data->tail != NULL);
+
+        data->tail->next = note;
+        data->tail = note;
     }
 
-    (*note_to_append)->next = note;
-    (*note_to_append) = note;
-
-    // a workaround for now
-    // TODO: implement these note
-    if (note->type == NOTE_PHOTATO) {
-        note->type = NOTE_YELLOW;
-    }
-
-    return 1;
+    return TRUE;
 }
 
-int fill_common_field(note_t *note)
+int fill_common_field(parse_data_t *fumen, note_t *note)
 {
-    note->offset = offset;
-    note->speed = scroll * NOTE_MARGIN / (1000.0 * 60 / (bpm * 4));
+    note->offset = fumen->offset;
+    note->speed = fumen->scroll * NOTE_MARGIN / (1000.0 * 60 / (fumen->bpm * 4));
     note->next = NULL;
     note->prev = NULL;
-    note->extra = delay;
-    note->ggt = ggt;
-    return 1;
+    note->ggt = fumen->is_ggt;
+    return TRUE;
 }
 
-branch_start_t *create_note_branch_start(char cond, float x, float y)
+branch_start_t *create_note_branch_start(parse_data_t *fumen, char cond, float x, float y)
 {
     branch_start_t *ret = (branch_start_t *)malloc(sizeof(branch_start_t));
 
     ret->type = NOTE_BRANCH_START;
-    fill_common_field((note_t *)ret);
+    fill_common_field(fumen, (note_t *)ret);
 
     ret->cond = cond;
     ret->x = x;
     ret->y = y;
-    ret->fumen_e = (note_t *)create_note_dummy(NOTE_DUMMY);
-    ret->fumen_n = (note_t *)create_note_dummy(NOTE_DUMMY);
-    ret->fumen_m = (note_t *)create_note_dummy(NOTE_DUMMY);
-    ret->fumen_e_ed = ret->fumen_e;
-    ret->fumen_n_ed = ret->fumen_n;
-    ret->fumen_m_ed = ret->fumen_m;
 
     return ret;
 }
 
-dummy_t *create_note_dummy(int type) {
+dummy_t *create_note_dummy(parse_data_t *fumen, int type) {
     dummy_t *ret = (dummy_t *)malloc(sizeof(dummy_t));
     ret->type = type;
-    fill_common_field((note_t *)ret);
+    fill_common_field(fumen, (note_t *)ret);
     return ret;
 }
 
-end_t *create_note_end(note_t *start_note) {
-    end_t *ret = (end_t *)malloc(sizeof(end_t));
-
-    ret->type = NOTE_END;
-    fill_common_field((note_t *)ret);
-
-    ret->start_note = start_note;
-
-    return ret; 
-}
-
-yellow_t *create_note_yellow(int type)
+yellow_t *create_note_yellow(parse_data_t *fumen, int type)
 {
     yellow_t *ret = (yellow_t *)malloc(sizeof(yellow_t));
 
     ret->type = type;
-    fill_common_field((note_t *)ret);
+    fill_common_field(fumen, (note_t *)ret);
 
     return ret;
 }
 
-balloon_t *create_note_balloon(int type, int hit_count) 
+balloon_t *create_note_balloon(parse_data_t *fumen, int type, int hit_count) 
 {
     balloon_t *ret = (balloon_t *)malloc(sizeof(balloon_t));
 
     ret->type = type;
     ret->hit_count = hit_count;
-    fill_common_field((note_t *)ret);
+    fill_common_field(fumen, (note_t *)ret);
 
     return ret;
 }
 
+barline_t *create_note_barline(parse_data_t *fumen, int is_branch_start)
+{
+    barline_t *ret = (barline_t *)malloc(sizeof(barline_t));
 
-int tjaparser_go_branch(int id, note_t *beg) {
-    note_t *p, *tmpp;
-    branch_start_t *pbs;
-    for (p = beg; p != NULL; p = (note_t *)(p->next)) {
-        //printf("%d", p->type);
-        if (p->type == NOTE_BARLINE) {
-            printf("\n|");
-        } else if (p->type >= NOTE_EMPTY && p->type <= NOTE_PHOTATO) {
-            printf("%c", p->type+'0');
-        } else if (p->type == NOTE_BRANCH_START) {
-            printf("\n[Branch %d]\n", id);
-            pbs = (branch_start_t *)p;
-            if (id == 0) {
-                tmpp = pbs->next;
-                pbs->next = pbs->fumen_e;
-                pbs->fumen_e_ed->next = tmpp;
-            } else if (id == 1) {
-                tmpp = pbs->next;
-                pbs->next = pbs->fumen_n;
-                pbs->fumen_n_ed->next = tmpp;                
-            } else if (id == 2) {
-                tmpp = pbs->next;
-                pbs->next = pbs->fumen_m;
-                pbs->fumen_m_ed->next = tmpp;
-            }
-        }
-    }  
-    printf("\n");
-    return 1;
+    ret->type = NOTE_BARLINE;
+    ret->is_branch = is_branch_start;
+
+    fill_common_field(fumen, (note_t *)ret);
+
+    return ret;
 }
 
 int tjaparser_unload()
 {
     sceIoClose(fd);
+    return TRUE;
 }

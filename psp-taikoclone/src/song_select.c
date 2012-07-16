@@ -73,8 +73,8 @@ int song_select_get_list2(char *fumen_lst, song_select_info_t **ret)
 		return -1;
 	}
 
-    printf("%s\n", (*ret)[3].title);
-    close(fd);
+    //printf("%s\n", (*ret)[3].title);
+    sceIoClose(fd);
 
 	return fumen_count;
 }

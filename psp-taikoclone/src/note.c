@@ -89,7 +89,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
     note_t *p, *tmpp;
     note_t *prev;
     branch_start_t *pbs;
-    int id = 0;
+    int id = 1;
     int offset = 0;
     int cn = 0;
 
@@ -119,17 +119,11 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
                 printf("\n[Branch %d]\n", id);
                 pbs = (branch_start_t *)p;
                 if (id == 0) {
-                    tmpp = pbs->next;
-                    pbs->next = pbs->fumen_e;
-                    pbs->fumen_e_ed->next = tmpp;
+                    pbs->next = pbs->fumen_n->next;
                 } else if (id == 1) {
-                    tmpp = pbs->next;
-                    pbs->next = pbs->fumen_n;
-                    pbs->fumen_n_ed->next = tmpp;                
+                    pbs->next = pbs->fumen_e->next;
                 } else if (id == 2) {
-                    tmpp = pbs->next;
-                    pbs->next = pbs->fumen_m;
-                    pbs->fumen_m_ed->next = tmpp;
+                    pbs->next = pbs->fumen_m->next;
                 }
                 tail = (note_t *)p;
                 cn = 0;
@@ -210,6 +204,8 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
             
             case NOTE_YELLOW:
             case NOTE_LYELLOW:
+                //printf("yellow offset2 = %f\n", ((yellow_t *)cur_hit_obj)->offset2);
+
                 x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * cur_hit_obj->speed;        
                 if (auto_play && x <= NOTE_FIT_X && x2 >= NOTE_FIT_X) {
                     if (!last_yellow) {
@@ -225,6 +221,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
                 }
                 break;
             case NOTE_BALLOON:
+                printf("balloon hit_count %d", ((balloon_t *)cur_hit_obj)->hit_count);
                 x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * cur_hit_obj->speed;        
                 if (auto_play && x<= NOTE_FIT_X && x2 >= NOTE_FIT_X) {
                     if (!last_yellow) {
@@ -343,11 +340,12 @@ void note_free_note_list(note_t *p)
 
 int note_destroy()
 {
+
     if (note_list == NULL) {
         return 0;
     }
     
-    note_free_note_list(note_list);
+    //note_free_note_list(note_list);
     note_list = NULL;
     return 0;
 }
