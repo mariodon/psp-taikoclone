@@ -318,7 +318,8 @@ int tjaparser_read_course_header(int idx, course_header_t *ret)
 tja_header_t tja_header;
 course_header_t course_header;
 
-int tjaparser_parse_course(int idx, note_t **entry)
+int tjaparser_parse_course(int idx, note_t **_N_fumen, note_t **_E_fumen, 
+	note_t **_M_fumen)
 {
     char *line;
     bool has_started = FALSE;
@@ -392,7 +393,10 @@ int tjaparser_parse_course(int idx, note_t **entry)
         branch_started = FALSE;
     }
 
-    *entry = N_fumen.head;
+	// return values
+    *_N_fumen = N_fumen.head;
+    *_E_fumen = N_fumen.head;
+    *_M_fumen = N_fumen.head;        
 
     return TRUE;
 }
@@ -895,6 +899,7 @@ branch_start_t *create_note_branch_start(parse_data_t *fumen, char cond, float x
     ret->cond = cond;
     ret->x = x;
     ret->y = y;
+    ret->bak_next = NULL;
 
     return ret;
 }

@@ -16,7 +16,7 @@ typedef struct {
     unsigned short great;
 } judge_level_t;
 
-int note_init(note_t *note_list_head);
+int note_init(note_t *note_N, note_t *note_E, note_t *note_M);
 int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad);
 int note_destroy();
 

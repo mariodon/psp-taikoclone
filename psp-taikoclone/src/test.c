@@ -92,10 +92,9 @@ void unload_bgm(int channel) {
     AalibUnload(channel);
 }
 
-note_t *parse_fumen(cccUCS2 *tja_file, int course_idx, tja_header_t *header)
+bool parse_fumen(cccUCS2 *tja_file, int course_idx, tja_header_t *header,
+	note_t **note_N, note_t **note_E, note_t **note_M)
 {
-    note_t *ret; 
-
     if (tjaparser_load(tja_file) == 0) {
         oslFatalError("can't open tjafile");
         return NULL;
@@ -106,13 +105,14 @@ note_t *parse_fumen(cccUCS2 *tja_file, int course_idx, tja_header_t *header)
     }
 
     printf("parsing fumen 0\n");
-    if (tjaparser_parse_course(course_idx, &ret) == 0) {
+    if (tjaparser_parse_course(course_idx, note_N, note_E, note_M) == 0) {
         oslFatalError("parsing fumen %s failed\n", tja_file);        
     }
-    printf("parsing fumen ok! %p\n", ret);
+    printf("parsing fumen ok! %p\n", *note_N);
 
     tjaparser_unload();
-    return ret;    
+    
+    return TRUE;
 }
 
 int main(int argc, char *argv[])
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 
     int music_started = 0;
 
-    note_t *note;
+    note_t *note_N, *note_E, *note_M;
     float time_passed;
 
     OSL_CONTROLLER *pad;
@@ -200,27 +200,28 @@ int main(int argc, char *argv[])
 
             oslSetFont(jpn0);
 
-            note = parse_fumen(tja_file, course_idx, &tja_header);
-            if (note == NULL) {
-                printf("init fumen erro!\n");
-                break;
-            }
+        	parse_fumen(tja_file, course_idx, &tja_header,
+            	&note_N, &note_E, &note_M);
 
+			if (note_N == NULL) {
+				oslFatalError("can't parse fumen!");
+			}
+			
             printf("selected %s\n", tja_header.title);
             //TODO: fix ext problem
             bgm_channel = load_bgm(wave_file, (tja_header.wave+strlen(tja_header.wave)-4));
             if (bgm_channel < 0) {
                 oslFatalError("can't load bgm!");
             }
-            note_init(note);
+            note_init(note_N, note_E, note_M);
 
             fumen_over = music_over = FALSE;
             // record basic info for display
-            fumen_offset = note->offset;
+            fumen_offset = note_N->offset;
 
             // current time
             frame = 0;
-            time_passed = note->offset - 480 / note->speed;
+            time_passed = note_N->offset - 480 / note_N->speed;
             printf("note_offset! %f\n", time_passed);
             if (time_passed < 0) {
                 time_passed = -((int)(-time_passed / tpf) + 2) * tpf;

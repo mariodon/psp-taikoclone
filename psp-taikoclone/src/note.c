@@ -3,18 +3,22 @@
 #include "tjaparser.h"
 #include "aalib/pspaalib.h"
 
+static note_t *N_fumen, *E_fumen, *M_fumen;
 static note_t *note_list = NULL;
 static note_t *head, *tail, *cur_hit_obj;
 static int last_yellow = 0;
 static judge_level_t judge = {217, 150, 50};
 
-int note_init(note_t *note_list_head)
+int note_init(note_t *_N_fumen, note_t *_E_fumen, note_t *_M_fumen)
 {
     if (note_list != NULL) {
         note_destroy();
     }
     head = tail = cur_hit_obj = NULL;
-    note_list = note_list_head;
+    note_list = N_fumen;
+    N_fumen = _N_fumen;
+    E_fumen = _E_fumen;
+    M_fumen = _M_fumen;
     return 0;
 }
 
@@ -118,6 +122,8 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
                 p->offset = -10000;
                 printf("\n[Branch %d]\n", id);
                 pbs = (branch_start_t *)p;
+                pbs->bak_next = pbs->next;	// backup old next pointer for 		
+                							// a later traverse
                 if (id == 0) {
                     pbs->next = pbs->fumen_n->next;
                 } else if (id == 1) {
@@ -318,22 +324,19 @@ void note_free_note_list(note_t *p)
         return;
     }
 
-    if (p->type == NOTE_BRANCH_START) {
-        branch_start_t *pbs = (branch_start_t *)p;
-
-        note_free_note_list(pbs->next);        
-        if (pbs->next != pbs->fumen_e) {
-            note_free_note_list(pbs->fumen_e);
-        }
-        if (pbs->next != pbs->fumen_n && pbs->fumen_e != pbs->fumen_n) {
-            note_free_note_list(pbs->fumen_n);
-        }
-        if (pbs->next != pbs->fumen_m && pbs->fumen_e != pbs->fumen_m && pbs->fumen_n != pbs->fumen_m) {        
-            note_free_note_list(pbs->fumen_m);
-        }
-    } else {
-        note_free_note_list(p->next);
-    }
+	if (p->type == NOTE_BRANCH_START) {
+		branch_start_t *pbs = (branch_start_t *)p;
+		
+		if (pbs->bak_next != NULL) {
+			next = pbs->bak_next;
+		} else {
+			next = pbs->next;
+		}
+	} else {
+		next = p->next;
+	}
+	
+	note_free_note_list(next);
 
     free(p);
 }
@@ -345,7 +348,11 @@ int note_destroy()
         return 0;
     }
     
-    //note_free_note_list(note_list);
+    note_free_note_list(N_fumen);
+    note_free_note_list(E_fumen);
+    note_free_note_list(M_fumen); 
+    
+    N_fumen = E_fumen = M_fumen = NULL;       
     note_list = NULL;
     return 0;
 }

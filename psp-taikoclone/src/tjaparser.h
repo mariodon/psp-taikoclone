@@ -140,17 +140,9 @@ typedef struct {
     note_t *fumen_e; //Kurouto - Expert
     note_t *fumen_n; //Futsu - Normal
     note_t *fumen_m; //Tatsujin - Master
+    note_t *bak_next;	//backup old next pointer before #BRANCHSTART take 
+    					//effect, else bak_next = NULL.
 } branch_start_t;
-
-typedef struct {
-    int type;
-    float offset;
-    float speed;
-    void *next;
-    void *prev;    
-    int ggt;    
-    /* extra */
-} branch_end_t;
 
 typedef struct {
     int type;
@@ -172,7 +164,8 @@ typedef struct {
     /* extra */
 } dummy_t;
 
-int tjaparser_parse_course(int idx, note_t **entry);
+int tjaparser_parse_course(int idx, note_t **note_N, note_t **note_E, 
+	note_t **note_M);
 
 
 SceUID sceIoOpenUCS2(const cccUCS2 *filename, int flags, SceMode mode);
