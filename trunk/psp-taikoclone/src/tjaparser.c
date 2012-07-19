@@ -60,7 +60,7 @@ char *deferred_line[MAX_DEFERRED_LINE];
 unsigned char num_deferred_line; 
 
 /* current parsing status of three fumens. */
-parse_data_t N_fumen, E_fumen, M_fumen;
+static parse_data_t N_fumen, E_fumen, M_fumen;
 unsigned char num_fumen;
 parse_data_t *curr_fumen;
 bool branch_started;
@@ -363,10 +363,11 @@ int tjaparser_parse_course(int idx, note_t **_N_fumen, note_t **_E_fumen,
         if (line == NULL) {
             break;
         }
-        line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
+        line = string_strip_inplace(line);
+        
 
-        printf("after fix line, %s\n", line);
+        //printf("after fix line, %s\n", line);
         if (!has_started && tjaparser_check_command(line, "#START")) {
             has_started = TRUE;
             continue;
@@ -395,8 +396,8 @@ int tjaparser_parse_course(int idx, note_t **_N_fumen, note_t **_E_fumen,
 
 	// return values
     *_N_fumen = N_fumen.head;
-    *_E_fumen = N_fumen.head;
-    *_M_fumen = N_fumen.head;        
+    *_E_fumen = E_fumen.head;
+    *_M_fumen = M_fumen.head;        
 
     return TRUE;
 }
@@ -423,18 +424,18 @@ int tjaparser_feed_line(const char *line)
     is_note = (tjaparser_is_note(line) || is_complete_bar);
 
 
-    printf("feed line %d %d %d %d\n", is_cmd, is_note, is_complete_bar, num_deferred_line);
+    //printf("feed line %d %d %d %d\n", is_cmd, is_note, is_complete_bar, num_deferred_line);
     if (! is_cmd && ! is_note) {
         return TRUE;
     }
 
-    printf("feed ok!\n");
+    //printf("feed ok!\n");
     if (num_deferred_line == 0 && is_cmd) { // single line command
         return tjaparser_handle_command(line);
     }
 
     if (num_deferred_line == 0 && is_complete_bar) { // single note
-        printf("handle single note\n");
+        //printf("handle single note\n");
         return tjaparser_handle_note((char **)&line, 1);
     }
 
@@ -447,7 +448,7 @@ int tjaparser_feed_line(const char *line)
         }
         strcpy(deferred_line[num_deferred_line - 1], line);
     } else { // handle deferred lines
-        printf("handle mixed note and command!\n");
+        //printf("handle mixed note and command!\n");
         ++ num_deferred_line;
         deferred_line[num_deferred_line - 1] = line;
         if (!tjaparser_handle_note(deferred_line, num_deferred_line)) {
@@ -607,7 +608,7 @@ int tjaparser_handle_command(const char *line)
         if (! branch_started) {
             return FALSE;
         }
-
+        printf("N fumen start!\n");
         curr_fumen = &N_fumen;
         return TRUE;
     }
@@ -619,6 +620,7 @@ int tjaparser_handle_command(const char *line)
             return FALSE;
         }
 
+        printf("E fumen start!\n");
         curr_fumen = &E_fumen;
         return TRUE;
     }    
@@ -629,7 +631,7 @@ int tjaparser_handle_command(const char *line)
         if (! branch_started) {
             return FALSE;
         }
-
+        printf("M fumen start!\n");
         curr_fumen = &M_fumen;
         return TRUE;        
     }
@@ -801,6 +803,7 @@ int tjaparser_handle_note_per_fumen(char **lines, int count, parse_data_t *fumen
     
     int note_type;
 
+
     //add barline
     if (fumen->barline_on || fumen->first_bar_after_branch) {
         barlinenote = create_note_barline(fumen, fumen->first_bar_after_branch);
@@ -809,6 +812,7 @@ int tjaparser_handle_note_per_fumen(char **lines, int count, parse_data_t *fumen
 
     // handle completely empty bar
     note_cnt = tjaparser_count_total_note(lines, count);
+    printf("note_cnt = %d\n",note_cnt);    
     if (note_cnt == 0) {
         if (barlinenote != NULL) {
             tjaparser_add_note(fumen, (note_t *)barlinenote);
@@ -856,7 +860,7 @@ int tjaparser_handle_note_per_fumen(char **lines, int count, parse_data_t *fumen
             // advance in time
             fumen->offset += (1.0 * fumen->measure / note_cnt) * (1000.0 * 60.0 / fumen->bpm);
         }
-        printf("handle %s ok\n", line);
+        printf("handle %p %s ok\n", fumen, line);
     }
 
     return TRUE;

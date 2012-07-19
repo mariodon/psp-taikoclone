@@ -15,7 +15,7 @@ int note_init(note_t *_N_fumen, note_t *_E_fumen, note_t *_M_fumen)
         note_destroy();
     }
     head = tail = cur_hit_obj = NULL;
-    note_list = N_fumen;
+    note_list = _N_fumen;
     N_fumen = _N_fumen;
     E_fumen = _E_fumen;
     M_fumen = _M_fumen;
@@ -93,7 +93,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
     note_t *p, *tmpp;
     note_t *prev;
     branch_start_t *pbs;
-    int id = 1;
+    int id = 2;
     int offset = 0;
     int cn = 0;
 
@@ -124,6 +124,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
                 pbs = (branch_start_t *)p;
                 pbs->bak_next = pbs->next;	// backup old next pointer for 		
                 							// a later traverse
+
                 if (id == 0) {
                     pbs->next = pbs->fumen_n->next;
                 } else if (id == 1) {
