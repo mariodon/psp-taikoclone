@@ -136,6 +136,10 @@ void init_drawing()
     note_tex[NOTE_LDON][0] = load_texture_config(tex_conf, "note_ldon");
     note_tex[NOTE_LKATSU][0] = load_texture_config(tex_conf, "note_lkatsu");    
     note_tex[NOTE_BARLINE][0] = load_texture_config(tex_conf, "note_barline");
+    note_tex[NOTE_BARLINE][1] = load_texture_config(tex_conf, "note_barline_yellow");
+
+    //==================debug======================
+    printf("load yellow barline texture %p\n", note_tex[NOTE_BARLINE][1]);
 
     note_tex[NOTE_YELLOW][0] = load_texture_config(tex_conf, "note_yellowh");
     note_tex[NOTE_YELLOW][1] = load_texture_config(tex_conf, "note_yellowb");
@@ -169,14 +173,18 @@ void draw_bg_note(OSL_IMAGE *img)
 void draw_note(note_t *note, int x, int y)
 {
     int x2;
+    barline_t *note_barline;
 
     switch (note->type) {
         case NOTE_DON:
         case NOTE_KATSU:
         case NOTE_LDON:
         case NOTE_LKATSU:
-        case NOTE_BARLINE:
             oslDrawImageSimpleXY(note_tex[note->type][0], x, y);
+            break;
+        case NOTE_BARLINE:
+            note_barline = (barline_t *)note;
+            oslDrawImageSimpleXY(note_tex[note->type][note_barline->is_branch], x, y);            
             break;
         case NOTE_BALLOON:
             draw_balloon(note_tex[note->type], x, y);
