@@ -228,7 +228,7 @@ int tjaparser_seek_course(int idx)
             break;
         }
         line = string_strip_inplace(line);
-        printf("after strip, line = %s\n", line);
+        //printf("after strip, line = %s\n", line);
         if (strncmp(line, end_cmd, sizeof(end_cmd)) == 0) {
             ++ i;
         }        
@@ -259,10 +259,10 @@ int tjaparser_read_tja_header(tja_header_t *ret)
         if (line == NULL) {
             break;
         }
-        printf("before strip len=%d\n", strlen(line));
+        //printf("before strip len=%d\n", strlen(line));
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
-        printf("after  strip len=%d\n", strlen(line));        
+        //printf("after  strip len=%d\n", strlen(line));        
         if (strncmp(line, start_cmd, sizeof(start_cmd)) == 0) {
             break;
         }
@@ -298,10 +298,10 @@ int tjaparser_read_course_header(int idx, course_header_t *ret)
         if (line == NULL) {
             break;
         }
-        printf("before strip len=%d\n", strlen(line));
+        //printf("before strip len=%d\n", strlen(line));
         line = string_strip_inplace(line);
         line = remove_jiro_comment_inplace(line);
-        printf("after  strip len=%d\n", strlen(line));        
+        //printf("after  strip len=%d\n", strlen(line));        
         if (strncmp(line, start_cmd, sizeof(start_cmd)) == 0) {
             break;
         }
@@ -812,7 +812,7 @@ int tjaparser_handle_note_per_fumen(char **lines, int count, parse_data_t *fumen
 
     // handle completely empty bar
     note_cnt = tjaparser_count_total_note(lines, count);
-    printf("note_cnt = %d\n",note_cnt);    
+    //printf("note_cnt = %d\n",note_cnt);    
     if (note_cnt == 0) {
         if (barlinenote != NULL) {
             tjaparser_add_note(fumen, (note_t *)barlinenote);
@@ -860,7 +860,7 @@ int tjaparser_handle_note_per_fumen(char **lines, int count, parse_data_t *fumen
             // advance in time
             fumen->offset += (1.0 * fumen->measure / note_cnt) * (1000.0 * 60.0 / fumen->bpm);
         }
-        printf("handle %p %s ok\n", fumen, line);
+        //printf("handle %p %s ok\n", fumen, line);
     }
 
     return TRUE;

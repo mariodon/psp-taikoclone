@@ -62,6 +62,7 @@ void note_update_note(note_t *p, float play_pos)
 {
     int x = NOTE_FIT_X + (p->offset - play_pos) * p->speed;
     int x2;
+    barline_t *note_barline;
 
     switch(p->type) {
         case NOTE_DON:
@@ -69,6 +70,9 @@ void note_update_note(note_t *p, float play_pos)
         case NOTE_KATSU:
         case NOTE_LKATSU:
         case NOTE_BARLINE:
+            note_barline = (barline_t *)p;
+            draw_note(p, x, NOTE_Y);
+            break;
         case NOTE_YELLOW:
         case NOTE_LYELLOW:
             draw_note(p, x, NOTE_Y);
@@ -228,7 +232,7 @@ int note_update(float play_pos, int auto_play, OSL_CONTROLLER *pad)
                 }
                 break;
             case NOTE_BALLOON:
-                printf("balloon hit_count %d", ((balloon_t *)cur_hit_obj)->hit_count);
+                //printf("balloon hit_count %d", ((balloon_t *)cur_hit_obj)->hit_count);
                 x2 = NOTE_FIT_X + (((yellow_t *)cur_hit_obj)->offset2 - play_pos) * cur_hit_obj->speed;        
                 if (auto_play && x<= NOTE_FIT_X && x2 >= NOTE_FIT_X) {
                     if (!last_yellow) {
