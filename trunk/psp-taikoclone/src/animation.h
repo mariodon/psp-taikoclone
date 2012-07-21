@@ -9,6 +9,23 @@
 #define ANIME_CTRL_ALPHA_LINEAR      3
 #define ANIME_CTRL_COMBINED          4
 
+/*
+ * note: We do not need an OSL_IMAGE * array, neither an OSL_PALETTE * array
+ * to implement animation.
+ */
+typedef struct {
+    /* moving */
+    int x, y;
+    /* scaling */
+    float scale_x, scale_y;
+    /* alpha */
+    float alpha;
+    /* sequenced images */
+    int frame_idx, num_frame;
+    /* different color schema */
+    int palette_idx, num_palette;
+} frame_state_t;
+
 struct {
     OSL_IMAGE **texture_array;
     float x, y;
