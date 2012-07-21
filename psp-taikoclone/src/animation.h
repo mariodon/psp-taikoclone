@@ -24,8 +24,19 @@ typedef struct {
     int frame_idx, num_frame;
     /* different color schema */
     int palette_idx, num_palette;
+    /* style */
+    int style;
 } frame_state_t;
 
+/*
+ * The following, accept input(usually, a time delta or in special case ,
+ * interactive info) and changes one or more frame_state_t's component 
+ * accordingly.
+ * Thus create an animation effect.
+ */
+typedef struct {
+	
+}
 struct {
     OSL_IMAGE **texture_array;
     float x, y;
