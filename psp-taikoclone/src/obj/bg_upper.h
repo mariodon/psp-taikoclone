@@ -7,8 +7,16 @@
 #define BG_UPPER_TYPE_MISS		3
 
 typedef struct {
+	const OSL_IMAGE *bg_upper_normal;
+	const OSL_IMAGE *bg_upper_miss;
+	const OSL_IMAGE *bg_upper_clear;
+	const OSL_IMAGE *bg_upper_full;
+	const int scroll_speed;
+} bg_upper_def_t;
+
+typedef struct {
 	int offset;
-	int scroll_speed;
+	const bg_upper_def_t const *def;
 } bg_upper_data_t;
 
 void bg_upper_update(float elapse_time, void *data)
