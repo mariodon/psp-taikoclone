@@ -2,31 +2,26 @@
 #define _ANIMATION_H_
 
 #include <osl/oslib.h>
+#include "const.h"
 
-/*
- * note: We do not need an OSL_IMAGE * array, neither an OSL_PALETTE * array
- * to implement animation.
- */
+// base struct
 typedef struct {
-    /* moving */
-    int x, y;
-    /* scaling */
-    float scale_x, scale_y;
-    /* alpha */
-    float alpha;
-    /* sequenced images */
-    int frame_idx, num_frame;
-    /* different color schema */
-    int palette_idx, num_palette;
-    /* style */
-    int style;
-} frame_state_t;
+	float duration;
+	bool is_loop;
+	bool is_stopped;
+	void (*draw)();
+	void (*reset)();
+	void (*play)();
+} anime_t;
 
-/*
- * The following, accept input(usually, a time delta or in special case ,
- * interactive info) and changes one or more frame_state_t's component 
- * accordingly.
- * Thus create an animation effect.
- */
+// frame by frame animation
+typedef struct {
+	float duration;
+	bool is_loop;
+	bool is_stopped;
+	void (*draw)();
+	void (*reset)();
+	void (*play)();	
+} anime_frames_t;
 
 #endif
