@@ -33,7 +33,6 @@ void frame_draw(frame_t *frame)
 	}
 
 	OSL_IMAGE *img = frame->img;
-	OSL_PALETTE *bak_palette;
 	img->x = frame->x;
 	img->y = frame->y;
 	img->center_x = frame->center_x;
