@@ -4,45 +4,58 @@
 #include <osl/oslib.h>
 #include "const.h"
 
-#define ANIME_CTRL_IMG		0x1
-#define ANIME_CTRL_POS		0x2
-#define ANIME_CTRL_SCALE	0x4
-#define ANIME_CTRL_PALETTE	0x8
+//------------------------------------------------------------------------------
+// definitions
+//------------------------------------------------------------------------------
+
+#define ANIME_FUNC_SEQUENCE		0x0
+#define ANIME_FUNC_SCALE		0x1
+#define ANIME_FUNC_PATH			0x2
+#define ANIME_FUNC_PALETTE		0x3
+
+#define ANIME_INTERP_NONE		0x0
+#define ANIME_INTERP_LINEAR		0x1
+#define ANIME_INTERP_PARABOLIC	0x2
+
+#define ANIME_FRAMERATE			30
+
+typedef void (*anime_callback_t)(anime_t *);
 
 typedef struct {
-	// switches for different animation type
-	int enables;
-	bool is_loop;
+	int frame;			//key value at which frame
+	union {
+		OSL_IMAGE *img;
+		float scale[2];
+		int pos[2];
+		OSL_PALETTE *palette;
+	} value;
+} anime_key_t;
+
+typedef struct {
+	int type;		// which type of animation it applies to
+	int interp;		// which interp method to use to interp key points
+	int num_keys;
+	anime_key_t **keys;
+	
+	int frame;
+	int total_frame;
+	bool is_loopped;
 	bool is_stopped;
-	bool is_used;	// a flag for reuse
-	float framerate;
-	float time;
-	
-	// frame by frame animation, TODO:mipmap??
-	OSL_IMAGE **imgs;
-	int imgs_count;
-	// pos animation
-	int pos_interp;
-	int pos_count;
-	int *pos_x, *pos_y;
-	// scale animation
-	int scale_interp;
-	int scale_count;
-	float *scale_x, *scale_y;
-	// palette animation, only work when all imgs are in the same texture sheet
-	// used to implement glow effect, plane alpha, colorize effect, etc.
-	OSL_PALETTE **palettes;
-	int palettes_count;
-	
-	// current frame
-	frame_t *current_frame;
-	// callback
-	void (*stopped_callback)(anime_control_t *self);
-} anime_control_t;
+} anime_func_t;
 
 typedef struct {
-	OSL_IMAGE **images;
-	int num_images;	
-} anime_control_images_t;
+	/* general control information */
+	float time;
+	float framerate;
+	anime_callback_t callback;
+	/* anime component */
+	anime_func_t *ani_funcs[4];
+	/* anime result frame */
+	frame_t *frame;
+} anime_t;
 
+
+//------------------------------------------------------------------------------
+// functions
+//------------------------------------------------------------------------------
 #endif
