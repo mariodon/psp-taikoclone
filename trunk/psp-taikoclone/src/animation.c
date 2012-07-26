@@ -18,14 +18,22 @@ anime_t *anime_create_empty()
 	ani->frame = frame_create(NULL);
 }
 
-anime_t *anime_from_cfg()
+// anime_t file layout:
+// offset	variable
+// +0x0		framerate		
+anime_t *anime_from_file(const char *file)
 {
-	oslFatalError("Not implemented!");
-}
-
-anime_t *anime_from_file()
-{
-	oslFatalError("Not implemented!");
+	SceUID fd = -1;
+	anime_t *ret_ani = NULL;
+	
+	// open animation file
+	fd = SceIoOpen(file, PSP_O_RDONLY, 0777);
+	if (fd < 0) {
+		oslFatalError("can't open file %s", file);
+	}
+	// create empty anime_t struct to fill
+	ret_ani = anime_create_empty();
+	// 
 }
 
 void anime_update(anime_t *ani, float step)

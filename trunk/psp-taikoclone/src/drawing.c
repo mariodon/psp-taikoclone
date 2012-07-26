@@ -8,6 +8,19 @@
 #include "note.h"
 #include "aalib/pspaalib.h"
 
+//------------------------------------------------------------------------------
+// includes and variables for test code
+//------------------------------------------------------------------------------
+#if TEST_ANIMATION
+
+#include "animation.h"
+static anime_t *anime_note_fly;
+
+#endif
+
+//------------------------------------------------------------------------------
+// global variables
+//------------------------------------------------------------------------------
 static dictionary *tex_conf;
 
 //preloaded textures
@@ -153,7 +166,19 @@ void init_drawing()
     note_tex[NOTE_BALLOON][1] = load_texture_config(tex_conf, "note_ballont");        
 
     is_texture_preloaded = TRUE;
-
+	
+	#if TEST_ANIMATION
+	anime_func_t *ani_seq;
+	anime_func_t *ani_path;
+	anime_func_t *ani_scale;
+	
+	anime_note_fly = anime_create_empty();
+	anime_set_func(anime_note_fly, ani_seq);
+	anime_set_func(anime_note_fly, ani_path);
+	anime_set_func(anime_note_fly, ani_scale);
+	
+	// create and set up animation here
+	#endif
 }
 
 void draw_bg_upper(OSL_IMAGE *img)
@@ -246,6 +271,10 @@ void drawing()
     oslDrawImageSimpleXY(hit_circle, NOTE_FIT_X, NOTE_Y);
     //
 //    oslDrawImage(soulbar_empty);
+
+	#if TEST_ANIMATION
+	// animate and draw animation here
+	#endif
 }
 
 void drawing_after_note()

@@ -12,6 +12,7 @@ OBJS = src/test.o \
 	   src/helper/mem64.o \
 	   src/helper/opendir.o \
 	   src/note.o \
+	   src/animation.o \
 
 YOURLIBS = 
 BUILD_PRX = 1
@@ -42,6 +43,7 @@ OBJS += $(OBJS_HELPER)
 INCDIR = 
 CFLAGS = -G0 -Wall -O2 -g
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+CPPFLAGS = -DTEST_ANIMATION
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =
