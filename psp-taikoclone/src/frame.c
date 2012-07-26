@@ -33,14 +33,23 @@ void frame_draw(frame_t *frame)
 	}
 
 	OSL_IMAGE *img = frame->img;
+	OSL_PALETTE *bak_palette;
 	img->x = frame->x;
 	img->y = frame->y;
 	img->center_x = frame->center_x;
 	img->center_y = frame->center_y;
 	img->stretchX = img->sizeX * frame->scale_x;
 	img->stretchY = img->sizeY * frame->scale_y;
-	img->palette = frame->palette;
-	oslDrawImage(img);
+	
+	// be careful not overwrite the img's old palette	
+	if (frame->palette != NULL) {
+		bak_palette = img->palette;
+		img->palette = frame->palette;
+		oslDrawImage(img);
+		img->palette = bak_palette;
+	} else {
+		oslDrawImage(img);
+	}
 }
 
 void frame_destroy(frame_t *frame)

@@ -124,3 +124,12 @@ void get_note_animator()
 	one = get_one_from_pool();
 	return one;
 }
+
+void obj_update()
+{
+	
+}
+
+void obj_register()
+{
+}
