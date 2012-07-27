@@ -29,4 +29,6 @@
 #define FALSE   0
 #endif
 
+#define MAX_TEXTURE_NAME	20
+
 #endif
