@@ -1,7 +1,6 @@
 #include <math.h>
 #include "helper/iniparser.h"
 #include "load_texture.h"
-#include "taiko_flash.h"
 #include "const.h"
 #include <time.h>
 #include "tjaparser.h"
@@ -115,8 +114,6 @@ void colorize_palette(OSL_IMAGE *img)
  * */
 void init_drawing()
 {
-    int i;
-    OSL_IMAGE *p;
 
     if (is_texture_preloaded) {
         return;
@@ -143,7 +140,7 @@ void init_drawing()
     soulbar_full = load_texture_config(tex_conf, "soulbar_full");
 
     // init notes
-    memset(note_tex, NULL, sizeof(note_tex));
+    memset(note_tex, -1, sizeof(note_tex)); // set NULL
     note_tex[NOTE_DON][0] = load_texture_config(tex_conf, "note_don");
     note_tex[NOTE_KATSU][0] = load_texture_config(tex_conf, "note_katsu");
     note_tex[NOTE_LDON][0] = load_texture_config(tex_conf, "note_ldon");
@@ -168,14 +165,7 @@ void init_drawing()
     is_texture_preloaded = TRUE;
 	
 	#if TEST_ANIMATION
-	anime_func_t *ani_seq;
-	anime_func_t *ani_path;
-	anime_func_t *ani_scale;
-	
-	anime_note_fly = anime_create_empty();
-	anime_set_func(anime_note_fly, ani_seq);
-	anime_set_func(anime_note_fly, ani_path);
-	anime_set_func(anime_note_fly, ani_scale);
+    anime_note_fly = anime_from_file("ani/note_fly_don.ani");
 	
 	// create and set up animation here
 	#endif

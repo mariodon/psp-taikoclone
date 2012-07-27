@@ -84,6 +84,13 @@ def test(r, g, b):
     return map(lambda x: round(x * 255), (r_f1, g_f1, b_f1))
 
 if __name__ == "__main__":
-    print "original color"
-    print test(248, 72, 40)
-    print
+    print rgb2hls(128, 112, 0)
+    print rgb2hls(136, 112, 8)
+    print rgb2hls(152, 128, 16)
+    print rgb2hls(160, 136, 16)
+    print rgb2hls(174, 144, 16)
+
+    print rgb2hls(248, 248, 126)
+    print rgb2hls(248, 216, 64)
+    print rgb2hls(184, 144, 24)
+    print rgb2hls(248, 168, 24)    
