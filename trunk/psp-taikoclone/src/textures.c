@@ -95,12 +95,12 @@ void textures_cache_cfg(dictionary *cfg, char *key)
 {
     assert(cfg != NULL && key != NULL);
 
-    static char key_buf[50];
+    static char key_buf[MAX_TEXTURE_NAME+4+1];
     char *file;
     int pf, loc;
     int namelen = strlen(key);
     
-    if (strlen(key) + 4 >= 50) {
+    if (strlen(key) > MAX_TEXTURE_NAME) {
         oslFatalError("config key too long!");
     }
     strcpy(key_buf, key);

@@ -34,13 +34,12 @@ typedef struct {
 typedef struct {
 	int type;		// which type of animation it applies to
 	int interp;		// which interp method to use to interp key points
-	int num_keys;
-	anime_key_t **keys;
-	
-	int frame;
-	int total_frame;
 	bool is_loopped;
+	int num_keys;
+
+	int total_frame;
 	bool is_stopped;
+	anime_key_t keys[0];
 } anime_func_t;
 
 typedef struct {

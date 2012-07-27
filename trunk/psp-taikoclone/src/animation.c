@@ -1,5 +1,6 @@
 #include "animation.h"
 #include "frame.h"
+#include "textures.h"
 
 anime_t *anime_create_empty()
 {
@@ -20,20 +21,115 @@ anime_t *anime_create_empty()
 
 // anime_t file layout:
 // offset	variable
-// +0x0		framerate		
+// 0		framerate
+// 4		func_count		
 anime_t *anime_from_file(const char *file)
 {
 	SceUID fd = -1;
 	anime_t *ret_ani = NULL;
+	int func_count;
+	int i, j;
+	struct {
+		int type;
+		int interp;
+		bool is_loopped;
+		int num_keys;
+	} func_data;
+	struct {
+		int frame;
+		char tex_name[MAX_TEXTURE_NAME+1];
+		int sx, sy, w, h, center_x, center_y;
+	} image_data;
+	struct {
+		char r;
+		char g;
+		char b;
+		char a;
+	} color_data;
+	size_t bytes;
+	int palette_size;
 	
 	// open animation file
-	fd = SceIoOpen(file, PSP_O_RDONLY, 0777);
+	fd = sceIoOpen(file, PSP_O_RDONLY, 0777);
 	if (fd < 0) {
 		oslFatalError("can't open file %s", file);
 	}
 	// create empty anime_t struct to fill
 	ret_ani = anime_create_empty();
-	// 
+	// fill anime_t struct
+	bytes = sizeof(float);
+	if (sceIoRead(fd, &(ret_ani->framerate), bytes) != bytes) {
+		oslFatalError("corrupt ani file");
+	}
+	bytes = sizeof(int);
+	if (sceIoRead(fd, &func_count, bytes) != bytes) {
+		oslFatalError("corrupt ani file");
+	}
+	
+	anime_func_t *func;
+	while (func_count > 0) {
+		-- func_count;
+		bytes = sizeof(func_data);
+		if (sceIoRead(fd, &func_data, bytes) != bytes) {
+			oslFatalError("corrupt ani file");
+		}
+		func = (anime_func_t *)malloc(sizeof(anime_func_t) \
+			+ func_data.num_keys * sizeof(anime_key_t));
+		if (func == NULL) {
+			oslFatalError("can't malloc for anime_func_t");
+		}
+		func->type = func_data.type;
+		func->interp = func_data.interp;
+		func->is_loopped = func_data.is_loopped;
+		func->num_keys = func_data.num_keys;
+		func->is_stopped = TRUE;
+		// specially, create instance for image or palette
+		if (func->type == ANIME_TYPE_SEQUENCE) {
+			bytes = sizeof(image_data);
+			for (i = 0; i < func->num_keys; ++ i) {
+				if (sceIoRead(fd, &image_data, bytes) != bytes) {
+					oslFatalError("corrupt ani file");
+				}
+				func->keys[i].value.img = \
+					textures_shared_copy(image_data.tex_name, \
+									image_data.sx, image_data.sy, \
+									image_data.w, image.data.h);
+				func->keys[i].value.img.center_x = image_data.center_x;
+				func->keys[i].value.img.center_x = image_data.center_y;
+				func->keys[i].frame = image_data.frame;
+			}
+		} else if (func->type == ANIME_TYPE_PALETTE) {
+			for (i = 0; i < func->num_keys; ++ i) {
+				bytes = sizeof(int);
+				if (sceIoRead(fd, &(func->keys[i].frame), bytes) != bytes) {
+					oslFatalError("corrupt ani file");
+				}
+				if (sceIoRead(fd, &palette_size, bytes) != bytes) {
+					oslFatalError("corrupt ani file");
+				}
+				assert(palette_size == (1 << 4) || palette_size == (1<<8));
+				func->keys[i].value.palette = oslCreatePalette(palette_size, \
+					OSL_PF_8888);
+				for (j = 0; j < palette_size; ++ j) {
+					bytes = sizeof(color_data);
+					if (sceIoRead(fd, &color_data, bytes) != bytes) {
+						oslFatalError("corrupt ani file");
+					}
+					((u32*)func->keys[i].value.palette->data)[j] = \
+						RGBA(color_data.r, color_data.g, color_data.b, color_data.a);
+				}
+			   oslUncachePalette(func->keys[i].value.palette);
+			}
+			
+		} else {
+			bytes = sizeof(anime_key_t) * func->num_keys;
+			if (sceIoRead(fd, &func->keys, bytes) != bytes) {
+				oslFatalError("corrupt ani file");
+			}
+		}
+		anime_set_func(ret_ani, func);
+	}
+	return ret_ani;
 }
 
 void anime_update(anime_t *ani, float step)
@@ -54,6 +150,7 @@ void anime_update(anime_t *ani, float step)
 		// check if func should be stopped
 		if (! func->is_loopped && frame >= func->total_frame - 1) {
 			func->is_stopped = TRUE;
+			continue;
 		}
 		anime_eval_func(func, frame, ani->frame);
 		// at least one func is not dead, so go on
