@@ -13,7 +13,7 @@ typedef struct {
     int center_x, center_y;     /* anchor point */
     float scale_x, scale_y;     /* scale */
     float alpha;                /* alpha */
-    OSL_PALETTE *osl_palette;   /* palette if indexed. */
+    OSL_PALETTE *palette;   /* palette if indexed. */
 } frame_t;
 
 frame_t *frame_create(OSL_IMAGE *osl_img);

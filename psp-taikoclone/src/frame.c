@@ -32,12 +32,12 @@ void frame_draw(frame_t *frame)
 		return;
 	}
 
-	OSL_IMAGE *img = frame->img;
+	OSL_IMAGE *img = frame->osl_img;
 	OSL_PALETTE *bak_palette;
 	img->x = frame->x;
 	img->y = frame->y;
-	img->center_x = frame->center_x;
-	img->center_y = frame->center_y;
+	img->centerX = frame->center_x;
+	img->centerY = frame->center_y;
 	img->stretchX = img->sizeX * frame->scale_x;
 	img->stretchY = img->sizeY * frame->scale_y;
 	

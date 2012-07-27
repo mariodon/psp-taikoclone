@@ -5,7 +5,6 @@
 #include "helper/iniparser.h"
 #include "load_texture.h"
 #include "drawing.h"
-#include "taiko_flash.h"
 #include "tjaparser.h"
 #include "song_select.h"
 #include "note.h"

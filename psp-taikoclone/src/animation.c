@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "animation.h"
 #include "frame.h"
 #include "textures.h"
@@ -11,11 +12,10 @@ anime_t *anime_create_empty()
 
 	ani->time = 0;
 	ani->framerate = ANIME_FRAMERATE_DEFAULT;
-	ani->stop_callback = NULL;
-	ani->ani_seq = NULL;
-	ani->ani_path = NULL;
-	ani->ani_pal = NULL;
-	ani->ani_scale = NULL;
+	ani->callback = NULL;
+    int i;
+    for (i = 0; i < 4; ++ i) 
+        ani->ani_funcs[i] = NULL;
 	ani->frame = frame_create(NULL);
 }
 
@@ -84,7 +84,7 @@ anime_t *anime_from_file(const char *file)
 		func->num_keys = func_data.num_keys;
 		func->is_stopped = TRUE;
 		// specially, create instance for image or palette
-		if (func->type == ANIME_TYPE_SEQUENCE) {
+		if (func->type == ANIME_FUNC_SEQUENCE) {
 			bytes = sizeof(image_data);
 			for (i = 0; i < func->num_keys; ++ i) {
 				if (sceIoRead(fd, &image_data, bytes) != bytes) {
@@ -93,12 +93,12 @@ anime_t *anime_from_file(const char *file)
 				func->keys[i].value.img = \
 					textures_shared_copy(image_data.tex_name, \
 									image_data.sx, image_data.sy, \
-									image_data.w, image.data.h);
-				func->keys[i].value.img.center_x = image_data.center_x;
-				func->keys[i].value.img.center_x = image_data.center_y;
+									image_data.w, image_data.h);
+				func->keys[i].value.img->centerX = image_data.center_x;
+				func->keys[i].value.img->centerY = image_data.center_y;
 				func->keys[i].frame = image_data.frame;
 			}
-		} else if (func->type == ANIME_TYPE_PALETTE) {
+		} else if (func->type == ANIME_FUNC_PALETTE) {
 			for (i = 0; i < func->num_keys; ++ i) {
 				bytes = sizeof(int);
 				if (sceIoRead(fd, &(func->keys[i].frame), bytes) != bytes) {
@@ -134,7 +134,7 @@ anime_t *anime_from_file(const char *file)
 
 void anime_update(anime_t *ani, float step)
 {
-	assert(ani != NULL)
+	assert(ani != NULL);
 	ani->time += step;
 	
 	int frame = (int)(ani->time * ani->framerate);
@@ -163,7 +163,7 @@ void anime_update(anime_t *ani, float step)
 	}
 }
 
-void anime_eval_func(anime_func_t *func, int frame, frame_t *res)
+void anime_eval_func(anime_func_t *func, int frame, frame_t *ret)
 {
 	int type;
 	int interp;
@@ -184,7 +184,7 @@ void anime_eval_func(anime_func_t *func, int frame, frame_t *res)
 	}
 
 	// find key point
-	key = bisearch_key_points(frame, func->keys, func->num_keys)
+	key = bisearch_key_points(frame, func->keys, func->num_keys);
 	assert(key != NULL);
 
 	// interp
@@ -230,7 +230,7 @@ void anime_eval_func(anime_func_t *func, int frame, frame_t *res)
 		break;
 		
 	case ANIME_FUNC_PALETTE:
-		ret->palette = func->value.palette;
+		ret->palette = key->value.palette;
 		break;
 	}
 	
@@ -242,33 +242,23 @@ frame_t *anime_get_frame(anime_t *ani)
 	return ani->frame;
 }
 
-inline void anime_set_func(anime_t *ani, anime_func_t *func)
-{
-	ani->funcs[ani->type] = func;
-}
-
-inline anime_set_callback(anime_t *ani, anime_callback_t callback)
-{
-	ani->callback = callback;
-}
-
 //binary search for a right [key1, key2] section and return key1
-anime_key_t *bisearch_key_points(int frame, anime_key_t **keys, 
+anime_key_t *bisearch_key_points(int frame, anime_key_t *keys, 
 	int num_keys) {
 	// empty array
-	if (num_keys == NULL) {
+	if (num_keys == 0) {
 		return NULL;
 	}
 	// only one element
 	if (num_keys == 1) {
-		return keys[0];
+		return &keys[0];
 	}
 	// begin binary search
 	int left = 0;
 	int right = num_keys - 1;
 	anime_key_t *key1, *key2;
 	while (left < right) {
-		key1 = keys[left];
+		key1 = &keys[left];
 		key2 = key1 + 1;
 		if (key1->frame > frame) {
 			right = (left + right) >> 1;

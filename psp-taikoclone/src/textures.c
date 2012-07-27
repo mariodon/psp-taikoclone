@@ -1,8 +1,11 @@
+#include <assert.h>
+
 #include <oslib/oslib.h>
 
 #include "textures.h"
 #include "const.h"
 #include "helper/dictionary.h"
+#include "helper/iniparser.h"
 
 /* caching preloaded textures */
 static dictionary *cache = NULL;
@@ -55,10 +58,11 @@ bool textures_init()
     textures_cache_cfg(config, "note_barline_yellow");
     // free config mem
     iniparser_freedict(config); 
+    return TRUE;
 }
 
 /* retrieve textures by key. */
-OSL_IMAGE *textures_get(char *key)
+OSL_IMAGE *textures_get(const char *key)
 {
     OSL_IMAGE *img;
     char *addr_str;
@@ -72,12 +76,11 @@ OSL_IMAGE *textures_get(char *key)
 void textures_cache(char *key, char *file, int pf, int loc)
 {
     assert(cache != NULL);
-    assert(cfg != NULL && key != NULL);
+    assert(file != NULL && key != NULL);
 
     OSL_IMAGE *img;
     char mem[16];
     char *addr_str;
-    int loc, pf;
 
     addr_str = dictionary_get(cache, key, "0x0");
     img = (OSL_IMAGE *)(strtol(addr_str, NULL, 0));
@@ -113,7 +116,7 @@ void textures_cache_cfg(dictionary *cfg, char *key)
     pf = iniparser_getint(cfg, key_buf, OSL_IN_VRAM);
 
     key_buf[namelen] = '\0';
-    stract(key_buf, ":loc");
+    strcat(key_buf, ":loc");
     loc = iniparser_getint(cfg, key_buf, TAIKO_PF);
 
     textures_cache(key, file, pf, loc);
@@ -129,13 +132,14 @@ void textures_cache_cfg(dictionary *cfg, char *key)
 OSL_IMAGE *textures_shared_copy(const char *key, int x, int y, int w, int h)
 {
     OSL_IMAGE *orig_img, *ret_img;
-    ori_img = textures_get(key);
-    ret_img = oslCreateImageTileSize(ori_img, x, y, w, h);
-    assert(ori_img != NULL && ret_img != NULL);    
+    orig_img = textures_get(key);
+    ret_img = oslCreateImageTileSize(orig_img, x, y, w, h);
+    assert(orig_img != NULL && ret_img != NULL);    
     return ret_img;
 }
 
 bool textures_destroy()
 {
     //let it go.We hold all image data util the whole program ends.
+    return TRUE;
 }

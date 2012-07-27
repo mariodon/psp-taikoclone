@@ -2,7 +2,6 @@ TARGET = test
 OBJS = src/test.o \
 	   src/load_texture.o \
 	   src/drawing.o \
-	   src/taiko_flash.o \
 	   src/tjaparser.o \
 	   src/ui/ui_utils.o \
 	   src/ui/song_select_ui.o \
@@ -13,6 +12,8 @@ OBJS = src/test.o \
 	   src/helper/opendir.o \
 	   src/note.o \
 	   src/animation.o \
+	   src/textures.o \
+	   src/frame.o \
 
 YOURLIBS = 
 BUILD_PRX = 1
