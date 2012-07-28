@@ -11,7 +11,7 @@ DATA = {
         "funcs": (
             {
                 "type": 0,
-                "keys": ((0, "note_don", 0, 0, 48, 48, 24, 24),),
+                "keys": ((0, 0, 0, 48, 48, 24, 24, "note_don"),),
             },
 
             {
@@ -44,13 +44,13 @@ def dump(name):
         # func keys
         if func["type"] == 0:   # sequence type
             for key in func["keys"]:
-                str += struct.pack("<I21sIIIIII", *key)
+                str += struct.pack("<IIIIIII24s", *key)
         elif func["type"] == 1: # scale type
             for key in func["keys"]:
                 str += struct.pack("<Iff", *key)            
         elif func["type"] == 2: # path type
             for key in func["keys"]:
-                str += struct.pack("<III", *key)
+                str += struct.pack("<Iii", *key)
         elif func["type"] == 3: # palette type
             for key in func["keys"]:
                 str += struct.pack("<II", key[0], len(key)-1)

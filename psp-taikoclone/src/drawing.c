@@ -175,6 +175,7 @@ void init_drawing()
     for (i = 0; i < 4; ++ i) {
         func = anime_note_fly->ani_funcs[i];
         if (func == NULL) { continue; }
+        printf("i = %d\n", i);
         printf("func (%d, %d, %d, %d)\n", func->type, func->interp,\
             func->is_loopped, func->num_keys);
     }
