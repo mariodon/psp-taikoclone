@@ -11,8 +11,7 @@ typedef struct {
     OSL_IMAGE *osl_img;         /* image data */
     int x, y;                   /* pos */
     int center_x, center_y;     /* anchor point */
-    float scale_x, scale_y;     /* scale */
-    float alpha;                /* alpha */
+    float scale_x, scale_y;     /* scale */             /* alpha */
     OSL_PALETTE *palette;   /* palette if indexed. */
 } frame_t;
 

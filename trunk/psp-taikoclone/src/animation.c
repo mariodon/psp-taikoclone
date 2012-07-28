@@ -62,6 +62,7 @@ anime_t *anime_from_file(const char *file)
 	if (sceIoRead(fd, &(ret_ani->framerate), bytes) != bytes) {
 		oslFatalError("corrupt ani file");
 	}
+	ret_ani->framerate /= 1000.0;
 	bytes = sizeof(int);
 	if (sceIoRead(fd, &func_count, bytes) != bytes) {
 		oslFatalError("corrupt ani file");
@@ -86,7 +87,7 @@ anime_t *anime_from_file(const char *file)
 		func->num_keys = func_data.num_keys;
         printf("reading: %d %d %d %d\n", func->type, func->interp, \
             func->is_loopped, func->num_keys);
-		func->is_stopped = TRUE;
+		func->is_stopped = FALSE;
 		// specially, create instance for image or palette
 		if (func->type == ANIME_FUNC_SEQUENCE) {
 			bytes = sizeof(image_data);
@@ -132,6 +133,7 @@ anime_t *anime_from_file(const char *file)
 				oslFatalError("corrupt ani file");
 			}
 		}
+		func->total_frame = func->keys[func->num_keys - 1].frame + 1;
 		anime_set_func(ret_ani, func);
 	}
 	for (i = 0; i < 4; ++ i) {
@@ -149,7 +151,7 @@ void anime_update(anime_t *ani, float step)
 	int frame = (int)(ani->time * ani->framerate);
 	bool stop = TRUE;
 	anime_func_t *func;
-	
+	printf("frame = %d\n", frame);
 	int i;
 	for (i = 0; i < 4; ++ i) {
 		func = ani->ani_funcs[i];
@@ -161,6 +163,7 @@ void anime_update(anime_t *ani, float step)
 			func->is_stopped = TRUE;
 			continue;
 		}
+		printf("eval func type %d, total_frame %d\n", func->type, func->total_frame);
 		anime_eval_func(func, frame, ani->frame);
 		// at least one func is not dead, so go on
 		stop = FALSE;
@@ -169,6 +172,9 @@ void anime_update(anime_t *ani, float step)
 	// callback
 	if (stop && ani->callback != NULL) {
 		ani->callback(ani);
+	}
+	if (stop) {
+		printf("anime_stopped!\n");
 	}
 }
 
@@ -265,14 +271,17 @@ anime_key_t *bisearch_key_points(int frame, anime_key_t *keys,
 	// begin binary search
 	int left = 0;
 	int right = num_keys - 1;
+	int mid;
 	anime_key_t *key1, *key2;
 	while (left < right) {
-		key1 = &keys[left];
+		mid = (left + right)>>1;
+		key1 = &keys[mid];
 		key2 = key1 + 1;
+		printf("search (%d, %d), (%d, %d)\n", mid, mid + 1, key1->frame, key2->frame);
 		if (key1->frame > frame) {
-			right = (left + right) >> 1;
+			right = mid;
 		} else if (key2->frame < frame) {
-			left = (left + right) >> 1;
+			left = mid;
 		} else {
 			return key1;
 		}

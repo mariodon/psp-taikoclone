@@ -59,8 +59,10 @@ typedef void (*anime_callback_t)(void *);
 //------------------------------------------------------------------------------
 anime_t *anime_create_empty();
 anime_t *anime_from_file(const char *file);
+void anime_update(anime_t *ani, float step);
 void anime_set_func(anime_t *ani, anime_func_t *func);
 void anime_set_callback(anime_t *ani, anime_callback_t callback);
+frame_t *anime_get_frame(anime_t *ani);
 
 //------------------------------------------------------------------------------
 // sub routines

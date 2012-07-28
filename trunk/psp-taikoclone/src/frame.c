@@ -16,7 +16,6 @@ frame_t *frame_create(OSL_IMAGE *osl_img)
 	frame->scale_x = 1.0;
 	frame->scale_y = 1.0;
 	
-	frame->alpha = 1.0;
 	/* default to osl_img->palette if NULL */
 	frame->palette = NULL;
 }
@@ -28,7 +27,7 @@ frame_t *frame_create(OSL_IMAGE *osl_img)
 void frame_draw(frame_t *frame)
 {
 	if (frame == NULL || frame->osl_img == NULL) {
-		printf("[WARNING]draw null img!");
+//		printf("[WARNING]draw null img!");
 		return;
 	}
 
