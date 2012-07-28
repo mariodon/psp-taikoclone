@@ -7,25 +7,87 @@ DEFAULT_INTERP = 0
 DEFAULT_IS_LOOPPED = False
 
 DATA = {
+	# note don flying to soul bar
     "note_fly_don" : {
     	"framerate": 60,
         "funcs": (
             {
                 "type": 0,
-                "is_loopped": True,
-                "keys": ((0, 0, 0, 48, 48, 24, 24, "note_don"),
-                	(2, 0, 0, 48, 48, 24, 24, "note_katsu"),
-                	(4, 0, 0, 48, 48, 24, 24, "note_katsu"),),
+                "keys": ((0, 0, 0, 48, 48, 24, 24, "note_don"),),
             },
 
             {
                 "type": 2,
                 "interp": 1,
-                "is_loopped": True,                
                 "keys": ((0, 104, 104), (5, 147, 75), (10, 224, 35), (15, 310, 9), (20, 367, 7), (25, 417, 14), (30, 437, 20), (35, 452, 26),),
             },
         )
-    }
+    },
+    # note katsu flying to soul bar
+	"note_fly_katsu": {
+    	"framerate": 60,
+        "funcs": (
+            {
+                "type": 0,
+                "keys": ((0, 0, 0, 48, 48, 24, 24, "note_katsu"),),
+            },
+
+            {
+                "type": 2,
+                "interp": 1,
+                "keys": ((0, 104, 104), (5, 147, 75), (10, 224, 35), (15, 310, 9), (20, 367, 7), (25, 417, 14), (30, 437, 20), (35, 452, 26),),
+            },
+        )
+    },
+    # note large don flying to soul bar
+	"note_fly_ldon": {
+    	"framerate": 60,
+        "funcs": (
+            {
+                "type": 0,
+                "keys": ((0, 0, 0, 48, 48, 24, 24, "note_ldon"),),
+            },
+
+            {
+                "type": 2,
+                "interp": 1,
+                "keys": ((0, 104, 104), (5, 147, 75), (10, 224, 35), (15, 310, 9), (20, 367, 7), (25, 417, 14), (30, 437, 20), (35, 452, 26),),
+            },
+        )
+    },
+    # note large katsu flying to soul bar
+	"note_fly_lkatsu": {
+    	"framerate": 60,
+        "funcs": (
+            {
+                "type": 0,
+                "keys": ((0, 0, 0, 48, 48, 24, 24, "note_lkatsu"),),
+            },
+
+            {
+                "type": 2,
+                "interp": 1,
+                "keys": ((0, 104, 104), (5, 147, 75), (10, 224, 35), (15, 310, 9), (20, 367, 7), (25, 417, 14), (30, 437, 20), (35, 452, 26),),
+            },
+        )
+    },
+    # anime_bg_upper
+	"bg_upper": {
+    	"framerate": 60,
+        "funcs": (
+            {
+                "type": 0,
+                "keys": ((0, 28, 0, 128, 100, 0, 0, "bg"),),
+            },
+
+            {
+                "type": 2,
+                "interp": 1,
+                "is_loopped": True,
+                "keys": ((0, 0, 0), (100, -128, 0),),
+            },
+        )
+    },    
 }
 
 def dump(name):
@@ -71,4 +133,5 @@ def dump(name):
     f.write(str)
     f.close()
 
-dump("note_fly_don")
+for k in DATA.keys():
+	dump(k)

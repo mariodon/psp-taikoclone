@@ -18,18 +18,17 @@ frame_t *frame_create(OSL_IMAGE *osl_img)
 	
 	/* default to osl_img->palette if NULL */
 	frame->palette = NULL;
+	return frame;
 }
 
 /* draw a frame, with the status applied.
- * TODO: add plane alpha support.
  * This is the most simple implementation.
  */
 void frame_draw(frame_t *frame)
 {
-	if (frame == NULL || frame->osl_img == NULL) {
-//		printf("[WARNING]draw null img!");
-		return;
-	}
+	if (frame == NULL) { oslFatalError("invalid frame!"); }
+	// Use a dummy image instead?
+	if (frame->osl_img == NULL) { return; }
 
 	OSL_IMAGE *img = frame->osl_img;
 	OSL_PALETTE *bak_palette;
@@ -44,11 +43,22 @@ void frame_draw(frame_t *frame)
 	if (frame->palette != NULL) {
 		bak_palette = img->palette;
 		img->palette = frame->palette;
-		oslDrawImage(img);
+		oslDrawImageSimple(img);
 		img->palette = bak_palette;
 	} else {
-		oslDrawImage(img);
+		oslDrawImageSimple(img);
 	}
+}
+
+void frame_draw_xy(frame_t *frame, int x, int y)
+{
+	if (frame == NULL) { oslFatalError("invalid frame"); }
+	
+	frame->x += x;
+	frame->y += y;
+	frame_draw(frame);
+	frame->x -= x;
+	frame->y -= y;
 }
 
 void frame_destroy(frame_t *frame)
@@ -60,4 +70,14 @@ void frame_destroy(frame_t *frame)
 		}
 		free(frame);
 	}
+}
+
+inline int frame_get_width(frame_t *frame)
+{
+	return frame->osl_img->stretchX;
+}
+
+inline int frame_get_height(frame_t *frame)
+{
+	return frame->osl_img->stretchY;
 }
