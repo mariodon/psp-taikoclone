@@ -1,5 +1,5 @@
-#ifndef _ANIMATION_H_
-#define _ANIMATION_H_
+#ifndef __ANIMATION_H__
+#define __ANIMATION_H__
 
 #include <oslib/oslib.h>
 #include "const.h"
@@ -59,15 +59,8 @@ typedef void (*anime_callback_t)(void *);
 //------------------------------------------------------------------------------
 anime_t *anime_create_empty();
 anime_t *anime_from_file(const char *file);
-inline void anime_set_func(anime_t *ani, anime_func_t *func)
-{
-	ani->ani_funcs[func->type] = func;
-}
-
-inline void anime_set_callback(anime_t *ani, anime_callback_t callback)
-{
-	ani->callback = callback;
-}
+void anime_set_func(anime_t *ani, anime_func_t *func);
+void anime_set_callback(anime_t *ani, anime_callback_t callback);
 
 //------------------------------------------------------------------------------
 // sub routines

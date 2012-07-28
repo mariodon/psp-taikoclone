@@ -12,6 +12,7 @@
 //------------------------------------------------------------------------------
 #if TEST_ANIMATION
 
+#include "textures.h"
 #include "animation.h"
 static anime_t *anime_note_fly;
 
@@ -165,8 +166,18 @@ void init_drawing()
     is_texture_preloaded = TRUE;
 	
 	#if TEST_ANIMATION
+    textures_init();
     anime_note_fly = anime_from_file("ani/note_fly_don.ani");
 	
+    printf("framerate: %f\n", anime_note_fly->framerate);
+    int i;
+    anime_func_t *func;
+    for (i = 0; i < 4; ++ i) {
+        func = anime_note_fly->ani_funcs[i];
+        if (func == NULL) { continue; }
+        printf("func (%d, %d, %d, %d)\n", func->type, func->interp,\
+            func->is_loopped, func->num_keys);
+    }
 	// create and set up animation here
 	#endif
 }
