@@ -82,6 +82,8 @@ anime_t *anime_from_file(const char *file)
 		func->interp = func_data.interp;
 		func->is_loopped = func_data.is_loopped;
 		func->num_keys = func_data.num_keys;
+        printf("reading: %d %d %d %d\n", func->type, func->interp, \
+            func->is_loopped, func->num_keys);
 		func->is_stopped = TRUE;
 		// specially, create instance for image or palette
 		if (func->type == ANIME_FUNC_SEQUENCE) {
@@ -270,4 +272,14 @@ anime_key_t *bisearch_key_points(int frame, anime_key_t *keys,
 	}
 	// not found
 	return NULL;
+}
+
+inline void anime_set_func(anime_t *ani, anime_func_t *func)
+{
+	ani->ani_funcs[func->type] = func;
+}
+
+inline void anime_set_callback(anime_t *ani, anime_callback_t callback)
+{
+	ani->callback = callback;
 }
