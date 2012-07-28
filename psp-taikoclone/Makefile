@@ -56,6 +56,7 @@ LIBS = $(STDLIBS)$(YOURLIBS)$(LIBS_AALIB)
 
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = Taiko no shirouto
+PSP_EBOOT_ICON = test.png
 
 PSPSDK = $(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak

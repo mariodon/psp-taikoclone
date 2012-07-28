@@ -15,6 +15,7 @@
 #include "textures.h"
 #include "animation.h"
 static anime_t *anime_note_fly;
+static anime_t *anime_bg_upper;
 
 #endif
 
@@ -168,6 +169,7 @@ void init_drawing()
 	#if TEST_ANIMATION
     textures_init();
     anime_note_fly = anime_from_file("ani/note_fly_don.ani");
+    anime_bg_upper = anime_from_file("ani/bg_upper.ani");
 	
     printf("framerate: %f\n", anime_note_fly->framerate);
     int i;
@@ -265,7 +267,26 @@ void draw_image_tiles(OSL_IMAGE *img, int start_x, int start_y, int end_x, int e
 
 void drawing()
 {
+#if TEST_ANIMATION
+	frame_t *f;
+	float step = 16.6;
+	int i;
+	int count;
+	
+	// drawing bg_upper
+	anime_update(anime_bg_upper, step);
+	f = anime_get_frame(anime_bg_upper);
+	count = (int)(SCREEN_WIDTH / frame_get_width(f)) + 2;
+	for (i = 0; i < count; ++ i) {
+		frame_draw_xy(f, frame_get_width(f) * i, 0);
+	}
+	
+	// drawing soul_bar
+	
+#else	// TEST_ANIMATION
     draw_bg_upper(bg);        
+#endif	// TEST_ANIMATION
+    
     oslDrawImageSimple(donchan);
     draw_bg_note(note_bg);
 
@@ -281,7 +302,7 @@ void drawing()
 //	printf("frame %p\n", frame);
 	frame_draw(frame);
 	// animate and draw animation here
-	#endif
+	#endif // TEST_ANIMATION
 }
 
 void drawing_after_note()
