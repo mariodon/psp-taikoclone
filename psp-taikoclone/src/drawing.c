@@ -175,11 +175,10 @@ void init_drawing()
     for (i = 0; i < 4; ++ i) {
         func = anime_note_fly->ani_funcs[i];
         if (func == NULL) { continue; }
-        printf("i = %d\n", i);
         printf("func (%d, %d, %d, %d)\n", func->type, func->interp,\
             func->is_loopped, func->num_keys);
     }
-	// create and set up animation here
+    
 	#endif
 }
 
@@ -275,6 +274,12 @@ void drawing()
 //    oslDrawImage(soulbar_empty);
 
 	#if TEST_ANIMATION
+	frame_t *frame;
+	anime_update(anime_note_fly, 16.6);
+	frame = anime_get_frame(anime_note_fly);
+	printf("%p %d %d %f %f\n", frame->osl_img, frame->x, frame->y, frame->scale_x, frame->scale_y);
+//	printf("frame %p\n", frame);
+	frame_draw(frame);
 	// animate and draw animation here
 	#endif
 }
