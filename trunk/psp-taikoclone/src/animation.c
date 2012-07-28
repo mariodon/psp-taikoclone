@@ -17,6 +17,7 @@ anime_t *anime_create_empty()
     for (i = 0; i < 4; ++ i) 
         ani->ani_funcs[i] = NULL;
 	ani->frame = frame_create(NULL);
+	return ani;
 }
 
 // anime_t file layout:
@@ -37,8 +38,8 @@ anime_t *anime_from_file(const char *file)
 	} func_data;
 	struct {
 		int frame;
+		int sx, sy, w, h, center_x, center_y;		
 		char tex_name[MAX_TEXTURE_NAME+1];
-		int sx, sy, w, h, center_x, center_y;
 	} image_data;
 	struct {
 		char r;
@@ -73,6 +74,7 @@ anime_t *anime_from_file(const char *file)
 		if (sceIoRead(fd, &func_data, bytes) != bytes) {
 			oslFatalError("corrupt ani file");
 		}
+		func = NULL;
 		func = (anime_func_t *)malloc(sizeof(anime_func_t) \
 			+ func_data.num_keys * sizeof(anime_key_t));
 		if (func == NULL) {
@@ -125,12 +127,17 @@ anime_t *anime_from_file(const char *file)
 			
 		} else {
 			bytes = sizeof(anime_key_t) * func->num_keys;
-			if (sceIoRead(fd, &func->keys, bytes) != bytes) {
+			printf("sizeof path or scale key %d\n", sizeof(anime_key_t));
+			if (sceIoRead(fd, func->keys, bytes) != bytes) {
 				oslFatalError("corrupt ani file");
 			}
 		}
 		anime_set_func(ret_ani, func);
 	}
+	for (i = 0; i < 4; ++ i) {
+		printf("%p ", ret_ani->ani_funcs[i]);
+	}
+	printf("\n");
 	return ret_ani;
 }
 
@@ -150,7 +157,7 @@ void anime_update(anime_t *ani, float step)
 			continue;
 		}
 		// check if func should be stopped
-		if (! func->is_loopped && frame >= func->total_frame - 1) {
+		if (! func->is_loopped && frame >= func->total_frame) {
 			func->is_stopped = TRUE;
 			continue;
 		}
