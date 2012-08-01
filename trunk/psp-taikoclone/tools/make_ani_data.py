@@ -77,17 +77,52 @@ DATA = {
         "funcs": (
             {
                 "type": 0,
-                "keys": ((0, 28, 0, 128, 100, 0, 0, "bg"),),
+                "keys": ((0, 0, 28, 128, 100, 0, 0, "bg"),),
             },
 
             {
                 "type": 2,
                 "interp": 1,
                 "is_loopped": True,
-                "keys": ((0, 0, 0), (100, -128, 0),),
+                "keys": ((0, 0, 0), (150, -128, 0),),
             },
         )
     },    
+    # explosion_upper
+    "explosion_upper": {
+        "framerate": 60,
+        "funcs": (
+            {
+                "type": 0,
+                "keys": ((0, 0, 0, 128, 128, 49, 49, "explosion_upper"),),
+            },
+
+            {
+                "type": 1,
+                "interp": 1,
+                "keys": ((0, 0.0, 0.0), (10, 1.0, 1.0)),
+            },
+        )
+    },
+    # flame
+    "flame": {
+        "framerate": 60,
+        "funcs": (
+            {
+                "type": 0,
+                "is_loopped": True,
+                "keys": (
+                    (0, 0, 0, 128, 128, 38, 81, "flame1"),
+                    (1, 0, 0, 128, 128, 38, 81, "flame2"),
+                    (2, 0, 0, 128, 128, 38, 81, "flame3"),
+                    (3, 0, 0, 128, 128, 38, 81, "flame4"),
+                    (4, 0, 0, 128, 128, 38, 81, "flame5"),
+                    (5, 0, 0, 128, 128, 38, 81, "flame6"),
+                    (6, 0, 0, 128, 128, 38, 81, "flame7"),
+                    (7, 0, 0, 128, 128, 38, 81, "flame8"),),
+            },
+        )
+    },
 }
 
 def dump(name):
@@ -128,7 +163,7 @@ def dump(name):
         else:
             assert False, "Unknown func type!"
 
-    fname = name+".ani"
+    fname = "../ani/"+name+".ani"
     f = open(fname, "wb")
     f.write(str)
     f.close()

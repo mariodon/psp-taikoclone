@@ -102,6 +102,9 @@ anime_t *anime_from_file(const char *file)
 				func->keys[i].value.img->centerX = image_data.center_x;
 				func->keys[i].value.img->centerY = image_data.center_y;
 				func->keys[i].frame = image_data.frame;
+                printf("image sizeX = %d, sizeY = %d\n", func->keys[i].value.img->sizeX, func->keys[i].value.img->sizeY);
+                printf("image stretchX = %d, stretchY = %d\n", func->keys[i].value.img->stretchX, func->keys[i].value.img->stretchY);
+                printf("image centerX = %d, centerY = %d\n", func->keys[i].value.img->centerX, func->keys[i].value.img->centerY);
 			}
 		} else if (func->type == ANIME_FUNC_PALETTE) {
 			for (i = 0; i < func->num_keys; ++ i) {
@@ -128,7 +131,7 @@ anime_t *anime_from_file(const char *file)
 			
 		} else {
 			bytes = sizeof(anime_key_t) * func->num_keys;
-			printf("sizeof path or scale key %d\n", sizeof(anime_key_t));
+			printf("sizeof path or scale or alpha key %d\n", sizeof(anime_key_t));
 			if (sceIoRead(fd, func->keys, bytes) != bytes) {
 				oslFatalError("corrupt ani file");
 			}
@@ -140,7 +143,22 @@ anime_t *anime_from_file(const char *file)
 		printf("%p ", ret_ani->ani_funcs[i]);
 	}
 	printf("\n");
+    sceIoClose(fd);
 	return ret_ani;
+}
+
+/*
+ * reset animation status.
+ */
+void anime_reset(anime_t *ani)
+{
+    int i;
+
+    ani->time = 0;
+    for (i = 0; i < 4; ++ i)
+        if (ani->ani_funcs[i] != NULL)
+            ani->ani_funcs[i]->is_stopped = FALSE;
+    anime_update(ani, 0);
 }
 
 void anime_update(anime_t *ani, float step)
@@ -210,7 +228,7 @@ void anime_eval_func(anime_func_t *func, int frame, frame_t *ret)
 		break;
 		
 	case ANIME_FUNC_PATH:
-		if (interp == ANIME_INTERP_NONE || frame == func->total_frame) {
+		if (interp == ANIME_INTERP_NONE || frame == func->total_frame - 1) {
 			ret->x = key->value.pos[0];
 			ret->y = key->value.pos[1];
 		} else if (interp == ANIME_INTERP_LINEAR) {
@@ -233,7 +251,7 @@ void anime_eval_func(anime_func_t *func, int frame, frame_t *ret)
 		break;
 		
 	case ANIME_FUNC_SCALE:
-		if (interp == ANIME_INTERP_NONE || frame == func->total_frame) {
+		if (interp == ANIME_INTERP_NONE || frame == func->total_frame - 1) {
 			ret->scale_x = key->value.scale[0];
 			ret->scale_y = key->value.scale[1];
 		} else if (interp == ANIME_INTERP_LINEAR) {
@@ -246,6 +264,16 @@ void anime_eval_func(anime_func_t *func, int frame, frame_t *ret)
 		
 	case ANIME_FUNC_PALETTE:
 		ret->palette = key->value.palette;
+		break;
+
+    case ANIME_FUNC_ALPHA:
+		if (interp == ANIME_INTERP_NONE || frame == func->total_frame - 1) {
+			ret->alpha = key->value.alpha;
+		} else if (interp == ANIME_INTERP_LINEAR) {
+			key1 = key + 1;
+			f = 1.0f * (frame - key->frame) / (key1->frame - key->frame);
+			ret->alpha = key->value.alpha + f * (key1->value.alpha - key->value.alpha);
+		}	
 		break;
 	}
 	

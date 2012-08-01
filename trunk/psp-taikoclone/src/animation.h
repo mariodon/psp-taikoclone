@@ -13,6 +13,7 @@
 #define ANIME_FUNC_SCALE		0x1
 #define ANIME_FUNC_PATH			0x2
 #define ANIME_FUNC_PALETTE		0x3
+#define ANIME_FUNC_ALPHA        0x4
 
 #define ANIME_INTERP_NONE		0x0
 #define ANIME_INTERP_LINEAR		0x1
@@ -27,6 +28,7 @@ typedef struct {
 		float scale[2];
 		int pos[2];
 		OSL_PALETTE *palette;
+        float alpha;
 	} value;
 } anime_key_t;
 
@@ -46,6 +48,7 @@ typedef struct {
 	float time;
 	float framerate;
     void (*callback)(void *self);
+    bool is_dirty;
 	/* anime component */
 	anime_func_t *ani_funcs[4];
 	/* anime result frame */

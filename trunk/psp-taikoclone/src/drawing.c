@@ -14,8 +14,11 @@
 
 #include "textures.h"
 #include "animation.h"
+//preloaded animations
 static anime_t *anime_note_fly;
 static anime_t *anime_bg_upper;
+static anime_t *anime_explosion_upper;
+static anime_t *anime_flame;
 
 #endif
 
@@ -28,9 +31,6 @@ static dictionary *tex_conf;
 static bool is_texture_preloaded = FALSE;
 OSL_IMAGE *bg, *note_bg, *hit_circle, *donchan;
 OSL_IMAGE *taiko;
-OSL_IMAGE *soulbar_empty;
-OSL_IMAGE *soulbar_full;
-OSL_IMAGE *taiko_flash[4];
 
 static OSL_IMAGE *note_tex[MAX_NOTE][4];
 
@@ -132,14 +132,8 @@ void init_drawing()
     taiko = load_texture_config(tex_conf, "taiko");
 
     // init taiko flash
-    taiko_flash[0] = load_texture_config(tex_conf, "taiko_lred");
-    taiko_flash[1] = load_texture_config(tex_conf, "taiko_lblue");
-    taiko_flash[2] = load_texture_config(tex_conf, "taiko_rred");
-    taiko_flash[3] = load_texture_config(tex_conf, "taiko_rblue");
 
     // init soul bar
-    soulbar_empty = load_texture_config(tex_conf, "soulbar_empty");
-    soulbar_full = load_texture_config(tex_conf, "soulbar_full");
 
     // init notes
     memset(note_tex, -1, sizeof(note_tex)); // set NULL
@@ -170,17 +164,8 @@ void init_drawing()
     textures_init();
     anime_note_fly = anime_from_file("ani/note_fly_don.ani");
     anime_bg_upper = anime_from_file("ani/bg_upper.ani");
-	
-    printf("framerate: %f\n", anime_note_fly->framerate);
-    int i;
-    anime_func_t *func;
-    for (i = 0; i < 4; ++ i) {
-        func = anime_note_fly->ani_funcs[i];
-        if (func == NULL) { continue; }
-        printf("func (%d, %d, %d, %d)\n", func->type, func->interp,\
-            func->is_loopped, func->num_keys);
-    }
-    
+    anime_explosion_upper = anime_from_file("ani/explosion_upper.ani");
+    anime_flame = anime_from_file("ani/flame.ani");
 	#endif
 }
 
@@ -296,18 +281,32 @@ void drawing()
 
 	#if TEST_ANIMATION
 	frame_t *frame;
+    anime_note_fly->ani_funcs[2]->is_loopped = TRUE;
 	anime_update(anime_note_fly, 16.6);
 	frame = anime_get_frame(anime_note_fly);
-	printf("%p %d %d %f %f\n", frame->osl_img, frame->x, frame->y, frame->scale_x, frame->scale_y);
-//	printf("frame %p\n", frame);
+	//printf("%p %d %d %f %f\n", frame->osl_img, frame->x, frame->y, frame->scale_x, frame->scale_y);
 	frame_draw(frame);
-	// animate and draw animation here
+    
+
+    anime_flame->ani_funcs[0]->is_loopped = TRUE;
+	anime_update(anime_flame, 16.6);
+	frame = anime_get_frame(anime_flame);
+    frame->alpha = 0.8;
+	//printf("%p %d %d %f %f\n", frame->osl_img, frame->x, frame->y, frame->scale_x, frame->scale_y);
+	frame_draw_xy(frame, 109, 104);
 	#endif // TEST_ANIMATION
 }
 
 void drawing_after_note()
 {
     oslDrawImageSimple(taiko);
+#if TEST_ANIMATION
+    frame_t *frame;
+    anime_explosion_upper->ani_funcs[1]->is_loopped = TRUE;
+    anime_update(anime_explosion_upper, 16.6);
+    frame = anime_get_frame(anime_explosion_upper);
+    frame_draw_xy(frame, 104, 104);
+#endif
 }
 
 void draw_yellow(OSL_IMAGE **textures, int x1, int x2, int y)
