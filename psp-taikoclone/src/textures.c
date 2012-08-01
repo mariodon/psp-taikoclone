@@ -33,10 +33,6 @@ bool textures_init()
     textures_cache_cfg(config, "donchan");
     textures_cache_cfg(config, "hit_circle");
     textures_cache_cfg(config, "taiko");
-    textures_cache_cfg(config, "taiko_lblue");
-    textures_cache_cfg(config, "taiko_rblue");
-    textures_cache_cfg(config, "taiko_lred");
-    textures_cache_cfg(config, "taiko_rred");
     textures_cache_cfg(config, "soulbar_empty");
     textures_cache_cfg(config, "soulbar_notclear");
     textures_cache_cfg(config, "soulbar_notfull");
@@ -56,6 +52,15 @@ bool textures_init()
     textures_cache_cfg(config, "note_balloont");
     textures_cache_cfg(config, "note_barline");
     textures_cache_cfg(config, "note_barline_yellow");
+    textures_cache_cfg(config, "explosion_upper");
+    textures_cache_cfg(config, "flame1");
+    textures_cache_cfg(config, "flame2");
+    textures_cache_cfg(config, "flame3");
+    textures_cache_cfg(config, "flame4");
+    textures_cache_cfg(config, "flame5");
+    textures_cache_cfg(config, "flame6");
+    textures_cache_cfg(config, "flame7");
+    textures_cache_cfg(config, "flame8");    
     // free config mem
     iniparser_freedict(config); 
     return TRUE;

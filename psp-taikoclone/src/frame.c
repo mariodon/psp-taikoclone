@@ -10,12 +10,11 @@ frame_t *frame_create(OSL_IMAGE *osl_img)
 	frame->x = 0;
 	frame->y = 0;
 	
-	frame->center_x = 0;
-	frame->center_y = 0;
-	
 	frame->scale_x = 1.0;
 	frame->scale_y = 1.0;
 	
+    frame->alpha = 1.0;
+
 	/* default to osl_img->palette if NULL */
 	frame->palette = NULL;
 	return frame;
@@ -27,18 +26,27 @@ frame_t *frame_create(OSL_IMAGE *osl_img)
 void frame_draw(frame_t *frame)
 {
 	if (frame == NULL) { oslFatalError("invalid frame!"); }
-	// Use a dummy image instead?
-	if (frame->osl_img == NULL) { return; }
 
-	OSL_IMAGE *img = frame->osl_img;
+    OSL_IMAGE *img = frame->osl_img;
+	if (img == NULL) { return; }
+
+    // set up frame->osl_img for rendering
+    img->stretchX = (img->offsetX1 - img->offsetX0) * frame->scale_x;
+    img->stretchY = (img->offsetY1 - img->offsetY0) * frame->scale_y;
+    img->x = frame->x - img->centerX * frame->scale_x;
+    img->y = frame->y - img->centerY * frame->scale_y;
+
 	OSL_PALETTE *bak_palette;
-	img->x = frame->x;
-	img->y = frame->y;
-	img->centerX = frame->center_x;
-	img->centerY = frame->center_y;
-	img->stretchX = img->sizeX * frame->scale_x;
-	img->stretchY = img->sizeY * frame->scale_y;
-	
+
+    // set blend func
+    if (fabs(frame->alpha - 1.0) > 0.001) {
+        int destfix = (int)(frame->alpha * 255);
+        if (destfix < 0) { destfix = 0; }
+        else if (destfix > 255) { destfix = 255; }
+
+        oslSetAlpha(OSL_FX_ALPHA, destfix);
+    }
+
 	// be careful not overwrite the img's old palette	
 	if (frame->palette != NULL) {
 		bak_palette = img->palette;
@@ -48,6 +56,11 @@ void frame_draw(frame_t *frame)
 	} else {
 		oslDrawImageSimple(img);
 	}
+
+    // restore blend func
+    if (fabs(frame->alpha - 1.0) > 0.001) {
+        oslSetAlpha(OSL_FX_DEFAULT, 0);
+    }
 }
 
 void frame_draw_xy(frame_t *frame, int x, int y)
