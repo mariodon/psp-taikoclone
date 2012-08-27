@@ -1,85 +1,126 @@
+#include <assert.h>
 #include "frame.h"
 
-frame_t *frame_create(OSL_IMAGE *osl_img)
+/*
+ * create a simple frame from a image file, with the right pixel format
+ *  and location. */
+frame_t *frame_create_simple(const char *filename, int pixel_format, \
+    int location)
 {
-	frame_t *frame = NULL;
-	
-	frame = (frame_t *)malloc(sizeof(frame_t));
-	frame->osl_img = osl_img;
-	
-	frame->x = 0;
-	frame->y = 0;
-	
-	frame->scale_x = 1.0;
-	frame->scale_y = 1.0;
-	
-    frame->alpha = 1.0;
+    frame_t *obj = NULL;
 
-	/* default to osl_img->palette if NULL */
-	frame->palette = NULL;
-	return frame;
+    obj = (frame_t *)malloc(sizeof(frame_t));
+    if (obj == NULL) {
+        return NULL;
+    }
+
+    obj->enables = FRAME_ATTR_NONE;
+    obj->img = oslLoadImageFile((char *)filename, location, pixel_format);
+    if (obj->img == NULL) {
+        free(obj);
+        return NULL;
+    }
+    obj->alpha = 1.0;
+    obj->x = obj->y = 0;
+    return obj;
 }
+
+frame_t *frame_copy(frame_t *old)
+{
+    frame_t *obj = NULL;
+
+    obj = (frame_t *)malloc(sizeof(frame_t));
+    if (obj == NULL) {
+        return NULL;
+    }
+
+    obj->enables = old->enables;
+    obj->img = oslCreateImageTile(old->img, old->img->offsetX0, old->img->offsetY0, old->img->offsetX1, old->img->offsetY1);
+    obj->alpha = old->alpha;
+    obj->x = old->x;
+    obj->y = old->y;
+
+    return obj;
+}
+
+/*
+ * config a already created frame to give it a lot of attributes, but share
+ * the same image data.
+ * */
+void frame_config(frame_t *obj, frame_cfg_t *cfg)
+{
+    // check enables
+    obj->enables = FRAME_ATTR_NONE;
+    if (cfg->alpha != 1.0) {
+        obj->enables |= FRAME_ATTR_ALPHA;
+    }
+    if (cfg->size_palette != 0 \
+            && oslPixelWidth[obj->img->pixelFormat] <= 8
+            && cfg->size_palette == (1 << oslPixelWidth[obj->img->pixelFormat])) {
+        obj->enables |= FRAME_ATTR_PALETTE;
+    }
+    if (cfg->scale_x != 1.0 || cfg->scale_y != 1.0) {
+        obj->enables |= FRAME_ATTR_SCALE;
+    }
+    if (cfg->angel != 0) {
+        obj->enables |= FRAME_ATTR_ROTATE;
+    }
+    // config sub image
+    obj->img->offsetX0 = cfg->sx;
+    obj->img->offsetY0 = cfg->sy;
+    obj->img->offsetX1 = cfg->sx + cfg->w - 1;
+    obj->img->offsetY1 = cfg->sy + cfg->h - 1;
+    obj->img->stretchX = cfg->w * cfg->scale_x;
+    obj->img->stretchY = cfg->h * cfg->scale_y;
+    obj->x = cfg->x - cfg->center_x * cfg->scale_x;
+    obj->y = cfg->y - cfg->center_y * cfg->scale_y;
+
+    // config rotation
+    obj->img->centerX = cfg->center_x;
+    obj->img->centerY = cfg->center_y;
+    obj->img->angel = cfg->angel;
+
+    // config palette
+    if (obj->enables & FRAME_ATTR_PALETTE) {
+        OSL_PALETTE *palette = NULL;
+        int i;
+        palette = oslCreatePalette(cfg->size_palette, OSL_PF_8888);
+        for (i = 0; i < cfg->size_palette; ++ i) {
+            ((u32*)palette->data)[i] = cfg->palette[i];
+        }
+        oslUncachePalette(palette);
+        osl->img->palette = palette;
+    }
+}
+
 
 /* draw a frame, with the status applied.
  * This is the most simple implementation.
  */
-void frame_draw(frame_t *frame)
+void frame_draw(frame_t *frame, int x, int y)
 {
-	if (frame == NULL) { oslFatalError("invalid frame!"); }
-
-    OSL_IMAGE *img = frame->osl_img;
-	if (img == NULL) { return; }
-
-    // set up frame->osl_img for rendering
-    img->stretchX = (img->offsetX1 - img->offsetX0) * frame->scale_x;
-    img->stretchY = (img->offsetY1 - img->offsetY0) * frame->scale_y;
-    img->x = frame->x - img->centerX * frame->scale_x;
-    img->y = frame->y - img->centerY * frame->scale_y;
-
-	OSL_PALETTE *bak_palette;
-
-    // set blend func
-    if (fabs(frame->alpha - 1.0) > 0.001) {
-        int destfix = (int)(frame->alpha * 255);
-        if (destfix < 0) { destfix = 0; }
-        else if (destfix > 255) { destfix = 255; }
-
-        oslSetAlpha(OSL_FX_ALPHA, destfix);
-    }
-
-	// be careful not overwrite the img's old palette	
-	if (frame->palette != NULL) {
-		bak_palette = img->palette;
-		img->palette = frame->palette;
-		oslDrawImageSimple(img);
-		img->palette = bak_palette;
-	} else {
-		oslDrawImageSimple(img);
-	}
-
-    // restore blend func
-    if (fabs(frame->alpha - 1.0) > 0.001) {
+    if (frame->enables & FRAME_ATTR_ALPHA) {
+        oslSetAlpha(OSL_FX_ALPHA, (int)(frame->alpha * 255));
+    } else {
         oslSetAlpha(OSL_FX_DEFAULT, 0);
     }
-}
 
-void frame_draw_xy(frame_t *frame, int x, int y)
-{
-	if (frame == NULL) { oslFatalError("invalid frame"); }
-	
-	frame->x += x;
-	frame->y += y;
-	frame_draw(frame);
-	frame->x -= x;
-	frame->y -= y;
+    if (frame->enables & FRAME_ATTR_ROTATE) {
+        oslDrawImageXY(frame->img, x + frame->x, y + frame->y);
+    } else {
+        oslDrawImageSimpleXY(frame->img, x + frame->x, y + frame->y);
+    }
 }
 
 void frame_destroy(frame_t *frame)
 {
 	if (frame != NULL) {
-		if (frame->osl_img != NULL) {
-			oslDeleteImage(frame->osl_img);
-			frame->osl_img = NULL;
+		if (frame->img != NULL) {
+            if (frame->enables & FRAME_ATTR_PALETTE) {
+                oslDeletePalette(frame->img->palette);
+            }
+			oslDeleteImage(frame->img);
+			frame->img = NULL;
 		}
 		free(frame);
 	}
@@ -87,10 +128,58 @@ void frame_destroy(frame_t *frame)
 
 inline int frame_get_width(frame_t *frame)
 {
-	return frame->osl_img->stretchX;
+	return frame->img->stretchX;
 }
 
 inline int frame_get_height(frame_t *frame)
 {
-	return frame->osl_img->stretchY;
+	return frame->img->stretchY;
+}
+
+frame_cfg_t *frame_cfg_lerp(frame_cfg_t *fcfg1, frame_cfg_t *fcfg2, float f)
+{
+    frame_cfg_t *ret;
+
+    if (fcfg1->size != fcfg2->size || fcfg->enables != fcfg->enables) {
+        return NULL;
+    }
+
+    ret = malloc(sizeof(fcfg1->size));
+    if (ret == NULL) {
+        return ret;
+    }
+ 
+    memcpy(ret, fcfg1, fcfg1->size);
+
+    if (f <= 0) {
+        f = 0;
+    } else if (f >= 1) {
+        f = 1;
+    }
+
+    ret->x = (fcfg2->x - fcfg1->x) * f + fcfg1->x;
+    ret->y = (fcfg2->y - fcfg1->y) * f + fcfg1->y;
+    if (ret->enables & FRAME_ATTR_SCALE) {
+        ret->scale_x = (fcfg2->scale_x - fcfg1->scale_x) * f + fcfg1->scale_x;
+        ret->scale_y = (fcfg2->scale_y - fcfg1->scale_y) * f + fcfg1->scale_y;
+    }
+    if (ret->enables & FRAME_ATTR_ROTATE) {
+        ret->angel = (fcfg2->x - fcfg1->x) * f + fcfg1->x;
+    }
+    if (ret->enables & FRAME_ATTR_ALPHA) {
+        ret->alpha = (fcfg2->alpha - fcfg1->alpha) * f + fcfg1->alpha;
+    } 
+    if (ret->enables & FRAME_ATTR_PALETTE) {
+        int i;
+        for (i = 0; i < ret->size_palette) {
+            ret->palette[i] = (fcfg2->palette[i] - fcfg1->palette[i]) * f + fcfg1->palette[i];
+        }
+    }
+
+    return ret;
+}
+
+void frame_cfg_destroy(frame_cfg_t *cfg)
+{
+    free(cfg);
 }

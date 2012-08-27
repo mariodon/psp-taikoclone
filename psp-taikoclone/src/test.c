@@ -125,6 +125,7 @@ int main(int argc, char *argv[])
     
     clock_t tbeg, tend;
     clock_t t1 = -1, t2;
+    bool game_started;
 
     int music_started = 0;
 
@@ -228,9 +229,15 @@ int main(int argc, char *argv[])
                 time_passed = -2 * tpf;
             }      
             printf("time_passed init %f\n", time_passed);            
-            tbeg = clock();
+
+            game_started = FALSE;
             continue;
         }       
+
+        if (! game_started) {
+            tbeg = clock();
+            game_started = TRUE;
+        }
 
         if (!music_started && eps + time_passed >= 0) {
             music_started = 1;
@@ -302,9 +309,9 @@ int main(int argc, char *argv[])
         //printf("time_passed %f, clock %f, delta=%f\n", time_passed, (t2-t1)/1000.0, time_passed - (t2-t1)/1000.0);
     }
 
-    tend = clock();
-    printf("time = %fs, frame = %d, fps=%f\n", (tend-tbeg)/1000000.0,
-            frame, frame / ((tend-tbeg)/1000000.0));
+    //tend = clock();
+    //printf("time = %fs, frame = %d, fps=%f\n", (tend-tbeg)/1000000.0,
+            //frame, frame / ((tend-tbeg)/1000000.0));
     oslEndGfx();
     oslIntraFontShutdown();
     oslQuit();
