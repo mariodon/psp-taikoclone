@@ -7,7 +7,7 @@ static note_t *N_fumen, *E_fumen, *M_fumen;
 static note_t *note_list = NULL;
 static note_t *head, *tail, *cur_hit_obj;
 static int last_yellow = 0;
-static judge_level_t judge = {217, 150, 50};
+static judge_level_t judge = {108, 75, 25};
 
 int note_init(note_t *_N_fumen, note_t *_E_fumen, note_t *_M_fumen)
 {

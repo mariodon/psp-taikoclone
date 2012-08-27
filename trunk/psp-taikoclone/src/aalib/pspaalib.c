@@ -24,8 +24,8 @@ typedef struct
 	int initialized;
     int hardwareChannel;
     // my custom variables
-    int playPosition;
-    int playPositionlastUpdate;
+    clock_t start_time;
+    bool is_started;
     int is_SRC;
     void *bufs;
     int buff_num;
@@ -151,10 +151,8 @@ void GetProcessedBuffer(void* abuf,unsigned int length,int channel)
 }
 
 int AalibGetPlayPosition(int channel) {
-    int inputSamples = channels[channel].playPosition / 4;
-    //int restSamples = sceAudioGetChannelRestLen(channels[channel].hardwareChannel);
-    return inputSamples;
-    //return (inputSamples - restSamples) / 44.1;
+    AalibChannelData *data = &channels[channel];
+    return data->is_started ? clock() - data->start_time : 0;
 }
 
 int PlayThread(SceSize argsize, void* args)
@@ -315,7 +313,6 @@ Play:
 			sceKernelDelayThread(10);
 		}
 		sceAudioOutputPanned(hardwareChannel,PSP_AUDIO_VOLUME_MAX,PSP_AUDIO_VOLUME_MAX,mainBuf);        
-        channels[channel].playPosition += sample_size * 4;
         GetProcessedBuffer(backBuf,sample_size,channel);
 		tempBuf=mainBuf;
 		mainBuf=backBuf;
@@ -542,7 +539,6 @@ int AalibLoad(cccUCS2* filename,int channel,int loadToRam, int is_SRC)
 	channels[channel].volume=(AalibVolume){1.0f,1.0f};
 	channels[channel].ampValue=1.0f;
 	channels[channel].initialized=TRUE;
-    channels[channel].playPosition = 0;
     channels[channel].is_SRC = is_SRC;
 
     int ret = PSPAALIB_ERROR_INVALID_CHANNEL;
@@ -623,7 +619,7 @@ int AalibPlay(int channel)
 	{
 		return PSPAALIB_WARNING_NO_FREE_CHANNELS;
 	}
-	hardwareChannels[hardwareChannel]=channel;
+	hardwareChannels[hardwareChannel] = channel;
     channels[channel].hardwareChannel = hardwareChannel;
 
     printf("start audio thread at hardware %d\n", hardwareChannel);
