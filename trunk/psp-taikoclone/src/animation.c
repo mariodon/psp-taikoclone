@@ -30,16 +30,16 @@ anime_t *anime_create_from_cfg(anime_cfg_t *cfg)
     k = 0;
     for (i = 0; i < cfg->key_count; ++ i) {
         if (ani->frames[k] == NULL) {
-            ani->frames[k] = frame_factory_get_cfged(cfg->keys[i].tex_name, cfg->keys[i].cfg);
+            ani->frames[k] = frame_factory_from_cfg(cfg->keys[i].cfg);
         }
         if (! cfg->keys[i].lerp || i >= cfg->key_count) {
             for (j = 1; j < cfg->keys[i].len; ++ j) {
-                ani->frames[k+j] = ani->frame[k+j-1];
+                ani->frames[k+j] = ani->frames[k+j-1];
             }
         } else {
             for (j = 1; j < cfg->keys[i].len; ++ j) {
-                frame_cfg_t *lerp_frame_cfg = frame_cfg_lerp(ani->keys[i].cfg, ani->keys[i + 1].cfg, (float)j / cfg->keys[i].len);
-                ani->frames[k+j] = frame_factory_get_cfged(cfg->keys[i].tex_name, lerp_frame_cfg);
+                frame_cfg_t *lerp_frame_cfg = frame_cfg_lerp(cfg->keys[i].cfg, cfg->keys[i + 1].cfg, (float)j / cfg->keys[i].len);
+                ani->frames[k+j] = frame_factory_from_cfg(lerp_frame_cfg);
                 frame_cfg_destroy(lerp_frame_cfg);
             }
         }
@@ -51,7 +51,7 @@ anime_t *anime_create_from_cfg(anime_cfg_t *cfg)
 
 anime_t *anime_create_from_file(const char *filename)
 {
-    SceUid fd = -1;
+    SceUID fd = -1;
     anime_cfg_t *cfg = NULL;
     int key_count;
     
@@ -70,7 +70,7 @@ anime_t *anime_create_from_file(const char *filename)
     }
     memset(cfg, 0, sizeof(cfg));
 
-    sceIoSeek(fd, 0, 0);
+    sceIoLseek(fd, 0, 0);
     if (sceIoRead(fd, cfg, sizeof(anime_cfg_t)) != sizeof(anime_cfg_t)) {
         goto error;
     }
@@ -81,7 +81,6 @@ anime_t *anime_create_from_file(const char *filename)
         // fill animation key frame config structure
         nbytes += sceIoRead(fd, &cfg->keys[i].len, sizeof(int));
         nbytes += sceIoRead(fd, &cfg->keys[i].lerp, sizeof(bool));
-        nbytes += sceIoRead(fd, &cfg->keys[i].tex_name, sizeof(cfg->keys[i].tex_name));
         nbytes += sceIoRead(fd, &frame_cfg_size, sizeof(int));
         cfg->keys[i].cfg = (frame_cfg_t *)malloc(frame_cfg_size);
         //TODO: clean up memory!!!!
@@ -90,7 +89,7 @@ anime_t *anime_create_from_file(const char *filename)
         }
         sceIoLseek(fd, -sizeof(int), SEEK_CUR);
         nbytes += sceIoRead(fd, &cfg->keys[i].cfg, frame_cfg_size);
-        if (nbytes != sizeof(int)+sizeof(bool)+sizeof(cfg->keys[i].tex_name)+frame_cfg_size) {
+        if (nbytes != sizeof(int)+sizeof(bool)+frame_cfg_size) {
             goto error;
         }
     }
@@ -109,6 +108,8 @@ error:
 
 inline void anime_update(anime_t *ani, int time)
 {
+    int frame_time = 16;
+
     if (ani->status != ANIME_PLAY_STATUS_PLAYING) {
         return;
     }
@@ -143,7 +144,7 @@ inline void anime_play(anime_t *ani)
     switch (ani->status) {
         case ANIME_PLAY_STATUS_PLAYING:
             return;
-        case ANIME_PLAY_STATUS_PAUSE:
+        case ANIME_PLAY_STATUS_PAUSED:
             ani->status = ANIME_PLAY_STATUS_PLAYING;
             return;
         case ANIME_PLAY_STATUS_STOPPED:
@@ -157,7 +158,7 @@ inline void anime_play(anime_t *ani)
 
 inline void anime_pause(anime_t *ani)
 {
-    ani->status = ANIME_PLAY_STATUS_PAUSE;
+    ani->status = ANIME_PLAY_STATUS_PAUSED;
 }
 
 inline void anime_stop(anime_t *ani)

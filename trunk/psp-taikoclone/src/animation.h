@@ -27,7 +27,6 @@ typedef struct {
 typedef struct {
     int len;    /* number of frame last */
     bool lerp;  /* linear lerp between this frame and next? */
-    char tex_name[MAX_TEXTURE_NAME+1]; /* using which texture */
     frame_cfg_t *cfg;   /* how to config that texture */
 } anime_key_cfg_t;
 

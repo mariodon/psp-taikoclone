@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <oslib/oslib.h>
 #include "frame.h"
 
 /*
@@ -55,14 +56,14 @@ void frame_config(frame_t *obj, frame_cfg_t *cfg)
         obj->enables |= FRAME_ATTR_ALPHA;
     }
     if (cfg->size_palette != 0 \
-            && oslPixelWidth[obj->img->pixelFormat] <= 8
-            && cfg->size_palette == (1 << oslPixelWidth[obj->img->pixelFormat])) {
+            && osl_pixelWidth[obj->img->pixelFormat] <= 8
+            && cfg->size_palette == (1 << osl_pixelWidth[obj->img->pixelFormat])) {
         obj->enables |= FRAME_ATTR_PALETTE;
     }
     if (cfg->scale_x != 1.0 || cfg->scale_y != 1.0) {
         obj->enables |= FRAME_ATTR_SCALE;
     }
-    if (cfg->angel != 0) {
+    if (cfg->angle != 0) {
         obj->enables |= FRAME_ATTR_ROTATE;
     }
     // config sub image
@@ -78,7 +79,7 @@ void frame_config(frame_t *obj, frame_cfg_t *cfg)
     // config rotation
     obj->img->centerX = cfg->center_x;
     obj->img->centerY = cfg->center_y;
-    obj->img->angel = cfg->angel;
+    obj->img->angle = cfg->angle;
 
     // config palette
     if (obj->enables & FRAME_ATTR_PALETTE) {
@@ -89,7 +90,7 @@ void frame_config(frame_t *obj, frame_cfg_t *cfg)
             ((u32*)palette->data)[i] = cfg->palette[i];
         }
         oslUncachePalette(palette);
-        osl->img->palette = palette;
+        obj->img->palette = palette;
     }
 }
 
@@ -140,7 +141,7 @@ frame_cfg_t *frame_cfg_lerp(frame_cfg_t *fcfg1, frame_cfg_t *fcfg2, float f)
 {
     frame_cfg_t *ret;
 
-    if (fcfg1->size != fcfg2->size || fcfg->enables != fcfg->enables) {
+    if (fcfg1->size != fcfg2->size || strcmp(fcfg1->tex_name, fcfg2->tex_name)) {
         return NULL;
     }
 
@@ -157,23 +158,16 @@ frame_cfg_t *frame_cfg_lerp(frame_cfg_t *fcfg1, frame_cfg_t *fcfg2, float f)
         f = 1;
     }
 
+    strcpy(ret->tex_name, fcfg1->tex_name);
     ret->x = (fcfg2->x - fcfg1->x) * f + fcfg1->x;
     ret->y = (fcfg2->y - fcfg1->y) * f + fcfg1->y;
-    if (ret->enables & FRAME_ATTR_SCALE) {
-        ret->scale_x = (fcfg2->scale_x - fcfg1->scale_x) * f + fcfg1->scale_x;
-        ret->scale_y = (fcfg2->scale_y - fcfg1->scale_y) * f + fcfg1->scale_y;
-    }
-    if (ret->enables & FRAME_ATTR_ROTATE) {
-        ret->angel = (fcfg2->x - fcfg1->x) * f + fcfg1->x;
-    }
-    if (ret->enables & FRAME_ATTR_ALPHA) {
-        ret->alpha = (fcfg2->alpha - fcfg1->alpha) * f + fcfg1->alpha;
-    } 
-    if (ret->enables & FRAME_ATTR_PALETTE) {
-        int i;
-        for (i = 0; i < ret->size_palette) {
-            ret->palette[i] = (fcfg2->palette[i] - fcfg1->palette[i]) * f + fcfg1->palette[i];
-        }
+    ret->scale_x = (fcfg2->scale_x - fcfg1->scale_x) * f + fcfg1->scale_x;
+    ret->scale_y = (fcfg2->scale_y - fcfg1->scale_y) * f + fcfg1->scale_y;
+    ret->angle = (fcfg2->angle - fcfg1->angle) * f + fcfg1->angle;
+    ret->alpha = (fcfg2->alpha - fcfg1->alpha) * f + fcfg1->alpha;
+    int i;
+    for (i = 0; i < ret->size_palette; ++ i) {
+        ret->palette[i] = (fcfg2->palette[i] - fcfg1->palette[i]) * f + fcfg1->palette[i];
     }
 
     return ret;
