@@ -1,19 +1,14 @@
 TARGET = test
 OBJS = src/test.o \
-	   src/load_texture.o \
 	   src/drawing.o \
 	   src/tjaparser.o \
 	   src/ui/ui_utils.o \
 	   src/ui/song_select_ui.o \
 	   src/song_select.o \
-	   src/helper/fat.o \
-	   src/helper/MiniConv.o \
-	   src/helper/mem64.o \
-	   src/helper/opendir.o \
 	   src/note.o \
 	   src/animation.o \
-	   src/textures.o \
 	   src/frame.o \
+	   src/frame_factory.o 
 
 YOURLIBS = 
 BUILD_PRX = 1
@@ -25,7 +20,7 @@ OBJS_AALIB = src/aalib/pspaalib.o \
 			 src/aalib/pspaalibeffects.o \
 			 src/aalib/pspaalibogg.o \
 			 src/aalib/pspaalibscemp3.o \
-			 src/aalib/pspaalibwav.o
+			 src/aalib/pspaalibwav.o 
 LIBS_AALIB = -lpspaudio -lpspmp3 -lvorbisidec -lpspatrac3
 OBJS += $(OBJS_AALIB)
 
@@ -35,16 +30,13 @@ OBJS += $(OBJS_AALIB)
 # ###############################
 OBJS_HELPER = src/helper/dictionary.o \
 			  src/helper/iniparser.o \
-			  src/helper/metadata_parser.o \
-			  src/helper/mem64.o \
-			  src/helper/fat.o \
-			  src/helper/opendir.o
+			  src/helper/metadata_parser.o 
 OBJS += $(OBJS_HELPER)
 
 INCDIR = 
 CFLAGS = -G0 -Wall -O2 -g
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
-CPPFLAGS = -DTEST_ANIMATION
+#CPPFLAGS = -DTEST_ANIMATION
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =

@@ -3,7 +3,7 @@
 #include <oslib/oslib.h>
 #include "tjaparser.h"
 
-void init_drawing();
+void drawing_init();
 void drawing();
 void drawing_after_note();
 void draw_image_tiles(OSL_IMAGE*,int,int,int,int);

@@ -3,8 +3,6 @@
 #include <stdlib.h>
 
 #include <oslib/oslib.h>
-#include "helper/opendir.h"
-#include "helper/libminiconv.h"
 #include "song_select.h"
 #include "ui/song_select_ui.h"
 #include "tjaparser.h"

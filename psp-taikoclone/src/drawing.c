@@ -1,176 +1,73 @@
 #include <math.h>
-#include "helper/iniparser.h"
-#include "load_texture.h"
-#include "const.h"
 #include <time.h>
-#include "tjaparser.h"
+
+#include "const.h"
 #include "note.h"
-#include "aalib/pspaalib.h"
-
-//------------------------------------------------------------------------------
-// includes and variables for test code
-//------------------------------------------------------------------------------
-#if TEST_ANIMATION
-
-#include "textures.h"
 #include "animation.h"
-//preloaded animations
-static anime_t *anime_note_fly;
-static anime_t *anime_bg_upper;
-static anime_t *anime_explosion_upper;
-static anime_t *anime_flame;
-
-#endif
+#include "frame.h"
+#include "frame_factory.h"
 
 //------------------------------------------------------------------------------
-// global variables
+// load all resources needed to render the scene
 //------------------------------------------------------------------------------
-static dictionary *tex_conf;
+static frame_t *f_bg_upper;             /* bg upper. */
+static frame_t *f_bg_note_normal;       /* bg of normal note sheet */
+static frame_t *f_bg_note_expert;       /* bg of expert note sheet */
+static frame_t *f_bg_note_master;       /* bg of master note sheet */
+static frame_t *f_bg_note_ggt;          /* bg of gogotime note sheet */
 
-//preloaded textures
-static bool is_texture_preloaded = FALSE;
-OSL_IMAGE *bg, *note_bg, *hit_circle, *donchan;
-OSL_IMAGE *taiko;
+/* all note in scroll field.*/
+static frame_t *f_don;
+static frame_t *f_katsu;
+static frame_t *f_ldon;
+static frame_t *f_lkatsu;
+static frame_t *f_balloon_head;
+static frame_t *f_balloon_tail;
+static frame_t *f_renda_head;
+static frame_t *f_renda_body;
+static frame_t *f_renda_tail;
+static frame_t *f_lrenda_head;
+static frame_t *f_lrenda_body;
+static frame_t *f_lrenda_tail;
+static frame_t *f_barline;
+static frame_t *f_barline_yellow;
 
-static OSL_IMAGE *note_tex[MAX_NOTE][4];
+/* the taiko */
+static frame_t *f_taiko;
+static anime_t *a_taiko_lred;
+static anime_t *a_taiko_lblue;
+static anime_t *a_taiko_rred;
+static anime_t *a_taiko_rblue;
+static anime_t *a_taiko_flower;
+static frame_t *f_hit_circle;
 
-float format_t(float t)
+/* soul bar */
+static frame_t *f_soulbar_bg;
+static frame_t *f_soulbar_shadow;
+static frame_t *f_soulbar_frame;
+static frame_t *f_soul_icon;
+static frame_t *f_soul_left;
+static frame_t *f_soul_right;
+
+void drawing_init()
 {
-    if (t < 0)
-        t += 1.0;
-    else if (t > 1)
-        t -= 1.0;
-    return t;
+    f_bg_upper = frame_factory_from_cfg_file("frame/bg_upper.f");
+    f_bg_note_normal = frame_factory_from_cfg_file("frame/bg_note_normal.f");
+    f_bg_note_expert = frame_factory_from_cfg_file("frame/bg_note_expert.f");
+    f_bg_note_master = frame_factory_from_cfg_file("frame/bg_note_master.f");
+    f_bg_note_ggt = frame_factory_from_cfg_file("frame/bg_note_ggt.f");
 }
 
-float calc_color_comp(float t, float p, float q)
+/* accept a time step, control pad, and some game status.
+ * and will draw the game scene.*/
+void drawing_update()
 {
-    if (t < 1.0 / 6)
-        return p + ((q - p) * 6.0 * t);
-    else if (t < 0.5)
-        return q;
-    else if (t < 2.0 / 3)
-        return p + ((q - p) * 6.0 * (2.0 / 3 - t));
-    else
-        return p;
-}
-
-void hsl_to_rgb(float h, float s, float l, float *r, float *g, float *b)
-{
-    float p, q, hk;
-    float tr, tg, tb;
-
-    if (s == 0) {
-        *r = *g = *b = l;
-    } else {
-        if (l < 0.5)
-            q = l * (1 + s);
-        else
-            q = l + s - l * s;
-        p = 2 * l - q;
-        hk = h / 360.0;
-        tr = format_t(hk + 1.0 / 3);
-        tg = format_t(hk);
-        tb = format_t(hk - 1.0 / 3);
-        *r = calc_color_comp(tr, p, q);
-        *g = calc_color_comp(tg, p, q);
-        *b = calc_color_comp(tb, p, q);
-    }
-}
-
-void colorize_palette(OSL_IMAGE *img)
-{
-    OSL_PALETTE *palette = img->palette;
-    int i;
-    int r, g, b, a;
-    float rf, gf, bf;
-    float lum, h, s, l;
-    float lightness;
-    
-    h = 63;
-    s = 0.5;
-    lightness = 52;
-
-    for (i = 0; i < palette->nElements; ++ i) {
-		r = (((u32*)palette->data)[i]) & 0xff;
-		g = ((((u32*)palette->data)[i]) >> 8) & 0xff;
-		b = ((((u32*)palette->data)[i]) >> 16) & 0xff;
-    	a = ((((u32*)palette->data)[i]) >> 24) & 0xff;        
-        lum = r * 0.2126 + g * 0.7152 + b * 0.0722;
-        if (lightness < 0)
-            lum *= (lightness + 100) / 100.0;
-        else
-            lum = lum + lightness * (255 - lum) / 100.0;
-        l = lum / 255.0;
-
-        hsl_to_rgb(h, s, l, &rf, &gf, &bf);
-
-        r = (int)(255 * rf);
-        g = (int)(255 * gf);
-        b = (int)(255 * bf);
-        ((u32*)palette->data)[i] = (a << 24) + (b << 16) + (g << 8) + r;
-    }
-}
-/*
- * preload textures.
- * */
-void init_drawing()
-{
-
-    if (is_texture_preloaded) {
-        return;
-    }
-
-    tex_conf = iniparser_load("config/texture.ini");
-    bg = load_texture_config(tex_conf, "bg");
-
-    donchan = load_texture_config(tex_conf, "donchan");
-    colorize_palette(donchan);
-
-    note_bg = load_texture_config(tex_conf, "note_bg");
-    hit_circle = load_texture_config(tex_conf, "hit_circle");
-    taiko = load_texture_config(tex_conf, "taiko");
-
-    // init taiko flash
-
-    // init soul bar
-
-    // init notes
-    memset(note_tex, -1, sizeof(note_tex)); // set NULL
-    note_tex[NOTE_DON][0] = load_texture_config(tex_conf, "note_don");
-    note_tex[NOTE_KATSU][0] = load_texture_config(tex_conf, "note_katsu");
-    note_tex[NOTE_LDON][0] = load_texture_config(tex_conf, "note_ldon");
-    note_tex[NOTE_LKATSU][0] = load_texture_config(tex_conf, "note_lkatsu");    
-    note_tex[NOTE_BARLINE][0] = load_texture_config(tex_conf, "note_barline");
-    note_tex[NOTE_BARLINE][1] = load_texture_config(tex_conf, "note_barline_yellow");
-
-    //==================debug======================
-    printf("load yellow barline texture %p\n", note_tex[NOTE_BARLINE][1]);
-
-    note_tex[NOTE_YELLOW][0] = load_texture_config(tex_conf, "note_yellowh");
-    note_tex[NOTE_YELLOW][1] = load_texture_config(tex_conf, "note_yellowb");
-    note_tex[NOTE_YELLOW][2] = load_texture_config(tex_conf, "note_yellowt");
-
-    note_tex[NOTE_LYELLOW][0] = load_texture_config(tex_conf, "note_lyellowh");
-    note_tex[NOTE_LYELLOW][1] = load_texture_config(tex_conf, "note_lyellowb");
-    note_tex[NOTE_LYELLOW][2] = load_texture_config(tex_conf, "note_lyellowt");
-
-    note_tex[NOTE_BALLOON][0] = load_texture_config(tex_conf, "note_ballonh");
-    note_tex[NOTE_BALLOON][1] = load_texture_config(tex_conf, "note_ballont");        
-
-    is_texture_preloaded = TRUE;
-	
-	#if TEST_ANIMATION
-    textures_init();
-    anime_note_fly = anime_from_file("ani/note_fly_don.ani");
-    anime_bg_upper = anime_from_file("ani/bg_upper.ani");
-    anime_explosion_upper = anime_from_file("ani/explosion_upper.ani");
-    anime_flame = anime_from_file("ani/flame.ani");
-	#endif
 }
 
 void draw_bg_upper(OSL_IMAGE *img)
 {
+    return;
+
     int i;
     for (i = 0; i * img->sizeX < SCREEN_WIDTH; ++ i) {
         oslDrawImageSimpleXY(img, i * img->sizeX, 0);
@@ -179,12 +76,16 @@ void draw_bg_upper(OSL_IMAGE *img)
 
 void draw_bg_note(OSL_IMAGE *img)
 {
+    return;
+
     img->stretchX = SCREEN_WIDTH;
     oslDrawImageXY(img, 0, 78);
 }
 
 void draw_note(note_t *note, int x, int y)
 {
+    return;
+/*
     int x2;
     barline_t *note_barline;
 
@@ -210,10 +111,12 @@ void draw_note(note_t *note, int x, int y)
         default:
             break;
     }
+    */
 }
 
 void get_note_left_right(note_t *note, int x, int *left, int *right)
 {
+    /* TODO: modify this to a common AOI. do not depend on image size. */
     int x2;
     switch (note->type) {
         case NOTE_DON:
@@ -221,18 +124,18 @@ void get_note_left_right(note_t *note, int x, int *left, int *right)
         case NOTE_LDON:
         case NOTE_LKATSU:
         case NOTE_BARLINE:
-            *left = x - note_tex[note->type][0]->centerX;
-            *right = x + note_tex[note->type][0]->sizeX - note_tex[note->type][0]->centerX;
+            *left = x - 32;
+            *right = x + 32;
             break;
         case NOTE_BALLOON:
-            *left = x - note_tex[note->type][0]->centerX;
-            *right = x + note_tex[note->type][1]->sizeX - note_tex[note->type][1]->centerX;
+            *left = x - 32;
+            *right = x + 32 * 2;
             break;
         case NOTE_YELLOW:
         case NOTE_LYELLOW:
             x2 = x + (((yellow_t *)note)->offset2 - note->offset) * note->speed;
-            *left = x - note_tex[note->type][0]->centerX;
-            *right = x2 + note_tex[note->type][2]->sizeX - note_tex[note->type][2]->centerX;
+            *left = x - 32;
+            *right = x2 + 32;
             break;
         default:
             *left = *right = x;
@@ -252,61 +155,25 @@ void draw_image_tiles(OSL_IMAGE *img, int start_x, int start_y, int end_x, int e
 
 void drawing()
 {
-#if TEST_ANIMATION
-	frame_t *f;
-	float step = 16.6;
-	int i;
-	int count;
-	
-	// drawing bg_upper
-	anime_update(anime_bg_upper, step);
-	f = anime_get_frame(anime_bg_upper);
-	count = (int)(SCREEN_WIDTH / frame_get_width(f)) + 2;
-	for (i = 0; i < count; ++ i) {
-		frame_draw_xy(f, frame_get_width(f) * i, 0);
-	}
-	
-	// drawing soul_bar
-	
-#else	// TEST_ANIMATION
+    return;
+
+    /*
     draw_bg_upper(bg);        
-#endif	// TEST_ANIMATION
     
     oslDrawImageSimple(donchan);
     draw_bg_note(note_bg);
 
     oslDrawImageSimpleXY(hit_circle, NOTE_FIT_X, NOTE_Y);
-    //
-//    oslDrawImage(soulbar_empty);
-
-	#if TEST_ANIMATION
-	frame_t *frame;
-    anime_note_fly->ani_funcs[2]->is_loopped = TRUE;
-	anime_update(anime_note_fly, 16.6);
-	frame = anime_get_frame(anime_note_fly);
-	//printf("%p %d %d %f %f\n", frame->osl_img, frame->x, frame->y, frame->scale_x, frame->scale_y);
-	frame_draw(frame);
-    
-
-    anime_flame->ani_funcs[0]->is_loopped = TRUE;
-	anime_update(anime_flame, 16.6);
-	frame = anime_get_frame(anime_flame);
-    frame->alpha = 0.8;
-	//printf("%p %d %d %f %f\n", frame->osl_img, frame->x, frame->y, frame->scale_x, frame->scale_y);
-	frame_draw_xy(frame, 109, 104);
-	#endif // TEST_ANIMATION
+    */
 }
 
 void drawing_after_note()
 {
+    return;
+
+    /*
     oslDrawImageSimple(taiko);
-#if TEST_ANIMATION
-    frame_t *frame;
-    anime_explosion_upper->ani_funcs[1]->is_loopped = TRUE;
-    anime_update(anime_explosion_upper, 16.6);
-    frame = anime_get_frame(anime_explosion_upper);
-    frame_draw_xy(frame, 104, 104);
-#endif
+    */
 }
 
 void draw_yellow(OSL_IMAGE **textures, int x1, int x2, int y)
