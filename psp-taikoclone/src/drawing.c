@@ -10,6 +10,8 @@
 //------------------------------------------------------------------------------
 // load all resources needed to render the scene
 //------------------------------------------------------------------------------
+static int bg_upper_offset;
+
 static frame_t *f_bg_upper;             /* bg upper. */
 static frame_t *f_bg_note_normal;       /* bg of normal note sheet */
 static frame_t *f_bg_note_expert;       /* bg of expert note sheet */
@@ -51,17 +53,20 @@ static frame_t *f_soul_right;
 
 void drawing_init()
 {
+    bg_upper_offset = 0;
     f_bg_upper = frame_factory_from_cfg_file("frame/bg_upper.f");
-    f_bg_note_normal = frame_factory_from_cfg_file("frame/bg_note_normal.f");
-    f_bg_note_expert = frame_factory_from_cfg_file("frame/bg_note_expert.f");
-    f_bg_note_master = frame_factory_from_cfg_file("frame/bg_note_master.f");
-    f_bg_note_ggt = frame_factory_from_cfg_file("frame/bg_note_ggt.f");
+    //f_bg_upper = frame_factory_from_cfg_file("frame/bg_upper.f");
+    //f_bg_note_normal = frame_factory_from_cfg_file("frame/bg_note_normal.f");
+    //f_bg_note_expert = frame_factory_from_cfg_file("frame/bg_note_expert.f");
+    //f_bg_note_master = frame_factory_from_cfg_file("frame/bg_note_master.f");
+    //f_bg_note_ggt = frame_factory_from_cfg_file("frame/bg_note_ggt.f");
 }
 
 /* accept a time step, control pad, and some game status.
  * and will draw the game scene.*/
 void drawing_update()
 {
+
 }
 
 void draw_bg_upper(OSL_IMAGE *img)
@@ -155,6 +160,8 @@ void draw_image_tiles(OSL_IMAGE *img, int start_x, int start_y, int end_x, int e
 
 void drawing()
 {
+
+    frame_draw(f_bg_upper, 0, 0);    
     return;
 
     /*
