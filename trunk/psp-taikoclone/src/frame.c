@@ -15,6 +15,7 @@ frame_t *frame_create_simple(const char *filename, int pixel_format, \
         return NULL;
     }
 
+    printf("ok??? %s %d %d\n", filename, pixel_format, location);
     obj->enables = FRAME_ATTR_NONE;
     obj->img = oslLoadImageFile((char *)filename, location, pixel_format);
     if (obj->img == NULL) {

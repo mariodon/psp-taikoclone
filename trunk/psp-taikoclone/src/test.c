@@ -7,6 +7,7 @@
 #include "tjaparser.h"
 #include "song_select.h"
 #include "note.h"
+#include "frame_factory.h"
 
 PSP_MODULE_INFO("Taiko No Tatsujin", 0, 1, 1);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
@@ -165,13 +166,14 @@ int main(int argc, char *argv[])
     scePowerSetCpuClockFrequency(222);
 
     oslInit(0);
-    oslInitGfx(OSL_PF_8888, 1);
+    oslInitGfx(OSL_PF_5551, 1);
     oslInitConsole();    
     oslIntraFontInit(INTRAFONT_CACHE_LARGE);
 
     AalibInit();
 
     //preload images needed for drawing
+    frame_factory_init("config/textures.ini");
     drawing_init();
     init_hitsound();
 
