@@ -31,4 +31,10 @@
 
 #define MAX_TEXTURE_NAME	23
 
+#define BG_UPPER_WIDTH	128
+
+#define FUMEN_LEVEL_NORMAL	0
+#define FUMEN_LEVEL_EXPERT	1
+#define FUMEN_LEVEL_MASTER	2
+
 #endif
