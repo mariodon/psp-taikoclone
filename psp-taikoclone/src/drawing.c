@@ -10,9 +10,7 @@
 //------------------------------------------------------------------------------
 // load all resources needed to render the scene
 //------------------------------------------------------------------------------
-static int bg_upper_offset;
-
-static frame_t *f_bg_upper;             /* bg upper. */
+static anime_t *a_bg_upper;             /* bg upper. */
 static frame_t *f_bg_note_normal;       /* bg of normal note sheet */
 static frame_t *f_bg_note_expert;       /* bg of expert note sheet */
 static frame_t *f_bg_note_master;       /* bg of master note sheet */
@@ -53,20 +51,56 @@ static frame_t *f_soul_right;
 
 void drawing_init()
 {
-    bg_upper_offset = 0;
-    f_bg_upper = frame_factory_from_cfg_file("frame/bg_upper.f");
-    //f_bg_upper = frame_factory_from_cfg_file("frame/bg_upper.f");
-    //f_bg_note_normal = frame_factory_from_cfg_file("frame/bg_note_normal.f");
-    //f_bg_note_expert = frame_factory_from_cfg_file("frame/bg_note_expert.f");
-    //f_bg_note_master = frame_factory_from_cfg_file("frame/bg_note_master.f");
-    //f_bg_note_ggt = frame_factory_from_cfg_file("frame/bg_note_ggt.f");
+	a_bg_upper = animation_create_from_file("ani/bg_upper.ani");
 }
 
 /* accept a time step, control pad, and some game status.
  * and will draw the game scene.*/
 void drawing_update()
 {
+	animation_update(a_bg_upper, 16.6);
+}
 
+void drawing_draw()
+{
+	int i;
+	bool is_ggt;
+	unsigned char fumen_level;
+	
+	/* draw bg upper */
+	for (i = 0; i < SCREEN_WIDTH / BG_UPPER_WIDTH + 2; ++ i) {
+		animation_draw(a_bg_upper, i * BG_UPPER_WIDTH, 0);
+	}
+	
+	/* draw note bg */
+	if (is_ggt) {
+		frame_draw(f_bg_note_ggt, 0, 0);
+	} else {
+		switch (fumen_level) {
+		case FUMEN_LEVEL_NORMAL:
+			frame_draw(f_bg_note_normal, 0, 0);
+			break;
+		case FUMEN_LEVEL_EXPERT:
+			frame_draw(f_bg_note_expert, 0, 0);
+			break;
+		case FUMEN_LEVEL_MASTER:
+			frame_draw(f_bg_note_master, 0, 0);
+			break;
+		default:
+			printf("[ERROR] unknown fumen level %d\n", fumen_level);
+			break;
+		}
+	}
+	
+	/* draw soul bar */
+	
+	/* draw note */
+	
+	/* draw taiko */
+	
+	/* draw hit effect */
+	
+	/* draw note flying animation */
 }
 
 void draw_bg_upper(OSL_IMAGE *img)
