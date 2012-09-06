@@ -260,20 +260,22 @@ OSL_IMAGE *oslCreateSwizzledImage(OSL_IMAGE *src, int newLocation)
 int oslVerifyStripBlit(OSL_IMAGE *img)		{
 	int i, ud, uf, size;
 	float xd, xf, zoomX;
+	u8 slice_size = osl_sliceSizes[img->pixelFormat];
+	
 	//Ne tient pas dans une page
 	size = (int)img->offsetX1 - (int)img->offsetX0;
 	//This routine doesn't support rotation.
-	if (size > OSL_SLICE_SIZE /*&& img->angle==0 && img->centerX==0 && img->centerY==0*/)			{
+	if (size > slice_size /*&& img->angle==0 && img->centerX==0 && img->centerY==0*/)			{
 		OSL_PRECISE_VERTEX *vertices;
 
 		zoomX = (float)img->stretchX/size;
-		for (i=0;i<size;i+=OSL_SLICE_SIZE)			{
+		for (i=0;i<size;i+=slice_size)			{
 			vertices = (OSL_PRECISE_VERTEX*)sceGuGetMemory(4 * sizeof(OSL_PRECISE_VERTEX));
 			ud = i;
-			if ((i + OSL_SLICE_SIZE) > size)
+			if ((i + slice_size) > size)
 				uf = size;
 			else
-				uf = i + OSL_SLICE_SIZE;
+				uf = i + slice_size;
 			xd = img->x + i * zoomX;
 			xf = img->x + uf * zoomX;
 
