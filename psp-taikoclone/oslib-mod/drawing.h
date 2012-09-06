@@ -1109,6 +1109,8 @@ extern void oslUnlockImage(OSL_IMAGE *img);
 extern const int osl_pixelWidth[];
 /** List of palette sizes (in powers of two). For non-paletted formats, it is zero. Else you can get the palette size by doing 1 << osl_paletteSizes[pixelFormat]. */
 extern const u8 osl_paletteSizes[];
+/** List of bliting slice size.*/
+extern const u8 osl_sliceSizes[];
 
 /** @} */ // end of image_pixel
 
@@ -1333,10 +1335,6 @@ As you see, it's very simple, if you're used to GU. If not, please read tutorial
 	/** Enables texturing. You should not call this function by yourself, as oslSetTexture does it by itself. */
 	#define oslDisableTexturing()	{ if (osl_textureEnabled)  sceGuDisable(GU_TEXTURE_2D), osl_textureEnabled = 0; }
 #endif
-
-/** Don't forget about stripping when you're drawing images by yourself, else it will be slower! The thing to know is: never draw an image wider than 64 pixels. If the image is, say, 256 pixels wide, you
-can draw it in 4 stripes of 64 each (setting u, v coordinates to 0, 64, 128, 192, etc.). */
-#define OSL_SLICE_SIZE 64
 
 /** Don't use it! It's internally used by oslDrawImageSimple. Look at the source code for more information. */
 extern int oslVerifyStripBlit(OSL_IMAGE *img);

@@ -37,6 +37,7 @@ const u8 osl_paletteSizes[]=		{
 	4, 									//4 bits
 	8, 									//8 bits
 };
+const u8 osl_sliceSizes[] = {64, 64, 64, 64, 128, 128};
 
 
 void oslSetAlpha2(u32 effect, u32 coeff1, u32 coeff2)		{
