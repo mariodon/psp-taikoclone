@@ -16,7 +16,7 @@ typedef struct {
     int status;
     int speed;
     int frame_time;
-    bool loop;
+    int loop;
 
     int cur_frame;
     int time_passed;
@@ -26,16 +26,16 @@ typedef struct {
 
 typedef struct {
     int len;    /* number of frame last */
-    bool lerp;  /* linear lerp between this frame and next? */
+    int lerp;  /* linear lerp between this frame and next? */
     frame_cfg_t *cfg;   /* how to config that texture */
-} anime_key_cfg_t;
+} anime_key_cfg_t __attribute__ ((__packed__));
 
 typedef struct {
     int key_count;
     int play_speed;
-    bool loop;
+    int loop;
     anime_key_cfg_t keys[0];
-} anime_cfg_t;
+} anime_cfg_t __attribute__ ((__packed__));
 
 void anime_play(anime_t *ani);
 void anime_pause(anime_t *ani);

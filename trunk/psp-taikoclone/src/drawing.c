@@ -15,6 +15,10 @@ static frame_t *f_bg_note_normal;       /* bg of normal note sheet */
 static frame_t *f_bg_note_expert;       /* bg of expert note sheet */
 static frame_t *f_bg_note_master;       /* bg of master note sheet */
 static frame_t *f_bg_note_ggt;          /* bg of gogotime note sheet */
+static frame_t *f_text_normal;
+static frame_t *f_text_expert;
+static frame_t *f_text_master;
+
 
 /* all note in scroll field.*/
 static frame_t *f_don;
@@ -51,106 +55,105 @@ static frame_t *f_soul_right;
 
 void drawing_init()
 {
-	a_bg_upper = animation_create_from_file("ani/bg_upper.ani");
+	a_bg_upper = anime_create_from_file("ani/bg_upper.ani");
+    anime_play(a_bg_upper);
+
+    f_bg_note_normal = frame_factory_from_cfg_file("frame/bg_note_normal.f");
+    f_bg_note_expert = frame_factory_from_cfg_file("frame/bg_note_expert.f");
+    f_bg_note_master = frame_factory_from_cfg_file("frame/bg_note_master.f");
+    f_bg_note_ggt = frame_factory_from_cfg_file("frame/bg_note_ggt.f");
+    f_text_normal = frame_factory_from_cfg_file("frame/text_normal.f");
+    f_text_expert = frame_factory_from_cfg_file("frame/text_expert.f");
+    f_text_master = frame_factory_from_cfg_file("frame/text_master.f");    
+
+    f_soulbar_shadow = frame_factory_from_cfg_file("frame/soulbar_shadow.f");
+    f_soulbar_bg = frame_factory_from_cfg_file("frame/soulbar_bg.f");
+
+    f_taiko = frame_factory_from_cfg_file("frame/taiko.f");
+
 }
 
 /* accept a time step, control pad, and some game status.
  * and will draw the game scene.*/
 void drawing_update()
 {
-	animation_update(a_bg_upper, 16.6);
+	anime_update(a_bg_upper, 1);
 }
 
 void drawing_draw()
 {
 	int i;
-	bool is_ggt;
-	unsigned char fumen_level;
-	
+	bool is_ggt = TRUE;
+    bool has_branch = TRUE;
+	unsigned char fumen_level = FUMEN_LEVEL_MASTER;
+
 	/* draw bg upper */
 	for (i = 0; i < SCREEN_WIDTH / BG_UPPER_WIDTH + 2; ++ i) {
-		animation_draw(a_bg_upper, i * BG_UPPER_WIDTH, 0);
+		anime_draw(a_bg_upper, i * BG_UPPER_WIDTH, 0);
 	}
 	
+    /* draw course marker */
+
 	/* draw note bg */
+    frame_draw(f_bg_note_normal, 0, 75);
 	if (is_ggt) {
-		frame_draw(f_bg_note_ggt, 0, 0);
+        // draw a padding sheet.
+		frame_draw(f_bg_note_ggt, 0, 75);
 	} else {
 		switch (fumen_level) {
 		case FUMEN_LEVEL_NORMAL:
-			frame_draw(f_bg_note_normal, 0, 0);
 			break;
 		case FUMEN_LEVEL_EXPERT:
-			frame_draw(f_bg_note_expert, 0, 0);
+            frame_draw(f_bg_note_expert, 0, 75);
 			break;
 		case FUMEN_LEVEL_MASTER:
-			frame_draw(f_bg_note_master, 0, 0);
+            frame_draw(f_bg_note_master, 0, 75);
 			break;
 		default:
 			printf("[ERROR] unknown fumen level %d\n", fumen_level);
 			break;
 		}
 	}
-	
+    /* draw branch text */
+    if (has_branch) {
+		switch (fumen_level) {
+		case FUMEN_LEVEL_NORMAL:
+            frame_draw(f_text_normal, 362, 90);
+			break;
+		case FUMEN_LEVEL_EXPERT:
+            frame_draw(f_text_expert, 362, 90);
+			break;
+		case FUMEN_LEVEL_MASTER:
+            frame_draw(f_text_master, 362, 90);
+			break;
+		default:
+			printf("[ERROR] unknown fumen level %d\n", fumen_level);
+			break;
+		}
+    }
+
+    /* draw effect below note */
+
+    /* draw note */
+
+    /* draw note text */
+
+    /* draw effect above note */
+
+    /* draw taiko*/
+    frame_draw(f_taiko, 0, 70);
+
+    /* draw taiko hit flash */
+
+    /* draw taiko flower if any */
+
+    /* draw combo number */
+
 	/* draw soul bar */
-	
-	/* draw note */
-	
-	/* draw taiko */
 	
 	/* draw hit effect */
 	
 	/* draw note flying animation */
-}
-
-void draw_bg_upper(OSL_IMAGE *img)
-{
-    return;
-
-    int i;
-    for (i = 0; i * img->sizeX < SCREEN_WIDTH; ++ i) {
-        oslDrawImageSimpleXY(img, i * img->sizeX, 0);
-    }
-}
-
-void draw_bg_note(OSL_IMAGE *img)
-{
-    return;
-
-    img->stretchX = SCREEN_WIDTH;
-    oslDrawImageXY(img, 0, 78);
-}
-
-void draw_note(note_t *note, int x, int y)
-{
-    return;
-/*
-    int x2;
-    barline_t *note_barline;
-
-    switch (note->type) {
-        case NOTE_DON:
-        case NOTE_KATSU:
-        case NOTE_LDON:
-        case NOTE_LKATSU:
-            oslDrawImageSimpleXY(note_tex[note->type][0], x, y);
-            break;
-        case NOTE_BARLINE:
-            note_barline = (barline_t *)note;
-            oslDrawImageSimpleXY(note_tex[note->type][note_barline->is_branch], x, y);            
-            break;
-        case NOTE_BALLOON:
-            draw_balloon(note_tex[note->type], x, y);
-            break;
-        case NOTE_YELLOW:
-        case NOTE_LYELLOW:
-            x2 = x + (((yellow_t *)note)->offset2 - note->offset) * note->speed;
-            draw_yellow(note_tex[note->type], x, x2, y);
-            break;
-        default:
-            break;
-    }
-    */
 }
 
 void get_note_left_right(note_t *note, int x, int *left, int *right)
@@ -190,31 +193,6 @@ void draw_image_tiles(OSL_IMAGE *img, int start_x, int start_y, int end_x, int e
             oslDrawImageSimpleXY(img, x, y);
         }
     }
-}
-
-void drawing()
-{
-
-    frame_draw(f_bg_upper, 0, 0);    
-    return;
-
-    /*
-    draw_bg_upper(bg);        
-    
-    oslDrawImageSimple(donchan);
-    draw_bg_note(note_bg);
-
-    oslDrawImageSimpleXY(hit_circle, NOTE_FIT_X, NOTE_Y);
-    */
-}
-
-void drawing_after_note()
-{
-    return;
-
-    /*
-    oslDrawImageSimple(taiko);
-    */
 }
 
 void draw_yellow(OSL_IMAGE **textures, int x1, int x2, int y)

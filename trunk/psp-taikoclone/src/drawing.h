@@ -4,8 +4,8 @@
 #include "tjaparser.h"
 
 void drawing_init();
-void drawing();
-void drawing_after_note();
+void drawing_draw();
+void drawing_update();
 void draw_image_tiles(OSL_IMAGE*,int,int,int,int);
 
 void get_note_left_right(note_t *note, int x, int *left, int *right);

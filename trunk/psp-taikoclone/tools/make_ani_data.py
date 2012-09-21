@@ -1,12 +1,13 @@
 # $Id$
 # -*- coding:gbk -*-
 import struct
+import math
 
 DEFAULT_FRAMERATE = 30.0
 DEFAULT_INTERP = 0
 DEFAULT_IS_LOOPPED = False
 
-DATA = {
+"""
 	# note don flying to soul bar
     "note_fly_don" : {
     	"framerate": 60,
@@ -123,50 +124,59 @@ DATA = {
             },
         )
     },
+"""
+
+DATA = {
+    "bg_upper": {
+        "fps": 60,
+        "loop": True,
+        "keys": (
+            (127, True, 
+                {
+                    "tex_name":"bg", 
+                    "sx": 0,
+                    "sy": 28,
+                    "w": 128,
+                    "h": 80,
+                    "x": 0,
+                }
+            ),
+            (1, False, 
+                {
+                    "tex_name":"bg",
+                    "sx": 0,
+                    "sy": 28,
+                    "w": 128,
+                    "h": 80,
+                    "x": -127,
+                }
+            )
+        ),
+    },
 }
 
-def dump(name):
-    data = DATA[name]
+def dump(data):
     str = ""
 
-    # framerate
-    str += struct.pack("<f", data.get("framerate", DEFAULT_FRAMERATE));
+    key_count = len(data["keys"])
+    play_speed = int(math.ceil(60.0 / data["fps"]))
+    loop = data["loop"]
 
-    # func_count
-    str += struct.pack("<I", len(data["funcs"]))
+    import make_frame_data
 
-    # funcs
-    for func in data["funcs"]:
-        # func headers
-        str += struct.pack("<IIII", 
-            func["type"], \
-            func.get("interp", DEFAULT_INTERP), \
-            func.get("is_loopped", DEFAULT_IS_LOOPPED),
-            len(func["keys"]))
-        # func keys
-        if func["type"] == 0:   # sequence type
-            for key in func["keys"]:
-                str += struct.pack("<IIIIIII24s", *key)
-        elif func["type"] == 1: # scale type
-            for key in func["keys"]:
-                str += struct.pack("<Iff", *key)            
-        elif func["type"] == 2: # path type
-            for key in func["keys"]:
-                str += struct.pack("<Iii", *key)
-        elif func["type"] == 3: # palette type
-            for key in func["keys"]:
-                str += struct.pack("<II", key[0], len(key)-1)
-                assert len(key) - 1 in (16, 256)
-                for c in key[1:]:
-                    str += struct.pack("<BBBB", (c>>24)&0xFF, \
-                        (c>>16)&0xFF, (c>>8)&0xFF, c&0xFF)
-        else:
-            assert False, "Unknown func type!"
+    str += struct.pack("<III", key_count, play_speed, loop);
+    for key in data["keys"]:
+        str += struct.pack("<II", key[0], key[1])
+        str += make_frame_data.dump(key[2])
 
+    return str
+
+def dump_f(name, cfg):
     fname = "../ani/"+name+".ani"
     f = open(fname, "wb")
-    f.write(str)
+    f.write(dump(cfg))
     f.close()
 
-for k in DATA.keys():
-	dump(k)
+if __name__ == "__main__":
+    for fname, cfg in DATA.iteritems():
+        dump_f(fname, cfg)

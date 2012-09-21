@@ -22,6 +22,7 @@ void frame_factory_init(const char *tex_cfg_file)
         oslFatalError("can't load texture config!");
     }
 
+    printf("%s\n", iniparser_getstring(texture_cfg, "bg:f", "not found"));
     return;
 }
 
@@ -31,6 +32,7 @@ frame_t *frame_factory_get(const char *key)
     char *addr_str;
     // try to load frame using config from config cache
     static char key_buf[MAX_TEXTURE_NAME+4+1];
+    static char addr_buff[16+1];
     char *file;
     int pf, loc;
     int namelen = strlen(key);
@@ -54,6 +56,7 @@ frame_t *frame_factory_get(const char *key)
     strcat(key_buf, ":f");
     file = iniparser_getstring(texture_cfg, key_buf, NULL);
     printf("search key %s, value %s\n", key_buf, file);
+    printf("texture cfg %p\n", texture_cfg);
 
     key_buf[namelen] = '\0';
     strcat(key_buf, ":pf");
@@ -65,22 +68,31 @@ frame_t *frame_factory_get(const char *key)
 
     printf("ok so far!\n");;
     frame = frame_create_simple(file, pf, loc);
+
+    if (frame != NULL) {
+        key_buf[namelen] = '\0';
+        sprintf(addr_buff, "%d", (int)frame);
+        dictionary_set(frame_cache, key_buf, addr_buff);
+    }
     return frame;
 }
 
 frame_t *frame_factory_from_cfg(frame_cfg_t *cfg)
 {
     frame_t *frame = NULL;
+    frame_t *ret = NULL;
 
-    printf("cfg tex-name = %s\n", cfg->tex_name);
+    //printf("cfg tex-name = %s\n", cfg->tex_name);
     frame = frame_factory_get(cfg->tex_name);
     if (frame == NULL) {
         return NULL;
     }
 
-    frame_config(frame, cfg);
+    ret = frame_copy(frame);
+    //printf("config frame\n");
+    frame_config(ret, cfg);
 
-    return frame;
+    return ret;
 }
 
 frame_cfg_t *frame_factory_read_cfg(SceUID fd)
@@ -97,11 +109,13 @@ frame_cfg_t *frame_factory_read_cfg(SceUID fd)
         printf("can't read file size\n");
         goto error;
     }
+    //printf("cfg size %d\n", cfg_size);
     cfg = (frame_cfg_t *)malloc(cfg_size);
     if (cfg == NULL) {
         printf("not enough mem!\n");
         goto error;
     }
+    cfg->size = cfg_size;
     bytes = sceIoRead(fd, (void*)cfg+sizeof(cfg_size), cfg_size-sizeof(cfg_size));
     if (bytes != cfg_size-sizeof(cfg_size)) {
         printf("size check fail %d/%d\n", cfg_size, bytes);

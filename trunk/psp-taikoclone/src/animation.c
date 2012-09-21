@@ -32,14 +32,19 @@ anime_t *anime_create_from_cfg(anime_cfg_t *cfg)
         if (ani->frames[k] == NULL) {
             ani->frames[k] = frame_factory_from_cfg(cfg->keys[i].cfg);
         }
-        if (! cfg->keys[i].lerp || i >= cfg->key_count) {
+        // do not need lerp? 
+        // is the last key frame? 
+        // copy from current key frame.
+        if (! cfg->keys[i].lerp || i + 1 >= cfg->key_count) {
             for (j = 1; j < cfg->keys[i].len; ++ j) {
                 ani->frames[k+j] = ani->frames[k+j-1];
             }
+        // lerp between current and next key frame.
         } else {
             for (j = 1; j < cfg->keys[i].len; ++ j) {
                 frame_cfg_t *lerp_frame_cfg = frame_cfg_lerp(cfg->keys[i].cfg, cfg->keys[i + 1].cfg, (float)j / cfg->keys[i].len);
                 ani->frames[k+j] = frame_factory_from_cfg(lerp_frame_cfg);
+                printf("after lerp, frame x = %d\n", ani->frames[k + j]->x);
                 frame_cfg_destroy(lerp_frame_cfg);
             }
         }
@@ -57,6 +62,7 @@ anime_t *anime_create_from_file(const char *filename)
     
 	fd = sceIoOpen(filename, PSP_O_RDONLY, 0777);
 	if (fd < 0) {
+        printf("can't open ani file %s\n", filename);
         goto error;
 	}
 
@@ -66,30 +72,27 @@ anime_t *anime_create_from_file(const char *filename)
 
     cfg = (anime_cfg_t *)malloc(sizeof(anime_cfg_t) + sizeof(anime_key_cfg_t) * key_count);
     if (cfg == NULL) {
+        printf("can't alloc memory for animation.\n");
         goto error;
     }
     memset(cfg, 0, sizeof(cfg));
 
-    sceIoLseek(fd, 0, 0);
-    if (sceIoRead(fd, cfg, sizeof(anime_cfg_t)) != sizeof(anime_cfg_t)) {
+    if (sceIoRead(fd, (void *)cfg + sizeof(int), sizeof(anime_cfg_t) - sizeof(int)) != sizeof(anime_cfg_t) - sizeof(int)) {
+        printf("can't read ani basic config\n");
         goto error;
     }
+    cfg->key_count = key_count;
 
-    int i, nbytes = 0;
-    int frame_cfg_size = 0;
+    //printf("%d %d %d\n", cfg->key_count, cfg->play_speed, cfg->loop);
+    int i, cfg_size;
     for (i = 0; i < key_count; ++ i) {
-        // fill animation key frame config structure
-        nbytes += sceIoRead(fd, &cfg->keys[i].len, sizeof(int));
-        nbytes += sceIoRead(fd, &cfg->keys[i].lerp, sizeof(bool));
-        nbytes += sceIoRead(fd, &frame_cfg_size, sizeof(int));
-        cfg->keys[i].cfg = (frame_cfg_t *)malloc(frame_cfg_size);
-        //TODO: clean up memory!!!!
+        sceIoRead(fd, &cfg->keys[i].len, sizeof(int));
+        sceIoRead(fd, &cfg->keys[i].lerp, sizeof(int));
+        //printf("%d %d\n", cfg->keys[i].len, cfg->keys[i].lerp);
+
+        cfg->keys[i].cfg = frame_factory_read_cfg(fd);
         if (cfg->keys[i].cfg == NULL) {
-            goto error;
-        }
-        sceIoLseek(fd, -sizeof(int), SEEK_CUR);
-        nbytes += sceIoRead(fd, &cfg->keys[i].cfg, frame_cfg_size);
-        if (nbytes != sizeof(int)+sizeof(bool)+frame_cfg_size) {
+            printf("can't build animation key cfg\n");
             goto error;
         }
     }
@@ -108,16 +111,14 @@ error:
 
 inline void anime_update(anime_t *ani, int time)
 {
-    int frame_time = 16;
-
     if (ani->status != ANIME_PLAY_STATUS_PLAYING) {
         return;
     }
 
     ani->time_passed += time;
-    while (ani->time_passed >= frame_time) {
+    while (ani->time_passed >= ani->speed) {
         ++ ani->cur_frame;
-        ani->time_passed -= frame_time;
+        ani->time_passed -= ani->speed;
     }
     if (ani->cur_frame >= ani->num_frame) {
         ani->cur_frame -= ani->num_frame;
@@ -125,6 +126,7 @@ inline void anime_update(anime_t *ani, int time)
             ani->status = ANIME_PLAY_STATUS_STOPPED;
         }        
     }
+    //printf("frame = %d, addr = %p, x = %d\n", ani->cur_frame, ani->frames[ani->cur_frame], ani->frames[ani->cur_frame]->x);
     return;
 }
 

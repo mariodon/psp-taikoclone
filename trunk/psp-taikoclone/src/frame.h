@@ -36,7 +36,7 @@ typedef struct {
     float alpha;
     int size_palette;
     int palette[0];
-} frame_cfg_t;
+} frame_cfg_t __attribute__ ((__packed__));;
 
 frame_t *frame_create_simple(const char *filename, int pixel_format, \
     int location);

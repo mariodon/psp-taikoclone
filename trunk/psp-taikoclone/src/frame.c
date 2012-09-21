@@ -12,6 +12,7 @@ frame_t *frame_create_simple(const char *filename, int pixel_format, \
 
     obj = (frame_t *)malloc(sizeof(frame_t));
     if (obj == NULL) {
+        printf("can't malloc memory for frame %s.\n", filename);
         return NULL;
     }
 
@@ -19,6 +20,7 @@ frame_t *frame_create_simple(const char *filename, int pixel_format, \
     obj->enables = FRAME_ATTR_NONE;
     obj->img = oslLoadImageFile((char *)filename, location, pixel_format);
     if (obj->img == NULL) {
+        printf("can't load osl image correctly!\n");
         free(obj);
         return NULL;
     }
@@ -142,23 +144,34 @@ frame_cfg_t *frame_cfg_lerp(frame_cfg_t *fcfg1, frame_cfg_t *fcfg2, float f)
 {
     frame_cfg_t *ret;
 
+    printf("%p %p\n", fcfg1->tex_name, fcfg2->tex_name);
     if (fcfg1->size != fcfg2->size || strcmp(fcfg1->tex_name, fcfg2->tex_name)) {
         return NULL;
     }
 
-    ret = malloc(sizeof(fcfg1->size));
+    printf("here?? %d\n", fcfg1->size);
+    ret = malloc(fcfg1->size);
     if (ret == NULL) {
         return ret;
     }
- 
-    memcpy(ret, fcfg1, fcfg1->size);
 
+    printf("begin to gen lerped cfg\n"); 
+
+    printf("raw copy over\n");
     if (f <= 0) {
         f = 0;
     } else if (f >= 1) {
         f = 1;
     }
 
+    printf("what the fuck?\n");
+    ret->size = fcfg1->size;
+    ret->sx = fcfg1->sx;
+    ret->sy = fcfg1->sy;
+    ret->w = fcfg1->w;
+    ret->h = fcfg1->h;
+    ret->center_x = fcfg1->center_x;
+    ret->center_y = fcfg1->center_y;
     strcpy(ret->tex_name, fcfg1->tex_name);
     ret->x = (fcfg2->x - fcfg1->x) * f + fcfg1->x;
     ret->y = (fcfg2->y - fcfg1->y) * f + fcfg1->y;
@@ -166,6 +179,7 @@ frame_cfg_t *frame_cfg_lerp(frame_cfg_t *fcfg1, frame_cfg_t *fcfg2, float f)
     ret->scale_y = (fcfg2->scale_y - fcfg1->scale_y) * f + fcfg1->scale_y;
     ret->angle = (fcfg2->angle - fcfg1->angle) * f + fcfg1->angle;
     ret->alpha = (fcfg2->alpha - fcfg1->alpha) * f + fcfg1->alpha;
+    ret->size_palette = fcfg1->size_palette;
     int i;
     for (i = 0; i < ret->size_palette; ++ i) {
         ret->palette[i] = (fcfg2->palette[i] - fcfg1->palette[i]) * f + fcfg1->palette[i];
