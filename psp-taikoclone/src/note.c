@@ -71,20 +71,20 @@ void note_update_note(note_t *p, float play_pos)
         case NOTE_LKATSU:
         case NOTE_BARLINE:
             note_barline = (barline_t *)p;
-            draw_note(p, x, NOTE_Y);
+            //draw_note(p, x, NOTE_Y);
             break;
         case NOTE_YELLOW:
         case NOTE_LYELLOW:
-            draw_note(p, x, NOTE_Y);
+            //draw_note(p, x, NOTE_Y);
             break;
         case NOTE_BALLOON:
             x2 = x + (((yellow_t *)p)->offset2 - p->offset) * p->speed;
             if (x >= NOTE_FIT_X) {
-                draw_note(p, x, NOTE_Y);
+                //draw_note(p, x, NOTE_Y);
             } else if (x2 >= NOTE_FIT_X) {
-                draw_note(p, NOTE_FIT_X, NOTE_Y);
+                //draw_note(p, NOTE_FIT_X, NOTE_Y);
             } else {
-                draw_note(p, x2, NOTE_Y);
+                //draw_note(p, x2, NOTE_Y);
             }
         default:
             break;

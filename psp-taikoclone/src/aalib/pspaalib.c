@@ -333,7 +333,7 @@ int AalibInitChannels()
 	for (i=0;i<8;i++)
 	{
 		sprintf(c,"aalibplay%i",i);
-		threads[i]=sceKernelCreateThread(c,PlayThread,0x18,0x10000,0,NULL);
+		threads[i]=sceKernelCreateThread(c,PlayThread,0x30,0x10000,0,NULL);
 		if (threads[i]<0)
 		{
             printf("create thread fail, %x\n", threads[i]);
@@ -346,7 +346,7 @@ int AalibInitChannels()
 
 int AalibInitSRCChannel()
 {
-    threads[8] = sceKernelCreateThread("aalibplay8",PlayThread,0x18,0x10000,0,NULL);
+    threads[8] = sceKernelCreateThread("aalibplay8",PlayThread,0x28,0x10000,0,NULL);
     decode_thread = sceKernelCreateThread("decode_thread",SRCChDecodeThread,0x30,0x10000,0,NULL);
     if (threads[8] < 0 || decode_thread < 0) {
         return PSPAALIB_WARNING_CREATE_THREAD;
