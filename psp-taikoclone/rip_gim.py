@@ -23,5 +23,6 @@ def rip(fname):
 
     f.close()
 
-for i in xrange(1539):
+for i in xrange(1, 1540):
     rip("part%d" % i)
+#rip("part1_0x00000000")
