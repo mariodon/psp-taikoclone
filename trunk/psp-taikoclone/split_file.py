@@ -1,7 +1,7 @@
 import struct
 import zlib
 
-f = open("BUILD.DAT", "rb")
+f = open("F:\PSP_GAME\USRDIR\HOME\BUILD.DAT", "rb")
 
 data = f.read()
 blocks = data.split("GARC")
