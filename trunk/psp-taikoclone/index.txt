@@ -1,0 +1,3880 @@
+c:\dump\part1
+	filename:      LOADING_WIPE_05_BLACK.LM	off: 0x400,	size: 0x67c
+	filename:       LOADING_WIPE_00_EASY.LM	off: 0xa80,	size: 0x3a94
+	filename:      LOADING_WIPE_05_SMILE.LM	off: 0x4580,	size: 0x3704
+	filename:     LOADING_WIPE_01_NORMAL.LM	off: 0x7d00,	size: 0x3ba4
+	filename:       LOADING_WIPE_02_HARD.LM	off: 0xb900,	size: 0x3d70
+	filename: LOADING_WIPE_05_BLACKOKAME.LM	off: 0xf680,	size: 0xf04
+	filename:               LOADING.TEXPACK	off: 0x10600,	size: 0x7b760
+	filename:                 LOADING_VS.LM	off: 0x8bd80,	size: 0x1190
+	filename:        LOADING_WIPE_03_ONI.LM	off: 0x8cf80,	size: 0x3820
+	filename:       LOADING_WIPE_04_DOJO.LM	off: 0x90800,	size: 0x3b90
+
+c:\dump\part2
+	filename:   CMN_KEYHELP_X_0.LM	off: 0x380,	size: 0x4630
+	filename:   CMN_KEYHELP_O_0.LM	off: 0x4a00,	size: 0x48d4
+	filename:  CMN_KEYHELP_ST_0.LM	off: 0x9300,	size: 0x46e0
+	filename:   CMN_KEYHELP_K_0.LM	off: 0xda00,	size: 0x3eb0
+	filename: CMN_KEYHELP_ETC_0.LM	off: 0x11900,	size: 0x2010
+	filename: CMN_KEYHELP_UNDER.LM	off: 0x13980,	size: 0x1ec
+	filename:      KEYHELP.TEXPACK	off: 0x13b80,	size: 0x22724
+	filename:   CMN_KEYHELP_S_0.LM	off: 0x36300,	size: 0x4480
+	filename:  CMN_KEYHELP_LR_0.LM	off: 0x3a800,	size: 0x4d58
+
+c:\dump\part3
+	filename: SONG_OPTION.TEXPACK	off: 0x280,	size: 0x3ae4
+	filename:         S_OPTION.LM	off: 0x3d80,	size: 0x2c64
+
+c:\dump\part4
+	filename:                        ONLINE_MODE.LM	off: 0x380,	size: 0x2c45c
+	filename:                  ONLINE_MODE_TITLE.LM	off: 0x2c800,	size: 0x290
+	filename:           ONLINE_MODE_SONG_SETTING.LM	off: 0x2cb00,	size: 0x150fc
+	filename:              ONLINE_MODE_FUKIDASHI.LM	off: 0x41c00,	size: 0x23f4
+	filename:                            CHANNEL.LM	off: 0x44000,	size: 0x818
+	filename:                   ONLINE_MODE.TEXPACK	off: 0x44880,	size: 0xc45e8
+	filename: ONLINE_MODE_SONG_SETTING_FUKIDASHI.LM	off: 0x108e80,	size: 0x28f0
+
+c:\dump\part5
+	filename:      SONG_SELECT.LM	off: 0x280,	size: 0x6516c
+	filename: SONG_SELECT.TEXPACK	off: 0x65400,	size: 0x4d7ec
+
+c:\dump\part6
+	filename:   SONG_SELECT_TOP.LM	off: 0x300,	size: 0x141bc
+	filename:       SONG_SELECT.LM	off: 0x14500,	size: 0x515c4
+	filename: SONG_SELECT2.TEXPACK	off: 0x65b00,	size: 0x656e4
+	filename: SONG_SELECT_BOARD.LM	off: 0xcb200,	size: 0x2b8c0
+
+c:\dump\part7
+	filename: NEXT_DAY.TEXPACK	off: 0x280,	size: 0x4ade0
+	filename:      NEXT_DAY.LM	off: 0x4b080,	size: 0x5678
+
+c:\dump\part8
+	filename: DOJO_ORGANIZATION_FUKIDASHI.LM	off: 0x380,	size: 0x2464
+	filename:              DOJO_MENU.TEXPACK	off: 0x2800,	size: 0x144770
+	filename:                   DOJO_MENU.LM	off: 0x146f80,	size: 0xf5898
+	filename:              DOJO_FUKIDASHI.LM	off: 0x23c880,	size: 0x1b3c0
+	filename:     DOJO_ORGANIZATION_TITLE.LM	off: 0x257c80,	size: 0x2b4
+	filename:           DOJO_ORGANIZATION.LM	off: 0x257f80,	size: 0x137e4
+	filename:                 DOJO_WINDOW.LM	off: 0x26b780,	size: 0x815c
+	filename:              DOJO_AI_CHOICE.LM	off: 0x273900,	size: 0x3b5a8
+
+c:\dump\part9
+	filename: CHALLENGER.TEXPACK	off: 0x280,	size: 0x11164
+	filename:      CHALLENGER.LM	off: 0x11400,	size: 0x4d7c
+
+c:\dump\part10
+	filename:     COURSE_TITLE.LM	off: 0x280,	size: 0x1d4
+	filename: TITTLE_DIFF.TEXPACK	off: 0x480,	size: 0x7e0
+
+c:\dump\part11
+	filename:        MAP_JAPAN.LM	off: 0x300,	size: 0x268b0
+	filename: 誰図の移動カーザ.LM	off: 0x26c00,	size: 0x4d8
+	filename: MAP_JAPAN_BUTTON.LM	off: 0x27100,	size: 0x358
+	filename:  MAP_JAPAN_SMALL.LM	off: 0x27480,	size: 0x5920
+	filename:         MAP.TEXPACK	off: 0x2ce00,	size: 0xcc8dc
+
+c:\dump\part12
+	filename: MAP_JAPAN_CHR06.LM	off: 0x380,	size: 0x2c38
+	filename:    MAP_CHR.TEXPACK	off: 0x3000,	size: 0x81e0
+	filename: MAP_JAPAN_CHR05.LM	off: 0xb200,	size: 0x2bd4
+	filename: MAP_JAPAN_CHR04.LM	off: 0xde00,	size: 0x1a84
+	filename: MAP_JAPAN_CHR03.LM	off: 0xf900,	size: 0x1c1c
+	filename: MAP_JAPAN_CHR02.LM	off: 0x11580,	size: 0x18e0
+	filename: MAP_JAPAN_CHR08.LM	off: 0x12e80,	size: 0x288c
+	filename: MAP_JAPAN_CHR01.LM	off: 0x15780,	size: 0x1a58
+	filename: MAP_JAPAN_CHR07.LM	off: 0x17200,	size: 0x2fa8
+	filename: MAP_JAPAN_CHR00.LM	off: 0x1a200,	size: 0x414
+
+c:\dump\part13
+	filename:  MAP_INFO_WINDOW_ENEMY.LM	off: 0x280,	size: 0x3818
+	filename: MAP_INFO_WINDOW_PLAYER.LM	off: 0x3b00,	size: 0x403c
+	filename:          MAP_INFO.TEXPACK	off: 0x7b80,	size: 0x187e4
+
+c:\dump\part14
+	filename:      BOSS_MAP.LM	off: 0x280,	size: 0x12388
+	filename: BOSS_MAP.TEXPACK	off: 0x12680,	size: 0x4b020
+
+c:\dump\part15
+	filename: MAP_SEL_POSITION.TEXPACK	off: 0x280,	size: 0x1d6c
+	filename: MAP_INFO_SEL_POSITION.LM	off: 0x2000,	size: 0x21c0
+
+c:\dump\part16
+	filename:     MAP_BASE_TITLE.LM	off: 0x300,	size: 0x1d4
+	filename:    MAP_JAPAN_TITLE.LM	off: 0x500,	size: 0x1d4
+	filename:    TITTLE_MAP.TEXPACK	off: 0x700,	size: 0x1ee0
+	filename: MAP_OMIKOSHI_TITLE.LM	off: 0x2600,	size: 0x1d4
+
+c:\dump\part17
+	filename:      MISSION_CONFIRMED.LM	off: 0x280,	size: 0x15bf8
+	filename: MISSION_CONFIRMED.TEXPACK	off: 0x15e80,	size: 0x59964
+
+c:\dump\part18
+	filename:      MISSION_FUKIDASHI.LM	off: 0x280,	size: 0x13c8
+	filename: MISSION_FUKIDASHI.TEXPACK	off: 0x1680,	size: 0x98e0
+
+c:\dump\part19
+	filename:    MISSION_EFFECT_0.LM	off: 0x280,	size: 0x2e04
+	filename: MISSION_EFFECT.TEXPACK	off: 0x3100,	size: 0x118a8
+
+c:\dump\part20
+	filename:         RESULT_V0010.LM	off: 0x280,	size: 0xdbbc
+	filename: RESULT_OMIKOSHI.TEXPACK	off: 0xde80,	size: 0x911e0
+	filename:       RESULT_V0010_2.LM	off: 0x9f080,	size: 0x1c5c
+
+c:\dump\part21
+	filename:            RESULT_P0020.LM	off: 0x280,	size: 0xfb28
+	filename:        RESULT_P0020_WIN.LM	off: 0xfe00,	size: 0x3c60
+	filename: RESULT_OMIKOSHI_VS.TEXPACK	off: 0x13a80,	size: 0x5d5e8
+
+c:\dump\part22
+	filename: RESULT_COUNT.TEXPACK	off: 0x280,	size: 0x815c
+	filename:      RESULT_COUNT.LM	off: 0x8400,	size: 0x3918
+
+c:\dump\part23
+	filename:      RESULT_SELECT.LM	off: 0x280,	size: 0x9c54
+	filename: RESULT_SELECT.TEXPACK	off: 0x9f00,	size: 0xf6e0
+
+c:\dump\part24
+	filename:                CROWN.LM	off: 0x900,	size: 0x3144
+	filename:    BOARD_SCORE_COMBO.LM	off: 0x3a80,	size: 0x2e84
+	filename:    BOARD_SCORE_RENDA.LM	off: 0x6980,	size: 0x2e98
+	filename:          OPTION_ICON.LM	off: 0x9880,	size: 0x19dc
+	filename:         FAILURE_RAIN.LM	off: 0xb280,	size: 0x39e4
+	filename:       FAILURE_BUDDLE.LM	off: 0xec80,	size: 0x1f18
+	filename:     BOARD_SCORE_FUKA.LM	off: 0x10c00,	size: 0x2e94
+	filename:      BOARD_SCORE_TEN.LM	off: 0x13b00,	size: 0x3b40
+	filename:                  DON.LM	off: 0x17680,	size: 0x214
+	filename:          PLAYER_NAME.LM	off: 0x17900,	size: 0x11d4
+	filename:            RESULT_BG.LM	off: 0x18b00,	size: 0x2a0
+	filename:              TAMASHI.LM	off: 0x18e00,	size: 0x5b80
+	filename:     BOARD_SCORE_RYOU.LM	off: 0x1ea00,	size: 0x2e98
+	filename:                PANEL.LM	off: 0x21900,	size: 0x22c
+	filename:   RESULT_MEDLEY.TEXPACK	off: 0x21b80,	size: 0xad95c
+	filename:         TAMASHI_FIRE.LM	off: 0xcf500,	size: 0x1c38
+	filename: BOARD_SCORE_TATAKETA.LM	off: 0xd1180,	size: 0x2d6c
+	filename:           NORM_CLEAR.LM	off: 0xd3f00,	size: 0x5e40
+	filename:  MEDLEY_RESULT_TITLE.LM	off: 0xd9d80,	size: 0x1d4
+	filename:              FAILURE.LM	off: 0xd9f80,	size: 0x5338
+	filename:             SONG_TEX.LM	off: 0xdf300,	size: 0x214
+	filename:        SUCCESS_FRONT.LM	off: 0xdf580,	size: 0x1d9c
+	filename:         SUCCESS_BACK.LM	off: 0xe1380,	size: 0x81f0
+	filename:          COURSE_ICON.LM	off: 0xe9580,	size: 0x6b4
+	filename:          BOARD_SCORE.LM	off: 0xe9c80,	size: 0x6638
+	filename:       BOARD_SCORE_KA.LM	off: 0xf0300,	size: 0x2e94
+
+c:\dump\part25
+	filename: RESULT_TOURNAMENT.TEXPACK	off: 0x280,	size: 0x7ba64
+	filename:      RESULT_TOURNAMENT.LM	off: 0x7bd00,	size: 0x63a90
+
+c:\dump\part26
+	filename:                   SCORE.LM	off: 0x380,	size: 0x1d34
+	filename:                SONG_TEX.LM	off: 0x2100,	size: 0x214
+	filename:                 SYNCHRO.LM	off: 0x2380,	size: 0x7b9c
+	filename:             COURSE_ICON.LM	off: 0x9f80,	size: 0x6b4
+	filename:            TAMASHI_FIRE.LM	off: 0xa680,	size: 0x222c
+	filename:             SCORE_BOARD.LM	off: 0xc900,	size: 0x1fc8
+	filename:             PLAYER_NAME.LM	off: 0xe900,	size: 0x4c8
+	filename:               RESULT_BG.LM	off: 0xee00,	size: 0x354
+	filename:                 TAMASHI.LM	off: 0xf180,	size: 0x886c
+	filename: RESULT_VS_NAKAYOKU.TEXPACK	off: 0x17a00,	size: 0x92660
+	filename:              NORM_CLEAR.LM	off: 0xaa080,	size: 0x3e4c
+
+c:\dump\part27
+	filename:            RESULT_BG.LM	off: 0x380,	size: 0x354
+	filename: RESULT_VS_OTHER.TEXPACK	off: 0x700,	size: 0x87d68
+	filename:                THEME.LM	off: 0x88480,	size: 0x77c
+	filename:          PLAYER_RANK.LM	off: 0x88c00,	size: 0x4160
+	filename:             S_OPTION.LM	off: 0x8cd80,	size: 0x13bc
+	filename:             SONG_TEX.LM	off: 0x8e180,	size: 0x268
+	filename:        WIN_LOSE_DRAW.LM	off: 0x8e400,	size: 0x2cb0
+	filename:          COURSE_ICON.LM	off: 0x91100,	size: 0x6b4
+	filename:                  DON.LM	off: 0x91800,	size: 0x354
+
+c:\dump\part28
+	filename: CMN_SYSTEM_MENU_A0020_A0040.LM	off: 0x300,	size: 0x5278
+	filename:       CMN_SYSTEM_MENU_B0011.LM	off: 0x5580,	size: 0x975c
+	filename:       CMN_SYSTEM_MENU_E0011.LM	off: 0xed00,	size: 0x60b8
+	filename:     CMN_MENU_PAUSE_SYS.TEXPACK	off: 0x14e00,	size: 0x3668
+
+c:\dump\part29
+	filename:    CMN_MENU_DANCE_03.LM	off: 0x300,	size: 0xf04
+	filename:    CMN_MENU_DANCE_02.LM	off: 0x1280,	size: 0x1134
+	filename:    CMN_MENU_DANCE_01.LM	off: 0x2400,	size: 0xfb8
+	filename: CMN_MENU_DANCER.TEXPACK	off: 0x3400,	size: 0x34b68
+	filename:    CMN_MENU_DANCE_00.LM	off: 0x37f80,	size: 0xea0
+
+c:\dump\part30
+	filename: CMN_SYS_M_ORANGE_TXT_02.LM	off: 0x600,	size: 0x21d0
+	filename:    CMN_SYS_M_ORANGE_WIN.LM	off: 0x2800,	size: 0xc9c
+	filename:            CMN_SYS_M3_4.LM	off: 0x3500,	size: 0x4e18
+	filename:            CMN_SYS_M1_2.LM	off: 0x8380,	size: 0x424c
+	filename:           CMN_SYS_M1S_3.LM	off: 0xc600,	size: 0x7c20
+	filename: CMN_SYS_M_ORANGE_TXT_00.LM	off: 0x14280,	size: 0x784
+	filename:            CMN_SYS_M2_5.LM	off: 0x14a80,	size: 0x51e4
+	filename:           CMN_MENU.TEXPACK	off: 0x19c80,	size: 0xae68
+	filename:            CMN_SYS_M1_5.LM	off: 0x24b00,	size: 0x50ec
+	filename: CMN_SYS_M_ORANGE_TXT_03.LM	off: 0x29c00,	size: 0x2758
+	filename:            CMN_SYS_M2_3.LM	off: 0x2c380,	size: 0x4aa4
+	filename:           CMN_SYS_M1S_4.LM	off: 0x30e80,	size: 0x7ff4
+	filename: CMN_SYS_M_ORANGE_TXT_01.LM	off: 0x38e80,	size: 0x2718
+	filename:            CMN_SYS_M0_4.LM	off: 0x3b600,	size: 0x4ad8
+	filename:            CMN_SYS_M1_6.LM	off: 0x40100,	size: 0x5670
+	filename:      CMN_SYS_M_BLUE_WIN.LM	off: 0x45780,	size: 0xea8
+	filename:   CMN_SYSTEM_MENU_NEIRO.LM	off: 0x46680,	size: 0x6838
+	filename:          CMN_SYS_M_MASK.LM	off: 0x4cf00,	size: 0x698
+	filename:            CMN_SYS_M0_1.LM	off: 0x4d600,	size: 0x1ce4
+	filename:            CMN_SYS_M0_2.LM	off: 0x4f300,	size: 0x4138
+
+c:\dump\part31
+	filename:     CMN_SYS_M_MASK.LM	off: 0x300,	size: 0x698
+	filename:       CMN_SYS_M0_4.LM	off: 0xa00,	size: 0x4ad8
+	filename:      CMN_GAME.TEXPACK	off: 0x5500,	size: 0x2464
+	filename:       CMN_SYS_M0_2.LM	off: 0x7980,	size: 0x4130
+	filename:       CMN_SYS_M0_1.LM	off: 0xbb00,	size: 0x1ce4
+	filename: CMN_SYS_M_BLUE_WIN.LM	off: 0xd800,	size: 0xeb0
+
+c:\dump\part32
+	filename:            ENSO_OPTION.TEXPACK	off: 0x280,	size: 0x9c64
+	filename: CMN_SYSTEM_MENU_ENSO_OPTION.LM	off: 0x9f00,	size: 0x155a4
+
+c:\dump\part33
+	filename: NAME_BOARD.TEXPACK	off: 0x280,	size: 0x2368
+	filename:      NAME_BOARD.LM	off: 0x2600,	size: 0xd90
+
+c:\dump\part34
+	filename: SCORE_BOARD.TEXPACK	off: 0x280,	size: 0x1bbe4
+	filename:       SCOREBOARD.LM	off: 0x1be80,	size: 0x51a10
+
+c:\dump\part35
+	filename: SCORE_BOARD_TOP.LM	off: 0x280,	size: 0x11b70
+	filename:  SCORE_TOP.TEXPACK	off: 0x11e00,	size: 0x1dea4
+
+c:\dump\part36
+	filename: SCOREBOARD_RANKING.LM	off: 0x280,	size: 0xd864
+	filename:  SCORE_WINDOW.TEXPACK	off: 0xdb00,	size: 0x4ac20
+
+c:\dump\part37
+	filename:   SONG_BOARD.TEXPACK	off: 0x280,	size: 0x24be4
+	filename: SONG_SELECT_BOARD.LM	off: 0x24e80,	size: 0x433e0
+
+c:\dump\part38
+	filename:   SONG_SELECT_EASY.LM	off: 0x300,	size: 0x12e3c
+	filename:    SONG_SELECT_ONI.LM	off: 0x13180,	size: 0x12f1c
+	filename: SONG_SELECTOR.TEXPACK	off: 0x26100,	size: 0x35cf0
+	filename: SONG_SELECT_NORMAL.LM	off: 0x5be00,	size: 0x12f30
+	filename:   SONG_SELECT_HARD.LM	off: 0x6ed80,	size: 0x12f30
+
+c:\dump\part39
+	filename: SONG_SELECT_TOP.LM	off: 0x280,	size: 0x11f20
+	filename:   SONG_TOP.TEXPACK	off: 0x12200,	size: 0x1e2a4
+
+c:\dump\part40
+	filename: MEDLEY_SELECT_TOP.LM	off: 0x280,	size: 0x3fac
+	filename:   MEDLEY_TOP.TEXPACK	off: 0x4280,	size: 0x2a0a0
+
+c:\dump\part41
+	filename: SELECT_OPTION_NEIRO.TEXPACK	off: 0x280,	size: 0x72e0
+
+c:\dump\part42
+	filename:           RANKING.LM	off: 0x280,	size: 0x3f38
+	filename: SONG_RANKING.TEXPACK	off: 0x4200,	size: 0xeb64
+
+c:\dump\part43
+	filename:  ENSO_ONP.TEXPACK	off: 0x400,	size: 0x14ce4
+	filename:    ONP_RENDA02.LM	off: 0x15100,	size: 0x107c
+	filename:  ONP_D_RENDA03.LM	off: 0x16180,	size: 0x1058
+	filename: ENSO_SYOUSETSU.LM	off: 0x17200,	size: 0xbc8
+	filename:        ONP_IMO.LM	off: 0x17e00,	size: 0x2080
+	filename:    ONP_RENDA01.LM	off: 0x19f00,	size: 0x7ac
+	filename:    ONP_DON_DAI.LM	off: 0x1a700,	size: 0x754
+	filename:  ONP_D_RENDA02.LM	off: 0x1ae80,	size: 0x1008
+	filename:       ONP_BOMB.LM	off: 0x1bf00,	size: 0x5fc
+	filename:  ONP_KATSU_DAI.LM	off: 0x1c500,	size: 0x754
+	filename:        ONP_DON.LM	off: 0x1cc80,	size: 0x794
+	filename:      ONP_KATSU.LM	off: 0x1d480,	size: 0x7a0
+	filename:  ONP_D_RENDA01.LM	off: 0x1dc80,	size: 0x728
+	filename:    ONP_RENDA03.LM	off: 0x1e400,	size: 0x10ac
+	filename:       ONP_GEKI.LM	off: 0x1f500,	size: 0x1738
+
+c:\dump\part44
+	filename:        ONP_FLY_DON_D.LM	off: 0x300,	size: 0x1454
+	filename:         ONP_FLY_GEKI.LM	off: 0x1780,	size: 0x1628
+	filename: ENSO_ONP_HITFLY.TEXPACK	off: 0x2e00,	size: 0x18720
+	filename:      ONP_FLY_KATSU_D.LM	off: 0x1b580,	size: 0x1494
+	filename:          ONP_FLY_DON.LM	off: 0x1ca80,	size: 0x143c
+	filename:        ONP_FLY_KATSU.LM	off: 0x1df00,	size: 0x1470
+
+c:\dump\part45
+	filename:  ENSO_RIGHT_DON.LM	off: 0x480,	size: 0x390
+	filename: ENSO_RIGHT_KATS.LM	off: 0x880,	size: 0x3dc
+	filename: ENSO_HITEFFECTS.LM	off: 0xc80,	size: 0xeb0
+	filename:      ENSO_COMBO.LM	off: 0x1b80,	size: 0xa108
+	filename:  ENSO_LEFT_KATS.LM	off: 0xbd00,	size: 0x3d8
+	filename:  ENSO_MATO_GOGO.LM	off: 0xc100,	size: 0x17fc
+	filename:   ENSO_HITJUDGE.LM	off: 0xd900,	size: 0x37e8
+	filename: ENSO_BUNKI_MOJI.LM	off: 0x11100,	size: 0x2bf4
+	filename:   ENSO_LEFT_DON.LM	off: 0x13d00,	size: 0x3d8
+	filename:      ENSO_TAIKO.LM	off: 0x14100,	size: 0x1d0
+	filename:      ENSO_BUNKI.LM	off: 0x14300,	size: 0x2208
+	filename:       ENSO_MATO.LM	off: 0x16580,	size: 0x1574
+	filename:  ENSO_LANE.TEXPACK	off: 0x17b00,	size: 0x361ec
+	filename:       ENSO_LANE.LM	off: 0x4dd00,	size: 0x1d4
+
+c:\dump\part46
+	filename:      ENSO_FULLCOMBO.LM	off: 0x280,	size: 0x1a8b8
+	filename: ENSO_FULLCOMBO.TEXPACK	off: 0x1ab80,	size: 0x3e124
+
+c:\dump\part47
+	filename:           IDOL_FULLCOMBO.LM	off: 0x280,	size: 0x5d24
+	filename: ENSO_FULLCOMBO_IDOL.TEXPACK	off: 0x6000,	size: 0x7870
+
+c:\dump\part48
+	filename: ENSO_FULLCOMBO_MONHAN.TEXPACK	off: 0x280,	size: 0x45f0
+	filename:           MONHAN_FULLCOMBO.LM	off: 0x4880,	size: 0x10fc
+
+c:\dump\part49
+	filename:           MIKU_FULLCOMBO.LM	off: 0x280,	size: 0x673c
+	filename: ENSO_FULLCOMBO_MIKU.TEXPACK	off: 0x6a00,	size: 0xdca4
+
+c:\dump\part50
+	filename: ENSO_FULLCOMBO_RYU.TEXPACK	off: 0x280,	size: 0x5fa8
+	filename:           RYU_FULLCOMBO.LM	off: 0x6280,	size: 0x6830
+
+c:\dump\part51
+	filename:  ENSO_SCORE_ADD.LM	off: 0x280,	size: 0x2000
+	filename: ENSO_SCORE_MAIN.LM	off: 0x2300,	size: 0x21b4
+	filename: ENSO_SCORE.TEXPACK	off: 0x4500,	size: 0xc3ac
+
+c:\dump\part52
+	filename:     COMBO_SPLASH.LM	off: 0x280,	size: 0x1bc0
+	filename: ENSO_SPLASH.TEXPACK	off: 0x1e80,	size: 0x213dc
+
+c:\dump\part53
+	filename:           RENDA_NUM.LM	off: 0x280,	size: 0x3d74
+	filename: ENSO_FUKIDASHI.TEXPACK	off: 0x4000,	size: 0x19dac
+	filename:    DON_1P_FUKIDASHI.LM	off: 0x1de00,	size: 0x32e0
+
+c:\dump\part54
+	filename:    DON_GEKI_1P.LM	off: 0x280,	size: 0x3d1c
+	filename: ENSO_GEKI.TEXPACK	off: 0x4000,	size: 0x25ae0
+
+c:\dump\part55
+	filename:           IMO.LM	off: 0x280,	size: 0x15fd0
+	filename: ENSO_IMO.TEXPACK	off: 0x16280,	size: 0x3d464
+
+c:\dump\part56
+	filename: ONP_BOMB_BLAST.LM	off: 0x280,	size: 0x7d8
+	filename: ENSO_BOMB.TEXPACK	off: 0xa80,	size: 0xcc6c
+
+c:\dump\part57
+	filename:      MEDLEY_MOJI.LM	off: 0x280,	size: 0x28c
+	filename: ENSO_MEDLEY.TEXPACK	off: 0x580,	size: 0x5764
+	filename:     MEDLEY_COUNT.LM	off: 0x5d00,	size: 0x1ed4
+
+c:\dump\part58
+	filename:     WADAIKO_KADAI.LM	off: 0x280,	size: 0x325c
+	filename: ENSO_WADAIKO.TEXPACK	off: 0x3500,	size: 0xf3e0
+	filename:     WADAIKO_CLEAR.LM	off: 0x12900,	size: 0x8a2c
+
+c:\dump\part59
+	filename:        THEME.LM	off: 0x280,	size: 0x844
+	filename:      ENSO_VS.LM	off: 0xb00,	size: 0x2a74
+	filename: ENSO_VS.TEXPACK	off: 0x3580,	size: 0x18ee8
+
+c:\dump\part60
+	filename: ENSO_VS_CUTIN.TEXPACK	off: 0x280,	size: 0xfa8
+	filename: ENSO_VS_CUTIN_BASE.LM	off: 0x1280,	size: 0xe74
+
+c:\dump\part61
+	filename:      COURSE_UME.LM	off: 0x280,	size: 0x870
+	filename: COURSE_UME.TEXPACK	off: 0xb00,	size: 0xd2a4
+
+c:\dump\part62
+	filename: COURSE_TAKE.TEXPACK	off: 0x280,	size: 0xd2a4
+	filename:      COURSE_TAKE.LM	off: 0xd580,	size: 0x870
+
+c:\dump\part63
+	filename: COURSE_MATSU.TEXPACK	off: 0x280,	size: 0x192a4
+	filename:      COURSE_MATSU.LM	off: 0x19580,	size: 0x87c
+
+c:\dump\part64
+	filename:      COURSE_ONI.LM	off: 0x280,	size: 0x870
+	filename: COURSE_ONI.TEXPACK	off: 0xb00,	size: 0xd2a4
+
+c:\dump\part65
+	filename:     GAUGE_DON_E.LM	off: 0x280,	size: 0xb60c
+	filename: GAUGE_EASY.TEXPACK	off: 0xb900,	size: 0x26ce8
+
+c:\dump\part66
+	filename: GAUGE_NORMAL.TEXPACK	off: 0x280,	size: 0x1c668
+	filename:       GAUGE_DON_N.LM	off: 0x1c900,	size: 0xb354
+
+c:\dump\part67
+	filename:     GAUGE_DON_H.LM	off: 0x280,	size: 0xb140
+	filename: GAUGE_HARD.TEXPACK	off: 0xb400,	size: 0x1c66c
+
+c:\dump\part68
+	filename:     GAUGE_DON_E.LM	off: 0x280,	size: 0x879c
+	filename: GAUGE_EASY.TEXPACK	off: 0x8a80,	size: 0x17ce4
+
+c:\dump\part69
+	filename: GAUGE_NORMAL.TEXPACK	off: 0x280,	size: 0x1b558
+	filename:       GAUGE_DON_N.LM	off: 0x1b800,	size: 0x8554
+
+c:\dump\part70
+	filename:     GAUGE_DON_H.LM	off: 0x280,	size: 0x8338
+	filename: GAUGE_HARD.TEXPACK	off: 0x8600,	size: 0x17cec
+
+c:\dump\part71
+	filename: CHIBI_1P_BALLOON_03.LM	off: 0x380,	size: 0x33fc
+	filename: CHIBI_1P_BALLOON_02.LM	off: 0x3780,	size: 0x340c
+	filename: CHIBI_1P_BALLOON_01.LM	off: 0x6c00,	size: 0x3404
+	filename:        BALLOON.TEXPACK	off: 0xa080,	size: 0x1a964
+	filename: CHIBI_1P_BALLOON_06.LM	off: 0x24a00,	size: 0x341c
+	filename: CHIBI_1P_BALLOON_05.LM	off: 0x27e80,	size: 0x342c
+	filename: CHIBI_1P_BALLOON_04.LM	off: 0x2b300,	size: 0x342c
+
+c:\dump\part72
+	filename: CHIBI_1P_CYO_04.LM	off: 0x300,	size: 0x2adc
+	filename: CHIBI_1P_CYO_03.LM	off: 0x2e00,	size: 0x2adc
+	filename: CHIBI_1P_CYO_02.LM	off: 0x5900,	size: 0x2adc
+	filename: CHIBI_1P_CYO_01.LM	off: 0x8400,	size: 0x2adc
+	filename:   CHOUCHIN.TEXPACK	off: 0xaf00,	size: 0xc5e0
+
+c:\dump\part73
+	filename: CHIBI_1P_DARU_A04.LM	off: 0x300,	size: 0x3c48
+	filename: CHIBI_1P_DARU_A03.LM	off: 0x3f80,	size: 0x3c48
+	filename: CHIBI_1P_DARU_A02.LM	off: 0x7c00,	size: 0x3c48
+	filename:      DARUMA1.TEXPACK	off: 0xb880,	size: 0x4f64
+	filename: CHIBI_1P_DARU_A01.LM	off: 0x10800,	size: 0x3c48
+
+c:\dump\part74
+	filename: CHIBI_1P_DARU_B04.LM	off: 0x300,	size: 0x2cd8
+	filename: CHIBI_1P_DARU_B03.LM	off: 0x3000,	size: 0x2cd8
+	filename: CHIBI_1P_DARU_B02.LM	off: 0x5d00,	size: 0x2cd8
+	filename: CHIBI_1P_DARU_B01.LM	off: 0x8a00,	size: 0x2cd8
+	filename:      DARUMA2.TEXPACK	off: 0xb700,	size: 0x13a64
+
+c:\dump\part75
+	filename: CHIBI_1P_HIYOKO_04.LM	off: 0x300,	size: 0x31d0
+	filename:       HIYOKO1.TEXPACK	off: 0x3500,	size: 0x11364
+	filename: CHIBI_1P_HIYOKO_03.LM	off: 0x14880,	size: 0x31d0
+	filename: CHIBI_1P_HIYOKO_02.LM	off: 0x17a80,	size: 0x31d0
+	filename: CHIBI_1P_HIYOKO_01.LM	off: 0x1ac80,	size: 0x31d0
+
+c:\dump\part76
+	filename: CHIBI_1P_HIYOKO2_04.LM	off: 0x300,	size: 0x304c
+	filename: CHIBI_1P_HIYOKO2_03.LM	off: 0x3380,	size: 0x304c
+	filename: CHIBI_1P_HIYOKO2_02.LM	off: 0x6400,	size: 0x304c
+	filename: CHIBI_1P_HIYOKO2_01.LM	off: 0x9480,	size: 0x304c
+	filename:        HIYOKO2.TEXPACK	off: 0xc500,	size: 0x160e4
+
+c:\dump\part77
+	filename: CHIBI_1P_KEN_04.LM	off: 0x300,	size: 0x356c
+	filename: CHIBI_1P_KEN_03.LM	off: 0x3880,	size: 0x356c
+	filename:    KENDAMA.TEXPACK	off: 0x6e00,	size: 0x18764
+	filename: CHIBI_1P_KEN_02.LM	off: 0x1f580,	size: 0x356c
+	filename: CHIBI_1P_KEN_01.LM	off: 0x22b00,	size: 0x356c
+
+c:\dump\part78
+	filename: CHIBI_1P_KIN_04.LM	off: 0x300,	size: 0x3ba8
+	filename:     KINGYO.TEXPACK	off: 0x3f00,	size: 0x4fe0
+	filename: CHIBI_1P_KIN_03.LM	off: 0x8f00,	size: 0x3ba8
+	filename: CHIBI_1P_KIN_02.LM	off: 0xcb00,	size: 0x30a0
+	filename: CHIBI_1P_KIN_01.LM	off: 0xfc00,	size: 0x30a0
+
+c:\dump\part79
+	filename: CHIBI_1P_MIMIZUCHAN_01.LM	off: 0x280,	size: 0x396c
+	filename: CHIBI_1P_MIMIZUCHAN_02.LM	off: 0x3c00,	size: 0x390c
+	filename:            MIMIZU.TEXPACK	off: 0x7580,	size: 0x3268
+
+c:\dump\part80
+	filename: CHIBI_1P_MIZU_04.LM	off: 0x300,	size: 0x2a88
+	filename: CHIBI_1P_MIZU_03.LM	off: 0x2e00,	size: 0x2a88
+	filename: CHIBI_1P_MIZU_02.LM	off: 0x5900,	size: 0x2a88
+	filename: CHIBI_1P_MIZU_01.LM	off: 0x8400,	size: 0x2a88
+	filename:    MIZUMARI.TEXPACK	off: 0xaf00,	size: 0xc5e4
+
+c:\dump\part81
+	filename: CHIBI_1P_SUZU_03.LM	off: 0x300,	size: 0x2cd8
+	filename: CHIBI_1P_SUZU_02.LM	off: 0x3000,	size: 0x2cd8
+	filename:        SUZU.TEXPACK	off: 0x5d00,	size: 0xec64
+	filename: CHIBI_1P_SUZU_01.LM	off: 0x14980,	size: 0x2cd8
+	filename: CHIBI_1P_SUZU_04.LM	off: 0x17680,	size: 0x2cd8
+
+c:\dump\part82
+	filename: CHIBI_1P_TAKO_03.LM	off: 0x300,	size: 0x2b84
+	filename: CHIBI_1P_TAKO_02.LM	off: 0x2f00,	size: 0x2b84
+	filename: CHIBI_1P_TAKO_01.LM	off: 0x5b00,	size: 0x2b84
+	filename:    TAKOYAKI.TEXPACK	off: 0x8700,	size: 0xc5e4
+	filename: CHIBI_1P_TAKO_04.LM	off: 0x14d00,	size: 0x2b84
+
+c:\dump\part83
+	filename: CHIBI_1P_TURU_01.LM	off: 0x280,	size: 0x3b0c
+	filename: CHIBI_1P_TURU_02.LM	off: 0x3e00,	size: 0x3b0c
+	filename:       TSURU.TEXPACK	off: 0x7980,	size: 0x75e4
+
+c:\dump\part84
+	filename:        WATA.TEXPACK	off: 0x300,	size: 0x9f64
+	filename: CHIBI_1P_WATA_04.LM	off: 0xa280,	size: 0x4c58
+	filename: CHIBI_1P_WATA_03.LM	off: 0xef00,	size: 0x4c58
+	filename: CHIBI_1P_WATA_02.LM	off: 0x13b80,	size: 0x4c58
+	filename: CHIBI_1P_WATA_01.LM	off: 0x18800,	size: 0x4c58
+
+c:\dump\part85
+	filename: CHIBI_TAMA_01.LM	off: 0x280,	size: 0x2cc0
+	filename: TAMASHII.TEXPACK	off: 0x2f80,	size: 0x1e68
+
+c:\dump\part86
+	filename: CHIBI_1P_IDOL_04.LM	off: 0x300,	size: 0x2b58
+	filename:        IDOL.TEXPACK	off: 0x2e80,	size: 0x75ec
+	filename: CHIBI_1P_IDOL_03.LM	off: 0xa480,	size: 0x2b58
+	filename: CHIBI_1P_IDOL_02.LM	off: 0xd000,	size: 0x2b58
+	filename: CHIBI_1P_IDOL_01.LM	off: 0xfb80,	size: 0x2b58
+
+c:\dump\part87
+	filename: CHIBI_1P_MONHAN_04.LM	off: 0x300,	size: 0x2970
+	filename: CHIBI_1P_MONHAN_03.LM	off: 0x2c80,	size: 0x2970
+	filename: CHIBI_1P_MONHAN_02.LM	off: 0x5600,	size: 0x2970
+	filename:        MONHAN.TEXPACK	off: 0x7f80,	size: 0x1b3ac
+	filename: CHIBI_1P_MONHAN_01.LM	off: 0x23380,	size: 0x2970
+
+c:\dump\part88
+	filename: CHIBI_1P_FRENESI_02.LM	off: 0x300,	size: 0x2608
+	filename: CHIBI_1P_FRENESI_01.LM	off: 0x2980,	size: 0x2634
+	filename: CHIBI_1P_FRENESI_04.LM	off: 0x5000,	size: 0x2608
+	filename:        FRENESI.TEXPACK	off: 0x7680,	size: 0x3ca8
+	filename: CHIBI_1P_FRENESI_03.LM	off: 0xb380,	size: 0x2608
+
+c:\dump\part89
+	filename: CHIBI_MIKU.LM	off: 0x280,	size: 0x2618
+	filename:  MIKU.TEXPACK	off: 0x2900,	size: 0x6e28
+
+c:\dump\part90
+	filename: CHIBI_1P_RYU_01.LM	off: 0x300,	size: 0x2a78
+	filename: CHIBI_1P_RYU_04.LM	off: 0x2d80,	size: 0x2a78
+	filename:        RYU.TEXPACK	off: 0x5800,	size: 0xc66c
+	filename: CHIBI_1P_RYU_03.LM	off: 0x11e80,	size: 0x2a78
+	filename: CHIBI_1P_RYU_02.LM	off: 0x14900,	size: 0x2a78
+
+c:\dump\part91
+	filename:      RENDA_EFFECT_HAMACHIDORI.LM	off: 0x280,	size: 0x8a60
+	filename: RENDA_EFFECT_HAMACHIDORI.TEXPACK	off: 0x8d00,	size: 0xd6f0
+
+c:\dump\part92
+	filename: RENDA_EFFECT_HAMAYA.TEXPACK	off: 0x280,	size: 0x8d28
+	filename:      RENDA_EFFECT_HAMAYA.LM	off: 0x9000,	size: 0x1b50
+
+c:\dump\part93
+	filename: RENDA_EFFECT_SYURIKEN.TEXPACK	off: 0x280,	size: 0xbe34
+	filename:      RENDA_EFFECT_SYURIKEN.LM	off: 0xc100,	size: 0x4e58
+
+c:\dump\part94
+	filename:      RENDA_EFFECT_IDOL.LM	off: 0x280,	size: 0xe4e8
+	filename: RENDA_EFFECT_IDOL.TEXPACK	off: 0xe780,	size: 0x3bec
+
+c:\dump\part95
+	filename: RENDA_EFFECT_MONHAN.TEXPACK	off: 0x280,	size: 0x156c
+	filename:      RENDA_EFFECT_MONHAN.LM	off: 0x1800,	size: 0x35c0
+
+c:\dump\part96
+	filename:      RENDA_EFFECT_MIKU.LM	off: 0x280,	size: 0x7454
+	filename: RENDA_EFFECT_MIKU.TEXPACK	off: 0x7700,	size: 0x326c
+
+c:\dump\part97
+	filename:      RENDA_EFFECT_RYU.LM	off: 0x280,	size: 0xef4
+	filename: RENDA_EFFECT_RYU.TEXPACK	off: 0x1180,	size: 0x1560
+
+c:\dump\part98
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_01.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_01.TEXPACK	off: 0x2180,	size: 0x7ca4
+
+c:\dump\part99
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_02.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_02.TEXPACK	off: 0x2180,	size: 0x7ca4
+
+c:\dump\part100
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_03.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_03.TEXPACK	off: 0x2180,	size: 0x7ca4
+
+c:\dump\part101
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename: ENSO_BG_04.TEXPACK	off: 0xa00,	size: 0x7ce4
+	filename:   ENSO_UP_BG_04.LM	off: 0x8700,	size: 0x1728
+
+c:\dump\part102
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_05.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_05.TEXPACK	off: 0x2180,	size: 0x7ce4
+
+c:\dump\part103
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_06.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_06.TEXPACK	off: 0x2180,	size: 0x7ce4
+
+c:\dump\part104
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename: ENSO_BG_07.TEXPACK	off: 0xa00,	size: 0x7ce4
+	filename:   ENSO_UP_BG_07.LM	off: 0x8700,	size: 0x1728
+
+c:\dump\part105
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename: ENSO_BG_08.TEXPACK	off: 0xa00,	size: 0x7ce4
+	filename:   ENSO_UP_BG_08.LM	off: 0x8700,	size: 0x1728
+
+c:\dump\part106
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_09.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_09.TEXPACK	off: 0x2180,	size: 0x7ce4
+
+c:\dump\part107
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_10.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_10.TEXPACK	off: 0x2180,	size: 0x7ca4
+
+c:\dump\part108
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename:   ENSO_UP_BG_11.LM	off: 0xa00,	size: 0x1728
+	filename: ENSO_BG_11.TEXPACK	off: 0x2180,	size: 0x7ce4
+
+c:\dump\part109
+	filename:  BG_SAB_EFFECTI.LM	off: 0x280,	size: 0x744
+	filename: ENSO_BG_12.TEXPACK	off: 0xa00,	size: 0x7ce4
+	filename:   ENSO_UP_BG_12.LM	off: 0x8700,	size: 0x1728
+
+c:\dump\part110
+	filename:      DANCE_BG_01.LM	off: 0x280,	size: 0x9d10
+	filename: DANCE_BG_01.TEXPACK	off: 0xa000,	size: 0x6eda8
+
+c:\dump\part111
+	filename:      DANCE_BG_02.LM	off: 0x280,	size: 0x15ea4
+	filename: DANCE_BG_02.TEXPACK	off: 0x16180,	size: 0x8ad68
+
+c:\dump\part112
+	filename: DANCE_BG_03.TEXPACK	off: 0x280,	size: 0x796a8
+	filename:      DANCE_BG_03.LM	off: 0x79980,	size: 0x619c
+
+c:\dump\part113
+	filename: DANCE_BG_04.TEXPACK	off: 0x280,	size: 0xbb334
+	filename:      DANCE_BG_04.LM	off: 0xbb600,	size: 0x44fa4
+
+c:\dump\part114
+	filename:      DANCE_BG_05.LM	off: 0x280,	size: 0x44bc
+	filename: DANCE_BG_05.TEXPACK	off: 0x4780,	size: 0x36228
+
+c:\dump\part115
+	filename:      DANCE_BG_06.LM	off: 0x280,	size: 0x581f0
+	filename: DANCE_BG_06.TEXPACK	off: 0x58480,	size: 0x93b28
+
+c:\dump\part116
+	filename: DANCE_BG_07.TEXPACK	off: 0x280,	size: 0x68b28
+	filename:      DANCE_BG_07.LM	off: 0x68e00,	size: 0x3d76c
+
+c:\dump\part117
+	filename:      DANCE_BG_10.LM	off: 0x280,	size: 0x4d684
+	filename: DANCE_BG_10.TEXPACK	off: 0x4d980,	size: 0x55328
+
+c:\dump\part118
+	filename: DANCE_BG_11.TEXPACK	off: 0x280,	size: 0x62ae8
+	filename:      DANCE_BG_11.LM	off: 0x62d80,	size: 0x37154
+
+c:\dump\part119
+	filename: DANCE_BG_12.TEXPACK	off: 0x280,	size: 0x7f4e8
+	filename:      DANCE_BG_12.LM	off: 0x7f780,	size: 0x965c8
+
+c:\dump\part120
+	filename:      DANCE_BG_13.LM	off: 0x280,	size: 0x994c
+	filename: DANCE_BG_13.TEXPACK	off: 0x9c00,	size: 0x4d168
+
+c:\dump\part121
+	filename:      DANCE_BG_14.LM	off: 0x280,	size: 0x5ee8c
+	filename: DANCE_BG_14.TEXPACK	off: 0x5f180,	size: 0x1a568
+
+c:\dump\part122
+	filename:      DANCE_BG_IDOL.LM	off: 0x280,	size: 0x5c84
+	filename: DANCE_BG_IDOL.TEXPACK	off: 0x5f80,	size: 0x238a4
+
+c:\dump\part123
+	filename: DANCE_BG_MH.TEXPACK	off: 0x280,	size: 0x21ee8
+	filename:  DANCE_BG_MONHAN.LM	off: 0x22180,	size: 0x795c
+
+c:\dump\part124
+	filename:      DANCE_BG_FRENESI.LM	off: 0x280,	size: 0x1ca4
+	filename: DANCE_BG_FRENESI.TEXPACK	off: 0x1f80,	size: 0x13fe4
+
+c:\dump\part125
+	filename:      DANCE_BG_MIKU.LM	off: 0x280,	size: 0x10044
+	filename: DANCE_BG_MIKU.TEXPACK	off: 0x10300,	size: 0x2abe0
+
+c:\dump\part126
+	filename: DANCE_BG_RYU.TEXPACK	off: 0x280,	size: 0x398a8
+	filename:      DANCE_BG_RYU.LM	off: 0x39b80,	size: 0x26b4
+
+c:\dump\part130
+	filename:                  MONKASEI_RED.LM	off: 0x280,	size: 0x13e70
+	filename: OMIKOSHI_MONKASEI_NORMAL.TEXPACK	off: 0x14100,	size: 0x1a3e4
+
+c:\dump\part131
+	filename:               MONKASEI_DEVIL.LM	off: 0x280,	size: 0x1be9c
+	filename: OMIKOSHI_MONKASEI_DEVIL.TEXPACK	off: 0x1c180,	size: 0x1ad6c
+
+c:\dump\part132
+	filename:      OMIKOSHI_GAGE2.LM	off: 0x280,	size: 0xb7bc
+	filename: OMIKOSHI_GAUGE.TEXPACK	off: 0xba80,	size: 0x20aa0
+	filename:       OMIKOSHI_GAGE.LM	off: 0x2c580,	size: 0xb790
+
+c:\dump\part133
+	filename:   HIT_EFFECT_01.LM	off: 0x280,	size: 0x1abc
+	filename: HIT_EFFECT.TEXPACK	off: 0x1d80,	size: 0xe8e0
+
+c:\dump\part134
+	filename:       MONKASEI_ATTACK.LM	off: 0x300,	size: 0x2084
+	filename: MONKASEI_ATTACK_DEVIL.LM	off: 0x2400,	size: 0x2088
+	filename:  MONKASEI_ATTACK.TEXPACK	off: 0x4500,	size: 0x358a8
+	filename:      MONKASEI_ATTACK2.LM	off: 0x39e00,	size: 0x2374
+
+c:\dump\part135
+	filename:       MONKASEI_ATTACK_LOOP_MIKATA.LM	off: 0x280,	size: 0x2d1b0
+	filename: MONKASEI_ATTACK_LOOP_MIKATA1.TEXPACK	off: 0x2d480,	size: 0xf2f0
+
+c:\dump\part136
+	filename: MONKASEI_ATTACK_LOOP_MIKATA2.TEXPACK	off: 0x280,	size: 0xf2f0
+	filename:      MONKASEI_ATTACK_LOOP_MIKATA2.LM	off: 0xf580,	size: 0x2d1a4
+
+c:\dump\part137
+	filename: MONKASEI_ATTACK_LOOP_TEKI1.TEXPACK	off: 0x280,	size: 0xf2f0
+	filename:       MONKASEI_ATTACK_LOOP_TEKI.LM	off: 0xf580,	size: 0x31284
+
+c:\dump\part138
+	filename: MONKASEI_ATTACK_LOOP_TEKI2.TEXPACK	off: 0x280,	size: 0xf2f0
+	filename:      MONKASEI_ATTACK_LOOP_TEKI2.LM	off: 0xf580,	size: 0x31290
+
+c:\dump\part139
+	filename:      MONKASEI_ATTACK_LOOP_DEVIL.LM	off: 0x280,	size: 0x30868
+	filename: MONKASEI_ATTACK_LOOP_DEVIL.TEXPACK	off: 0x30b00,	size: 0xf2f0
+
+c:\dump\part140
+	filename: MONKASEI_COUNT.TEXPACK	off: 0x280,	size: 0x26e8
+	filename:      MONKASEI_COUNT.LM	off: 0x2980,	size: 0x23ac
+
+c:\dump\part141
+	filename:     MONKASEI_ICON2.LM	off: 0x280,	size: 0x4ac
+	filename: MONKASEI_ICON.TEXPACK	off: 0x780,	size: 0x1edc
+	filename:      MONKASEI_ICON.LM	off: 0x2680,	size: 0x458
+
+c:\dump\part142
+	filename:   MONKASEI_TEKI_IN_OUT2.LM	off: 0x380,	size: 0xa764
+	filename:  MONKASEI_MIKATA_IN_OUT.LM	off: 0xab00,	size: 0xa77c
+	filename:    MONKASEI_TEKI_IN_OUT.LM	off: 0x15280,	size: 0xa764
+	filename:   MONKASEI_DEVIL_IN_OUT.LM	off: 0x1fa00,	size: 0xa764
+	filename:    MONKASEI_IN_OUT.TEXPACK	off: 0x2a180,	size: 0x3be8
+	filename: MONKASEI_MIKATA_IN_OUT2.LM	off: 0x2dd80,	size: 0xa7b0
+
+c:\dump\part143
+	filename:     START_CUTIN2.LM	off: 0x280,	size: 0xd938
+	filename: START_CUTIN.TEXPACK	off: 0xdc00,	size: 0x156e4
+	filename:      START_CUTIN.LM	off: 0x23300,	size: 0xde20
+
+c:\dump\part144
+	filename: SUKET_CUTIN.TEXPACK	off: 0x300,	size: 0x250ac
+	filename:     SUKET_CUTINL.LM	off: 0x25400,	size: 0xdf4
+	filename:     SUKET_CUTINR.LM	off: 0x26200,	size: 0x1034
+	filename: SUKET_CUTIN_DARK.LM	off: 0x27280,	size: 0x97c
+
+c:\dump\part145
+	filename: SUKET_ICON_R_BOTTOM.LM	off: 0x380,	size: 0x1624
+	filename:       SUKET_ICON_L2.LM	off: 0x1a00,	size: 0x1624
+	filename:   SUKET_ICON_OJYAMA.LM	off: 0x3080,	size: 0x12f4
+	filename:       SUKET_ICON_R2.LM	off: 0x4380,	size: 0x1624
+	filename:     SUKET_ICON.TEXPACK	off: 0x5a00,	size: 0x58a4
+	filename:       SUKET_ICON_L1.LM	off: 0xb300,	size: 0x1624
+	filename:       SUKET_ICON_L3.LM	off: 0xc980,	size: 0x1624
+	filename: SUKET_ICON_L_BOTTOM.LM	off: 0xe000,	size: 0x1624
+	filename:       SUKET_ICON_R1.LM	off: 0xf680,	size: 0x1624
+	filename:       SUKET_ICON_R3.LM	off: 0x10d00,	size: 0x1624
+
+c:\dump\part146
+	filename:    TEKI_DARK_EFFECT.TEXPACK	off: 0x300,	size: 0x7b4e8
+	filename:         TEKI_DARK_EFFECT.LM	off: 0x7b800,	size: 0x2fb0
+	filename:       DARK_EFFECTS_STEAL.LM	off: 0x7e800,	size: 0x18cc
+	filename: DARK_EFFECTS_STEAL_BLOCK.LM	off: 0x80100,	size: 0x19e4
+
+c:\dump\part147
+	filename:      TEKI_HITEFFECT.LM	off: 0x280,	size: 0x41c
+	filename: TEKI_HITEFFECT.TEXPACK	off: 0x700,	size: 0x23e4
+
+c:\dump\part148
+	filename:      THEME.LM	off: 0x280,	size: 0x61c
+	filename: THEME.TEXPACK	off: 0x900,	size: 0x5a60
+
+c:\dump\part149
+	filename: THEME_COUNT_PLAYER_ICON.LM	off: 0x300,	size: 0x1944
+	filename:     THEME_COUNT_1DIGITS.LM	off: 0x1c80,	size: 0x3a90
+	filename:     THEME_COUNT_2DIGITS.LM	off: 0x5780,	size: 0x4a00
+	filename:     THEME_COUNT_3DIGITS.LM	off: 0xa200,	size: 0x5974
+	filename:     THEME_COUNT_4DIGITS.LM	off: 0xfb80,	size: 0x68e8
+	filename:        THEME_COUNT.TEXPACK	off: 0x16480,	size: 0x38e0
+
+c:\dump\part150
+	filename:   THEME_COUNT_COOP.TEXPACK	off: 0x380,	size: 0x74e0
+	filename:  THEME_COUNT_1DIGITS_ON.LM	off: 0x7880,	size: 0x35d4
+	filename:  THEME_COUNT_3DIGITS_ON.LM	off: 0xae80,	size: 0x4d20
+	filename: THEME_COUNT_PLAYER_ICON.LM	off: 0xfc00,	size: 0x1944
+	filename:  THEME_COUNT_2DIGITS_ON.LM	off: 0x11580,	size: 0x4178
+	filename:  THEME_COUNT_4DIGITS_ON.LM	off: 0x15700,	size: 0x58c8
+
+c:\dump\part151
+	filename:     CHUOUMON2.LM	off: 0x280,	size: 0x3ccc
+	filename: CHUOUMON.TEXPACK	off: 0x3f80,	size: 0x160a4
+	filename:      CHUOUMON.LM	off: 0x1a080,	size: 0x3ccc
+
+c:\dump\part152
+	filename:      RESULT_SYOUHAI.LM	off: 0x280,	size: 0x76d4
+	filename: RESULT_SYOUHAI.TEXPACK	off: 0x7980,	size: 0x1a92c
+
+c:\dump\part153
+	filename:        HIT_EFFECT_S.LM	off: 0x280,	size: 0x448
+	filename: HIT_EFFECT1P4P.TEXPACK	off: 0x700,	size: 0x23e4
+
+c:\dump\part154
+	filename: SUKET_CUTIN_BOARD_CPU_01.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_L_01.GIM	off: 0x10880,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_01.GIM	off: 0x20e00,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_01.GIM	off: 0x31380,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_01.GIM	off: 0x33500,	size: 0x216c
+
+c:\dump\part155
+	filename:   SUKET_CUTIN_BOARD_R_02.GIM	off: 0x300,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_02.GIM	off: 0x10880,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_02.GIM	off: 0x12a00,	size: 0x216c
+	filename: SUKET_CUTIN_BOARD_CPU_02.GIM	off: 0x14b80,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_L_02.GIM	off: 0x25100,	size: 0x1052c
+
+c:\dump\part156
+	filename: SUKET_CUTIN_ABILITY_R_03.GIM	off: 0x300,	size: 0x216c
+	filename: SUKET_CUTIN_BOARD_CPU_03.GIM	off: 0x2480,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_L_03.GIM	off: 0x12a00,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_03.GIM	off: 0x22f80,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_03.GIM	off: 0x33500,	size: 0x216c
+
+c:\dump\part157
+	filename:   SUKET_CUTIN_BOARD_L_04.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_04.GIM	off: 0x10880,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_04.GIM	off: 0x20e00,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_04.GIM	off: 0x22f80,	size: 0x216c
+	filename: SUKET_CUTIN_BOARD_CPU_04.GIM	off: 0x25100,	size: 0x1052c
+
+c:\dump\part158
+	filename: SUKET_CUTIN_ABILITY_L_05.GIM	off: 0x300,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_05.GIM	off: 0x2480,	size: 0x216c
+	filename: SUKET_CUTIN_BOARD_CPU_05.GIM	off: 0x4600,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_L_05.GIM	off: 0x14b80,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_05.GIM	off: 0x25100,	size: 0x1052c
+
+c:\dump\part159
+	filename:   SUKET_CUTIN_BOARD_L_06.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_06.GIM	off: 0x10880,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_06.GIM	off: 0x20e00,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_06.GIM	off: 0x22f80,	size: 0x216c
+	filename: SUKET_CUTIN_BOARD_CPU_06.GIM	off: 0x25100,	size: 0x1052c
+
+c:\dump\part160
+	filename: SUKET_CUTIN_ABILITY_L_07.GIM	off: 0x300,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_07.GIM	off: 0x2480,	size: 0x216c
+	filename: SUKET_CUTIN_BOARD_CPU_07.GIM	off: 0x4600,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_L_07.GIM	off: 0x14b80,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_07.GIM	off: 0x25100,	size: 0x1052c
+
+c:\dump\part161
+	filename: SUKET_CUTIN_BOARD_CPU_08.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_L_08.GIM	off: 0x10880,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_08.GIM	off: 0x20e00,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_08.GIM	off: 0x31380,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_08.GIM	off: 0x33500,	size: 0x216c
+
+c:\dump\part162
+	filename: SUKET_CUTIN_ABILITY_L_09.GIM	off: 0x300,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_09.GIM	off: 0x2480,	size: 0x216c
+	filename: SUKET_CUTIN_BOARD_CPU_09.GIM	off: 0x4600,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_L_09.GIM	off: 0x14b80,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_09.GIM	off: 0x25100,	size: 0x1052c
+
+c:\dump\part163
+	filename:   SUKET_CUTIN_BOARD_L_01.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_01.GIM	off: 0x10880,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_01.GIM	off: 0x20e00,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_01.GIM	off: 0x22f80,	size: 0x216c
+
+c:\dump\part164
+	filename:   SUKET_CUTIN_BOARD_R_02.GIM	off: 0x300,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_02.GIM	off: 0x10880,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_02.GIM	off: 0x12a00,	size: 0x216c
+	filename:   SUKET_CUTIN_BOARD_L_02.GIM	off: 0x14b80,	size: 0x1052c
+
+c:\dump\part165
+	filename: SUKET_CUTIN_ABILITY_R_03.GIM	off: 0x300,	size: 0x216c
+	filename:   SUKET_CUTIN_BOARD_L_03.GIM	off: 0x2480,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_03.GIM	off: 0x12a00,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_03.GIM	off: 0x22f80,	size: 0x216c
+
+c:\dump\part166
+	filename:   SUKET_CUTIN_BOARD_L_04.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_04.GIM	off: 0x10880,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_04.GIM	off: 0x20e00,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_04.GIM	off: 0x22f80,	size: 0x216c
+
+c:\dump\part167
+	filename: SUKET_CUTIN_ABILITY_L_05.GIM	off: 0x300,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_05.GIM	off: 0x2480,	size: 0x216c
+	filename:   SUKET_CUTIN_BOARD_L_05.GIM	off: 0x4600,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_05.GIM	off: 0x14b80,	size: 0x1052c
+
+c:\dump\part168
+	filename:   SUKET_CUTIN_BOARD_L_06.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_06.GIM	off: 0x10880,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_06.GIM	off: 0x20e00,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_06.GIM	off: 0x22f80,	size: 0x216c
+
+c:\dump\part169
+	filename: SUKET_CUTIN_ABILITY_L_07.GIM	off: 0x300,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_07.GIM	off: 0x2480,	size: 0x216c
+	filename:   SUKET_CUTIN_BOARD_L_07.GIM	off: 0x4600,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_07.GIM	off: 0x14b80,	size: 0x1052c
+
+c:\dump\part170
+	filename:   SUKET_CUTIN_BOARD_L_08.GIM	off: 0x300,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_08.GIM	off: 0x10880,	size: 0x1052c
+	filename: SUKET_CUTIN_ABILITY_L_08.GIM	off: 0x20e00,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_08.GIM	off: 0x22f80,	size: 0x216c
+
+c:\dump\part171
+	filename: SUKET_CUTIN_ABILITY_L_09.GIM	off: 0x300,	size: 0x216c
+	filename: SUKET_CUTIN_ABILITY_R_09.GIM	off: 0x2480,	size: 0x216c
+	filename:   SUKET_CUTIN_BOARD_L_09.GIM	off: 0x4600,	size: 0x1052c
+	filename:   SUKET_CUTIN_BOARD_R_09.GIM	off: 0x14b80,	size: 0x1052c
+
+c:\dump\part172
+	filename:      OMIKOSHI_BG_01.LM	off: 0x280,	size: 0x1d8
+	filename: OMIKOSHI_BG_01.TEXPACK	off: 0x480,	size: 0x207a4
+
+c:\dump\part173
+	filename:      OMIKOSHI_BG_02.LM	off: 0x280,	size: 0x1d8
+	filename: OMIKOSHI_BG_02.TEXPACK	off: 0x480,	size: 0x207a4
+
+c:\dump\part174
+	filename: OMIKOSHI_BG_03.TEXPACK	off: 0x280,	size: 0x207a4
+	filename:      OMIKOSHI_BG_03.LM	off: 0x20a80,	size: 0x1d8
+
+c:\dump\part175
+	filename: OMIKOSHI_BG_04.TEXPACK	off: 0x280,	size: 0x207a4
+	filename:      OMIKOSHI_BG_04.LM	off: 0x20a80,	size: 0x1d8
+
+c:\dump\part176
+	filename:      OMIKOSHI_BG_05.LM	off: 0x280,	size: 0x1d8
+	filename: OMIKOSHI_BG_05.TEXPACK	off: 0x480,	size: 0x207a4
+
+c:\dump\part177
+	filename:      OMIKOSHI_BG_06.LM	off: 0x280,	size: 0x1d8
+	filename: OMIKOSHI_BG_06.TEXPACK	off: 0x480,	size: 0x207a4
+
+c:\dump\part178
+	filename: OMIKOSHI_BG_07.TEXPACK	off: 0x280,	size: 0x207a4
+	filename:      OMIKOSHI_BG_07.LM	off: 0x20a80,	size: 0x1d8
+
+c:\dump\part179
+	filename: OMIKOSHI_BG_08.TEXPACK	off: 0x280,	size: 0x207a4
+	filename:      OMIKOSHI_BG_08.LM	off: 0x20a80,	size: 0x1d8
+
+c:\dump\part180
+	filename: BOSS_GUTS_CANNON.TEXPACK	off: 0x280,	size: 0x85264
+	filename:           GUTS_CANNON.LM	off: 0x85500,	size: 0x91b4
+
+c:\dump\part181
+	filename:  DOKONDAN_DOKON.LM	off: 0x280,	size: 0xb430
+	filename:  DOKONDAN_BOTAN.LM	off: 0xb700,	size: 0xa640
+	filename: BOSS_DOKON.TEXPACK	off: 0x15d80,	size: 0x71268
+
+c:\dump\part182
+	filename:           GUTS_JET.LM	off: 0x280,	size: 0x9524
+	filename: BOSS_GUTS_JET.TEXPACK	off: 0x9800,	size: 0x9346c
+
+c:\dump\part183
+	filename:            GUTS_ITEL.LM	off: 0x280,	size: 0x98f4
+	filename: BOSS_GUTS_EATEL.TEXPACK	off: 0x9b80,	size: 0xa84ec
+
+c:\dump\part184
+	filename:               ARMAGE.LM	off: 0x280,	size: 0x6694
+	filename: BOSS_ARMAGEDDON.TEXPACK	off: 0x6980,	size: 0x3b860
+
+c:\dump\part185
+	filename: BOSS_ATTACK_CANNON.TEXPACK	off: 0x280,	size: 0x921c
+	filename:   BOSS_ATTACK_CANNON_00.LM	off: 0x9500,	size: 0xc60c
+
+c:\dump\part186
+	filename:      BOSS_ATTACK_BOTAN.LM	off: 0x300,	size: 0x11a6c
+	filename:   BOSS_ATTACK_BOTAN_00.LM	off: 0x11d80,	size: 0x11a6c
+	filename: BOSS_ATTACK_DOKON.TEXPACK	off: 0x23800,	size: 0x4b4dc
+	filename:       BOSS_ATTACK_NYAN.LM	off: 0x6ed00,	size: 0x100e0
+
+c:\dump\part187
+	filename: BOSS_ATTACK_MISSILE_03.LM	off: 0x300,	size: 0x37850
+	filename: BOSS_ATTACK_MISSILE_02.LM	off: 0x37b80,	size: 0x3e41c
+	filename: BOSS_ATTACK_MISSILE_01.LM	off: 0x76000,	size: 0x3e458
+	filename:   BOSS_ATTACK_JET.TEXPACK	off: 0xb4480,	size: 0x78e4
+
+c:\dump\part188
+	filename:      BOSS_ATTACK_DEVIL.LM	off: 0x280,	size: 0x2076c
+	filename: BOSS_ATTACK_DEVIL.TEXPACK	off: 0x20a00,	size: 0x17268
+
+c:\dump\part189
+	filename:       BOSS_ATTACK_ITEL.LM	off: 0x280,	size: 0x193c4
+	filename: BOSS_ATTACK_EATEL.TEXPACK	off: 0x19680,	size: 0x252a0
+
+c:\dump\part190
+	filename:          BOSS_ATTACK_ARMAGE.LM	off: 0x300,	size: 0x76334
+	filename:         BOSS_ATTACK_ARMAGE2.LM	off: 0x76680,	size: 0x2ef94
+	filename: BOSS_ATTACK_ARMAGEDDON.TEXPACK	off: 0xa5680,	size: 0xdfdc
+
+c:\dump\part191
+	filename: BOSS_SP_BOTAN.TEXPACK	off: 0x280,	size: 0x15e28
+	filename:        DOJYO_BOTAN.LM	off: 0x16100,	size: 0x1898
+
+c:\dump\part192
+	filename: BOSS_SP_DOKON.TEXPACK	off: 0x280,	size: 0x15e28
+	filename:        DOJYO_DOKON.LM	off: 0x16100,	size: 0x18ac
+
+c:\dump\part193
+	filename: ATTRACT_A0010.LM	off: 0x280,	size: 0x2730
+	filename:  WARNING.TEXPACK	off: 0x2a00,	size: 0x23b68
+
+c:\dump\part194
+	filename:     LOGO.TEXPACK	off: 0x280,	size: 0xe16a0
+	filename: ATTRACT_A0051.LM	off: 0xe1980,	size: 0x1ec8
+	filename: ATTRACT_A0050.LM	off: 0xe3880,	size: 0x531c
+
+c:\dump\part195
+	filename:    TITLE.TEXPACK	off: 0x280,	size: 0x9e71c
+	filename: TITLE_ROGO_00.LM	off: 0x9ea00,	size: 0x7f70
+
+c:\dump\part196
+	filename: ADVERTISE.TEXPACK	off: 0x280,	size: 0x4a29c
+	filename:      TAIKENBAN.LM	off: 0x4a580,	size: 0x4b60
+
+c:\dump\part197
+	filename:   ONLINE_MODE_BG.LM	off: 0x300,	size: 0x1924
+	filename: PLAYER_SELECT_BG.LM	off: 0x1c80,	size: 0x9b4
+	filename:  GAME_SETTING.BG.LM	off: 0x2680,	size: 0x9b8
+	filename:   MODE_SELECT_BG.LM	off: 0x3080,	size: 0x29bec
+	filename:     MENU_BG.TEXPACK	off: 0x2cc80,	size: 0x8286c
+	filename:   SONG_SELECT_BG.LM	off: 0xaf500,	size: 0x4528
+
+c:\dump\part198
+	filename:          DRUM_COUNTER.LM	off: 0x380,	size: 0x1e70
+	filename:           MODE_SELECT.LM	off: 0x2200,	size: 0x1a878
+	filename:  MODE_SELECT_TRIANGLE.LM	off: 0x1ca80,	size: 0x28a4
+	filename: MODE_SELECT_FUKIDASHI.LM	off: 0x1f380,	size: 0x2cc8
+	filename:     MODE_SELECT_TITLE.LM	off: 0x22080,	size: 0x3774
+	filename:              BASE_TOP.LM	off: 0x25800,	size: 0x1e0
+	filename:      MODE_SELECT.TEXPACK	off: 0x25a00,	size: 0x3b9e4
+
+c:\dump\part199
+	filename:                BASE_TOP.LM	off: 0x300,	size: 0x1e0
+	filename: PLAYER_SELECT_FUKIDASHI.LM	off: 0x500,	size: 0x2058
+	filename:     PLAYER_SELECT_TITLE.LM	off: 0x2580,	size: 0x1d4
+	filename:  PLAYER_SELECT_TRIANGLE.LM	off: 0x2780,	size: 0x20ec
+	filename:           PLAYER_SELECT.LM	off: 0x4880,	size: 0xc554
+	filename:      PLAYER_SELECT.TEXPACK	off: 0x10e00,	size: 0x22aec
+
+c:\dump\part200
+	filename: GAME_SETTING.TEXPACK	off: 0x280,	size: 0xaa76c
+	filename:      GAME_SETTING.LM	off: 0xaaa00,	size: 0x39fc4
+
+c:\dump\part201
+	filename:  DONSROOM_TRIANGLE.LM	off: 0x300,	size: 0x27fc
+	filename:     DONS_ROOM.TEXPACK	off: 0x2b00,	size: 0x9bf64
+	filename: DONSROOM_FUKIDASHI.LM	off: 0x9ea80,	size: 0x2b74
+	filename:     DONSROOM_TITLE.LM	off: 0xa1600,	size: 0x2fe0
+	filename:           DONSROOM.LM	off: 0xa4600,	size: 0x20c30
+	filename:       DRUM_COUNTER.LM	off: 0xc5280,	size: 0x1e70
+	filename:           BASE_TOP.LM	off: 0xc7100,	size: 0x1e0
+
+c:\dump\part202
+	filename:                CROWN.LM	off: 0x900,	size: 0x3144
+	filename:    BOARD_SCORE_COMBO.LM	off: 0x3a80,	size: 0x2e84
+	filename:         RESULT_TITLE.LM	off: 0x6980,	size: 0x1d4
+	filename:    BOARD_SCORE_RENDA.LM	off: 0x6b80,	size: 0x2e98
+	filename:          OPTION_ICON.LM	off: 0x9a80,	size: 0x19dc
+	filename:         DRUM_COUNTER.LM	off: 0xb480,	size: 0x1e70
+	filename:         FAILURE_RAIN.LM	off: 0xd300,	size: 0x39e4
+	filename:       FAILURE_BUDDLE.LM	off: 0x10d00,	size: 0x1f18
+	filename:     BOARD_SCORE_FUKA.LM	off: 0x12c80,	size: 0x2e94
+	filename:      BOARD_SCORE_TEN.LM	off: 0x15b80,	size: 0x3b40
+	filename:                  DON.LM	off: 0x19700,	size: 0x214
+	filename:          PLAYER_NAME.LM	off: 0x19980,	size: 0x11d4
+	filename:            RESULT_BG.LM	off: 0x1ab80,	size: 0x2a0
+	filename:              TAMASHI.LM	off: 0x1ae80,	size: 0x5b80
+	filename:     BOARD_SCORE_RYOU.LM	off: 0x20a80,	size: 0x2e98
+	filename:                PANEL.LM	off: 0x23980,	size: 0x22c
+	filename:            BEST_ICON.LM	off: 0x23c00,	size: 0x4644
+	filename:         TAMASHI_FIRE.LM	off: 0x28280,	size: 0x1c38
+	filename: BOARD_SCORE_TATAKETA.LM	off: 0x29f00,	size: 0x2d6c
+	filename:           NORM_CLEAR.LM	off: 0x2cc80,	size: 0x5e40
+	filename:             SONG_TEX.LM	off: 0x32b00,	size: 0x214
+	filename:        SUCCESS_FRONT.LM	off: 0x32d80,	size: 0x1d9c
+	filename:              RANKING.LM	off: 0x34b80,	size: 0x3f38
+	filename:         SUCCESS_BACK.LM	off: 0x38b00,	size: 0x81f0
+	filename:          COURSE_ICON.LM	off: 0x40d00,	size: 0x6b4
+	filename:          RESULT.TEXPACK	off: 0x41400,	size: 0xb9ee0
+	filename:       BOARD_SCORE_KA.LM	off: 0xfb300,	size: 0x2e94
+
+c:\dump\part203
+	filename: DOJO_WADAIKO_RESULT.TEXPACK	off: 0x280,	size: 0x45a60
+	filename:      DOJO_WADAIKO_RESULT.LM	off: 0x45d00,	size: 0x2ac2c
+
+c:\dump\part204
+	filename: DONS_ROOM_KISEKAE.TEXPACK	off: 0x380,	size: 0x96160
+	filename:          KISEKAE_SUB_E.LM	off: 0x96500,	size: 0x49e0
+	filename:           KISEKAE_MAIN.LM	off: 0x9af00,	size: 0x13ffc
+	filename:          KISEKAE_SUB_D.LM	off: 0xaef00,	size: 0x4a24
+	filename:          KISEKAE_SUB_C.LM	off: 0xb3980,	size: 0x49e0
+	filename:          KISEKAE_SUB_B.LM	off: 0xb8380,	size: 0xaee8
+	filename:          KISEKAE_SUB_A.LM	off: 0xc3280,	size: 0xaf60
+	filename:             KISEKAE_BG.LM	off: 0xce200,	size: 0x8290
+	filename:          KISEKAE_TAIKO.LM	off: 0xd6500,	size: 0x1518
+
+c:\dump\part205
+	filename: NAME_ENTRY_TAIKO.LM	off: 0x300,	size: 0x1298
+	filename:  NAME_ENTRY.TEXPACK	off: 0x1600,	size: 0xdd76c
+	filename:    NAME_ENTRY_BG.LM	off: 0xded80,	size: 0x79a68
+	filename:       NAME_ENTRY.LM	off: 0x158800,	size: 0x1ea90
+	filename:         BASE_TOP.LM	off: 0x177300,	size: 0x1bc
+	filename: NAME_ENTRY_TITLE.LM	off: 0x177500,	size: 0x1d4
+
+c:\dump\part206
+	filename:           EVERYONE_BG.LM	off: 0x300,	size: 0x7e50
+	filename:     EVERYONE_SUB_AREA.LM	off: 0x8180,	size: 0x6ae8
+	filename: EVERYONE_SUB_PERSONAL.LM	off: 0xec80,	size: 0x127f0
+	filename:    EVERYONE_FUKIDASHI.LM	off: 0x21480,	size: 0x2b10
+	filename:         EVERYONE_MAIN.LM	off: 0x24000,	size: 0x7178
+	filename:    EVERYONE_DATA.TEXPACK	off: 0x2b180,	size: 0x93160
+
+c:\dump\part207
+	filename:        COMPLETENOTE.LM	off: 0x300,	size: 0xb9e0
+	filename: COMPLETENOTE_RESULT.LM	off: 0xbd00,	size: 0x236c
+	filename:  COMPLETENOTE_TITLE.LM	off: 0xe080,	size: 0x1d4
+	filename:       KISEKAE_TAIKO.LM	off: 0xe280,	size: 0x1518
+	filename:  COMPLETE_NOTE.TEXPACK	off: 0xf800,	size: 0x752e4
+	filename:            BASE_TOP.LM	off: 0x84b00,	size: 0x1e0
+
+c:\dump\part208
+	filename:             BASE_TOP.LM	off: 0x380,	size: 0x1e0
+	filename: MEDLEY_SELECT_WINDOW.LM	off: 0x580,	size: 0x4284
+	filename:       MEDLEY_MODE_BG.LM	off: 0x4880,	size: 0x9b70
+	filename:        KISEKAE_TAIKO.LM	off: 0xe400,	size: 0x1518
+	filename:     MEDLEY_MODE.TEXPACK	off: 0xf980,	size: 0xc85a0
+	filename:          MEDLEY_MODE.LM	off: 0xd7f80,	size: 0xf830
+	filename:    MEDLEY_SELECT_TOP.LM	off: 0xe7800,	size: 0x3fb8
+
+c:\dump\part209
+	filename:    TUTORIAL_EVENT02.LM	off: 0x380,	size: 0xc720
+	filename:    TUTORIAL_EVENT08.LM	off: 0xcb00,	size: 0x76b4
+	filename:    TUTORIAL_EVENT01.LM	off: 0x14200,	size: 0x6e24
+	filename:    TUTORIAL_EVENT07.LM	off: 0x1b080,	size: 0x222cc
+	filename: TUTORIAL_EVENT.TEXPACK	off: 0x3d380,	size: 0x156d64
+	filename:    TUTORIAL_EVENT06.LM	off: 0x194100,	size: 0x7c40
+	filename:    TUTORIAL_EVENT05.LM	off: 0x19bd80,	size: 0x21cac
+	filename:    TUTORIAL_EVENT04.LM	off: 0x1bda80,	size: 0xb978
+	filename:    TUTORIAL_EVENT03.LM	off: 0x1c9400,	size: 0x8c94
+
+c:\dump\part210
+	filename: TUTORIAL_BASE.TEXPACK	off: 0x280,	size: 0x73620
+	filename:      TUTORIAL_BASE.LM	off: 0x73900,	size: 0x3e28
+
+c:\dump\part211
+	filename:      END_ROLL_BG.LM	off: 0x280,	size: 0x3250
+	filename: END_ROLL_BG.TEXPACK	off: 0x3500,	size: 0x1ccda0
+
+c:\dump\part212
+	filename:        ENDROLL_F_GK.LM	off: 0x800,	size: 0x1830
+	filename:    END_ROLL_TEXT_03.LM	off: 0x2080,	size: 0x1960
+	filename:    END_ROLL_TEXT_13.LM	off: 0x3a00,	size: 0x1a44
+	filename:    END_ROLL_TEXT_23.LM	off: 0x5480,	size: 0x1a5c
+	filename:    END_ROLL_TEXT_07.LM	off: 0x6f00,	size: 0x1a54
+	filename:    END_ROLL_TEXT_17.LM	off: 0x8980,	size: 0x1ae4
+	filename:    END_ROLL_TEXT_27.LM	off: 0xa480,	size: 0x1b10
+	filename: EVENT_IMAGE_ENDING1.LM	off: 0xc000,	size: 0xd91c
+	filename:    END_ROLL_TEXT_10.LM	off: 0x19980,	size: 0x1904
+	filename:    END_ROLL_TEXT_20.LM	off: 0x1b300,	size: 0x1904
+	filename:    END_ROLL_TEXT_04.LM	off: 0x1cc80,	size: 0x1ae4
+	filename:    END_ROLL_TEXT_14.LM	off: 0x1e780,	size: 0x1864
+	filename:    END_ROLL_TEXT_24.LM	off: 0x20000,	size: 0x1914
+	filename:       ENDROLL_D_BNG.LM	off: 0x21980,	size: 0x1f38
+	filename:    END_ROLL_TEXT_08.LM	off: 0x23900,	size: 0x1b84
+	filename:    END_ROLL_TEXT_18.LM	off: 0x25500,	size: 0x1c44
+	filename:    END_ROLL_TEXT_28.LM	off: 0x27180,	size: 0x1b1c
+	filename:    END_ROLL_TEXT_01.LM	off: 0x28d00,	size: 0x17c4
+	filename:    END_ROLL_TEXT_11.LM	off: 0x2a500,	size: 0x1a44
+	filename:    END_ROLL_TEXT_21.LM	off: 0x2bf80,	size: 0x1870
+	filename:    END_ROLL_TEXT_05.LM	off: 0x2d800,	size: 0x1a54
+	filename:    END_ROLL_TEXT_15.LM	off: 0x2f280,	size: 0x1864
+	filename:    END_ROLL_TEXT_25.LM	off: 0x30b00,	size: 0x1ba4
+	filename:  END_ROLL_TEXT.TEXPACK	off: 0x32700,	size: 0x255060
+	filename:    END_ROLL_TEXT_09.LM	off: 0x287780,	size: 0x1864
+	filename:    END_ROLL_TEXT_19.LM	off: 0x289000,	size: 0x1af4
+	filename:    END_ROLL_TEXT_29.LM	off: 0x28ab00,	size: 0x19b8
+	filename:         IMG_ENDING2.LM	off: 0x28c500,	size: 0xddcc
+	filename:    END_ROLL_TEXT_02.LM	off: 0x29a300,	size: 0x1904
+	filename:    END_ROLL_TEXT_12.LM	off: 0x29bc80,	size: 0x1a44
+	filename:    END_ROLL_TEXT_22.LM	off: 0x29d700,	size: 0x1c48
+	filename:    END_ROLL_TEXT_06.LM	off: 0x29f380,	size: 0x1a44
+	filename:    END_ROLL_TEXT_16.LM	off: 0x2a0e00,	size: 0x1ae4
+	filename:    END_ROLL_TEXT_26.LM	off: 0x2a2900,	size: 0x1a6c
+
+c:\dump\part213
+	filename:    MAIL.TEXPACK	off: 0x280,	size: 0x1adee0
+	filename: LOAD_OTEGAMI.LM	off: 0x1ae180,	size: 0xd404
+
+c:\dump\part214
+	filename:      MAILBOX.LM	off: 0x280,	size: 0x72e8
+	filename: MAILBOX.TEXPACK	off: 0x7580,	size: 0x7664
+
+c:\dump\part215
+	filename:   MAILBOX_TAIKO.LM	off: 0x280,	size: 0x1588
+	filename:      MAILBOX_BG.LM	off: 0x1880,	size: 0x7d5c
+	filename: MAILBOX_BG.TEXPACK	off: 0x9600,	size: 0x5b120
+
+c:\dump\part216
+	filename: EVENT_BG.LM	off: 0x280,	size: 0x3c40
+	filename:  BG.TEXPACK	off: 0x3f00,	size: 0x2679c
+
+c:\dump\part217
+	filename:  BG_UPPER.TEXPACK	off: 0x280,	size: 0x75c
+	filename: EVENT_BG_UPPER.LM	off: 0xa00,	size: 0x21ac
+
+c:\dump\part218
+	filename: EVENT_BG01_FLOOR_0.GIM	off: 0x280,	size: 0x20524
+	filename: EVENT_BG01_FLOOR_1.GIM	off: 0x20800,	size: 0x4524
+
+c:\dump\part219
+	filename: EVENT_BG02_BATTLE1_0.GIM	off: 0x280,	size: 0x20528
+	filename: EVENT_BG02_BATTLE1_1.GIM	off: 0x20800,	size: 0x4528
+
+c:\dump\part220
+	filename: EVENT_BG03_BATTLE2_0.GIM	off: 0x280,	size: 0x20528
+	filename: EVENT_BG03_BATTLE2_1.GIM	off: 0x20800,	size: 0x4528
+
+c:\dump\part221
+	filename: EVENT_BG04_BATTLE3_0.GIM	off: 0x280,	size: 0x20528
+	filename: EVENT_BG04_BATTLE3_1.GIM	off: 0x20800,	size: 0x4528
+
+c:\dump\part222
+	filename: EVENT_BG05_BATTLE4_0.GIM	off: 0x280,	size: 0x20528
+	filename: EVENT_BG05_BATTLE4_1.GIM	off: 0x20800,	size: 0x4528
+
+c:\dump\part223
+	filename: EVENT_BG06_SIDE_0.GIM	off: 0x280,	size: 0x20524
+	filename: EVENT_BG06_SIDE_1.GIM	off: 0x20800,	size: 0x4524
+
+c:\dump\part224
+	filename: EVENT_BG07_MISSION4_0.GIM	off: 0x280,	size: 0x20528
+	filename: EVENT_BG07_MISSION4_1.GIM	off: 0x20800,	size: 0x4528
+
+c:\dump\part225
+	filename: EVENT_BG08_MISSION6_0.GIM	off: 0x280,	size: 0x20528
+	filename: EVENT_BG08_MISSION6_1.GIM	off: 0x20800,	size: 0x4528
+
+c:\dump\part226
+	filename: EVENT_BG09_MISSION7_0.GIM	off: 0x280,	size: 0x20528
+	filename: EVENT_BG09_MISSION7_1.GIM	off: 0x20800,	size: 0x4528
+
+c:\dump\part227
+	filename: EVENT_BG10_ARMAGE_0.GIM	off: 0x280,	size: 0x20524
+	filename: EVENT_BG10_ARMAGE_1.GIM	off: 0x20800,	size: 0x4524
+
+c:\dump\part228
+	filename: EVENT_BG11_0.GIM	off: 0x280,	size: 0x20520
+	filename: EVENT_BG11_1.GIM	off: 0x20800,	size: 0x4520
+
+c:\dump\part229
+	filename: EVENT_BG12_TUTORIAL_0.GIM	off: 0x280,	size: 0x2052c
+	filename: EVENT_BG12_TUTORIAL_1.GIM	off: 0x20800,	size: 0x252c
+
+c:\dump\part230
+	filename: EVENT_EFFECT.TEXPACK	off: 0x480,	size: 0x4afe0
+	filename:   EVENT_EFFECT_15.LM	off: 0x4b480,	size: 0xf64
+	filename:   EVENT_EFFECT_10.LM	off: 0x4c400,	size: 0x3860
+	filename:   EVENT_EFFECT_06.LM	off: 0x4fc80,	size: 0x13a0
+	filename:   EVENT_EFFECT_01.LM	off: 0x51080,	size: 0x1120
+	filename:   EVENT_EFFECT_12.LM	off: 0x52200,	size: 0x7788
+	filename:   EVENT_EFFECT_08.LM	off: 0x59a00,	size: 0x1a3c
+	filename:   EVENT_EFFECT_03.LM	off: 0x5b480,	size: 0xc08
+	filename:   EVENT_EFFECT_14.LM	off: 0x5c100,	size: 0x5e4
+	filename:   EVENT_EFFECT_05.LM	off: 0x5c700,	size: 0x1544
+	filename:   EVENT_EFFECT_00.LM	off: 0x5dc80,	size: 0x7f8
+	filename:   EVENT_EFFECT_11.LM	off: 0x5e480,	size: 0x2e94
+	filename:   EVENT_EFFECT_07.LM	off: 0x61380,	size: 0x2618
+	filename:   EVENT_EFFECT_02.LM	off: 0x63a00,	size: 0xbd8
+	filename:   EVENT_EFFECT_13.LM	off: 0x64600,	size: 0x67b4
+	filename:   EVENT_EFFECT_09.LM	off: 0x6ae00,	size: 0x17e0
+	filename:   EVENT_EFFECT_04.LM	off: 0x6c600,	size: 0x1b18
+
+c:\dump\part231
+	filename: EVENT_MAIN.TEXPACK	off: 0x280,	size: 0x1cee4
+	filename:      EVENT_MAIN.LM	off: 0x1d180,	size: 0xa39c
+
+c:\dump\part232
+	filename:      EVENT_KEY.LM	off: 0x280,	size: 0x309c
+	filename: EVENT_KEY.TEXPACK	off: 0x3380,	size: 0x1c60
+
+c:\dump\part233
+	filename: DON_COS00_DIET_EFFECT.LM	off: 0x280,	size: 0x440
+	filename:              DON.TEXPACK	off: 0x700,	size: 0x100
+
+c:\dump\part234
+	filename:      DEVIL_DON.TEXPACK	off: 0x280,	size: 0x107a0
+	filename: EVENT_CHR_DEVIL_DON.LM	off: 0x10a80,	size: 0x2c0
+
+c:\dump\part235
+	filename: M_DON.TEXPACK	off: 0x280,	size: 0x21a60
+	filename:      M_DON.LM	off: 0x21d00,	size: 0x556c
+
+c:\dump\part236
+	filename:      MASKDON.TEXPACK	off: 0x280,	size: 0x20d24
+	filename: EVENT_CHR_MASKDON.LM	off: 0x21000,	size: 0x4798
+
+c:\dump\part237
+	filename: EVENT_CHR_MIKO.LM	off: 0x280,	size: 0x9394
+	filename:      MIKO.TEXPACK	off: 0x9680,	size: 0x73aa0
+
+c:\dump\part238
+	filename:      MIKO_EVENT.TEXPACK	off: 0x280,	size: 0xf9520
+	filename: EVENT_CHR_MIKO_EVENT.LM	off: 0xf9800,	size: 0x18aec
+
+c:\dump\part239
+	filename:      EVENT_CHR_HANA.LM	off: 0x280,	size: 0x40d4
+	filename:           HANA.TEXPACK	off: 0x4380,	size: 0xc459c
+	filename: EVENT_CHR_HANA_LEFT.LM	off: 0xc8980,	size: 0x40bc
+
+c:\dump\part240
+	filename: EVENT_CHR_WADAINU.LM	off: 0x280,	size: 0x37c8
+	filename:      WADAINU.TEXPACK	off: 0x3a80,	size: 0x51e1c
+
+c:\dump\part241
+	filename:      EVENT_CHR_TETSUO.LM	off: 0x280,	size: 0x4024
+	filename:           TETSUO.TEXPACK	off: 0x4300,	size: 0xc45a0
+	filename: EVENT_CHR_TETSUO_LEFT.LM	off: 0xc8900,	size: 0x4024
+
+c:\dump\part242
+	filename: EVENT_CHR_DONKO.LM	off: 0x280,	size: 0x5068
+	filename:      DONKO.TEXPACK	off: 0x5300,	size: 0x623a0
+
+c:\dump\part243
+	filename: EVENT_CHR_KAME.LM	off: 0x280,	size: 0x42f8
+	filename:      KAME.TEXPACK	off: 0x4580,	size: 0x6239c
+
+c:\dump\part244
+	filename: EVENT_CHR_NEKOS.LM	off: 0x280,	size: 0x66c0
+	filename:      NEKOS.TEXPACK	off: 0x6980,	size: 0x345a0
+
+c:\dump\part245
+	filename: EVENT_CHR_UNAGI.LM	off: 0x280,	size: 0x416c
+	filename:      UNAGI.TEXPACK	off: 0x4400,	size: 0x623a0
+
+c:\dump\part246
+	filename: EVENT_CHR_BACHIO.LM	off: 0x280,	size: 0x2598
+	filename:      BACHIO.TEXPACK	off: 0x2880,	size: 0x312a0
+
+c:\dump\part247
+	filename: EVENT_CHR_MONKASEI_1P.LM	off: 0x280,	size: 0x16208
+	filename:           PUPIL1.TEXPACK	off: 0x16500,	size: 0x6be0
+
+c:\dump\part248
+	filename:           PUPIL2.TEXPACK	off: 0x280,	size: 0x6be0
+	filename: EVENT_CHR_MONKASEI_2P.LM	off: 0x6e80,	size: 0x16018
+
+c:\dump\part249
+	filename:   DOKONDAN3.TEXPACK	off: 0x280,	size: 0x8eca0
+	filename: EVENT_CHR_DOKON3.LM	off: 0x8ef80,	size: 0x14a20
+
+c:\dump\part250
+	filename: EVENT_CHR_DOKON_BOSS.LM	off: 0x280,	size: 0x6540
+	filename:      DOKON_BOSS.TEXPACK	off: 0x6800,	size: 0xb4024
+
+c:\dump\part251
+	filename:      EVENT_TUTORIAL.LM	off: 0x280,	size: 0x21f8
+	filename: EVENT_TUTORIAL.TEXPACK	off: 0x2480,	size: 0x53424
+
+c:\dump\part252
+	filename:      GUTS_CANNON.TEXPACK	off: 0x280,	size: 0x727a8
+	filename: EVENT_CHR_GUTS_CANNON.LM	off: 0x72a80,	size: 0xf738
+
+c:\dump\part253
+	filename: EVENT_CHR_GUTS_JET.LM	off: 0x280,	size: 0xc720
+	filename:      GUTS_JET.TEXPACK	off: 0xca00,	size: 0x7d720
+
+c:\dump\part254
+	filename:      GUTS_EATER.TEXPACK	off: 0x280,	size: 0x99524
+	filename: EVENT_CHR_GUTS_EATER.LM	off: 0x99800,	size: 0x175c0
+
+c:\dump\part255
+	filename: EVENT_IMAGE_01.LM	off: 0x280,	size: 0x25d0
+	filename:    IMG_01.TEXPACK	off: 0x2880,	size: 0x4191c
+
+c:\dump\part256
+	filename: EVENT_IMAGE_02.LM	off: 0x280,	size: 0x10a00
+	filename:    IMG_02.TEXPACK	off: 0x10d00,	size: 0x4b0a4
+
+c:\dump\part257
+	filename: EVENT_IMAGE_03.LM	off: 0x280,	size: 0x23b8
+	filename:    IMG_03.TEXPACK	off: 0x2680,	size: 0xc35e8
+
+c:\dump\part258
+	filename:    IMG_04.TEXPACK	off: 0x280,	size: 0x6091c
+	filename: EVENT_IMAGE_04.LM	off: 0x60c00,	size: 0x14a8
+
+c:\dump\part259
+	filename: EVENT_IMAGE_05.LM	off: 0x280,	size: 0x1408
+	filename:    IMG_05.TEXPACK	off: 0x1700,	size: 0xe14a0
+
+c:\dump\part260
+	filename: EVENT_IMAGE_06.LM	off: 0x280,	size: 0x29cc
+	filename:    IMG_06.TEXPACK	off: 0x2c80,	size: 0xc8d60
+
+c:\dump\part261
+	filename: EVENT_IMAGE_07.LM	off: 0x280,	size: 0x3e74
+	filename:    IMG_07.TEXPACK	off: 0x4100,	size: 0x114ca0
+
+c:\dump\part262
+	filename:    IMG_08.TEXPACK	off: 0x280,	size: 0x10001c
+	filename: EVENT_IMAGE_08.LM	off: 0x100300,	size: 0xe108
+
+c:\dump\part263
+	filename: EVENT_IMAGE_09.LM	off: 0x280,	size: 0x2f10
+	filename:    IMG_09.TEXPACK	off: 0x3200,	size: 0x71060
+
+c:\dump\part264
+	filename: EVENT_IMAGE_11.LM	off: 0x280,	size: 0x7c58
+	filename:    IMG_11.TEXPACK	off: 0x7f00,	size: 0x85fe0
+
+c:\dump\part265
+	filename: EVENT_IMAGE_13.LM	off: 0x280,	size: 0x3204
+	filename:    IMG_13.TEXPACK	off: 0x3500,	size: 0x850a0
+
+c:\dump\part266
+	filename:    IMG_16.TEXPACK	off: 0x280,	size: 0xcb3e4
+	filename: EVENT_IMAGE_16.LM	off: 0xcb680,	size: 0x3d94
+
+c:\dump\part267
+	filename: EVENT_IMAGE_18.LM	off: 0x280,	size: 0x3eac
+	filename:    IMG_18.TEXPACK	off: 0x4180,	size: 0x85364
+
+c:\dump\part268
+	filename: EVENT_IMAGE_19.LM	off: 0x280,	size: 0xaf24
+	filename:    IMG_19.TEXPACK	off: 0xb200,	size: 0x41ae4
+	filename:          EV_19.LM	off: 0x4cd00,	size: 0xaf48
+
+c:\dump\part269
+	filename:    IMG_ENDING1.TEXPACK	off: 0x280,	size: 0xed964
+	filename: EVENT_IMAGE_ENDING1.LM	off: 0xedc00,	size: 0xda60
+
+c:\dump\part270
+	filename: IMG_ENDING2.TEXPACK	off: 0x280,	size: 0x82f20
+	filename:      IMG_ENDING2.LM	off: 0x83200,	size: 0x96a0
+
+c:\dump\part271
+	filename:      IMG_KACHINUKI.LM	off: 0x280,	size: 0xce4c
+	filename: IMG_KACHINUKI.TEXPACK	off: 0xd100,	size: 0x96aa0
+
+c:\dump\part272
+	filename: COS_A06_INFO.DAT	off: 0xd80,	size: 0x40
+	filename: COS_B02_INFO.DAT	off: 0xe00,	size: 0x40
+	filename: COS_B30_INFO.DAT	off: 0xe80,	size: 0x40
+	filename: COS_A20_INFO.DAT	off: 0xf00,	size: 0x40
+	filename: COS_B19_INFO.DAT	off: 0xf80,	size: 0x40
+	filename: COS_A09_INFO.DAT	off: 0x1000,	size: 0x40
+	filename: COS_B05_INFO.DAT	off: 0x1080,	size: 0x40
+	filename: COS_A23_INFO.DAT	off: 0x1100,	size: 0x40
+	filename: COS_B08_INFO.DAT	off: 0x1180,	size: 0x40
+	filename: COS_A26_INFO.DAT	off: 0x1200,	size: 0x40
+	filename: COS_B22_INFO.DAT	off: 0x1280,	size: 0x40
+	filename: COS_A12_INFO.DAT	off: 0x1300,	size: 0x40
+	filename: COS_A29_INFO.DAT	off: 0x1380,	size: 0x40
+	filename: COS_A15_INFO.DAT	off: 0x1400,	size: 0x40
+	filename: COS_B11_INFO.DAT	off: 0x1480,	size: 0x40
+	filename: COS_A01_INFO.DAT	off: 0x1500,	size: 0x40
+	filename: COS_B28_INFO.DAT	off: 0x1580,	size: 0x40
+	filename: COS_A18_INFO.DAT	off: 0x1600,	size: 0x40
+	filename: COS_B14_INFO.DAT	off: 0x1680,	size: 0x40
+	filename: COS_A04_INFO.DAT	off: 0x1700,	size: 0x40
+	filename: COS_B17_INFO.DAT	off: 0x1780,	size: 0x40
+	filename: COS_A07_INFO.DAT	off: 0x1800,	size: 0x40
+	filename: COS_B03_INFO.DAT	off: 0x1880,	size: 0x40
+	filename: COS_A21_INFO.DAT	off: 0x1900,	size: 0x40
+	filename: COS_B06_INFO.DAT	off: 0x1980,	size: 0x40
+	filename: COS_A24_INFO.DAT	off: 0x1a00,	size: 0x40
+	filename: COS_B20_INFO.DAT	off: 0x1a80,	size: 0x40
+	filename: COS_A10_INFO.DAT	off: 0x1b00,	size: 0x40
+	filename: COS_B09_INFO.DAT	off: 0x1b80,	size: 0x40
+	filename: COS_A27_INFO.DAT	off: 0x1c00,	size: 0x40
+	filename: COS_B23_INFO.DAT	off: 0x1c80,	size: 0x40
+	filename: COS_A13_INFO.DAT	off: 0x1d00,	size: 0x40
+	filename: COS_B26_INFO.DAT	off: 0x1d80,	size: 0x40
+	filename: COS_A16_INFO.DAT	off: 0x1e00,	size: 0x40
+	filename: COS_B12_INFO.DAT	off: 0x1e80,	size: 0x40
+	filename: COS_A02_INFO.DAT	off: 0x1f00,	size: 0x40
+	filename: COS_A30_INFO.DAT	off: 0x1f80,	size: 0x40
+	filename: COS_B29_INFO.DAT	off: 0x2000,	size: 0x40
+	filename: COS_A19_INFO.DAT	off: 0x2080,	size: 0x40
+	filename: COS_B15_INFO.DAT	off: 0x2100,	size: 0x40
+	filename: COS_A05_INFO.DAT	off: 0x2180,	size: 0x40
+	filename: COS_B01_INFO.DAT	off: 0x2200,	size: 0x40
+	filename: COS_B18_INFO.DAT	off: 0x2280,	size: 0x40
+	filename: COS_A08_INFO.DAT	off: 0x2300,	size: 0x40
+	filename: COS_B04_INFO.DAT	off: 0x2380,	size: 0x40
+	filename: COS_A22_INFO.DAT	off: 0x2400,	size: 0x40
+	filename: COS_B07_INFO.DAT	off: 0x2480,	size: 0x40
+	filename: COS_A25_INFO.DAT	off: 0x2500,	size: 0x40
+	filename: COS_B21_INFO.DAT	off: 0x2580,	size: 0x40
+	filename: COS_A11_INFO.DAT	off: 0x2600,	size: 0x40
+	filename: COS_A28_INFO.DAT	off: 0x2680,	size: 0x40
+	filename: COS_B24_INFO.DAT	off: 0x2700,	size: 0x40
+	filename: COS_A14_INFO.DAT	off: 0x2780,	size: 0x40
+	filename: COS_B10_INFO.DAT	off: 0x2800,	size: 0x40
+	filename: COS_B27_INFO.DAT	off: 0x2880,	size: 0x40
+	filename: COS_A17_INFO.DAT	off: 0x2900,	size: 0x40
+	filename: COS_B13_INFO.DAT	off: 0x2980,	size: 0x40
+	filename: COS_A03_INFO.DAT	off: 0x2a00,	size: 0x40
+	filename: COS_B16_INFO.DAT	off: 0x2a80,	size: 0x40
+
+c:\dump\part273
+	filename: COS_A11_ICON.GIM	off: 0xd80,	size: 0x964
+	filename: COS_A03_ICON.GIM	off: 0x1700,	size: 0x964
+	filename: COS_B24_ICON.GIM	off: 0x2080,	size: 0x964
+	filename: COS_B16_ICON.GIM	off: 0x2a00,	size: 0x964
+	filename: COS_B08_ICON.GIM	off: 0x3380,	size: 0x964
+	filename: COS_999_ICON.GIM	off: 0x3d00,	size: 0x960
+	filename: COS_A24_ICON.GIM	off: 0x4680,	size: 0x964
+	filename: COS_A16_ICON.GIM	off: 0x5000,	size: 0x964
+	filename: COS_A08_ICON.GIM	off: 0x5980,	size: 0x964
+	filename: COS_B10_ICON.GIM	off: 0x6300,	size: 0x964
+	filename: COS_B02_ICON.GIM	off: 0x6c80,	size: 0x964
+	filename: COS_B29_ICON.GIM	off: 0x7600,	size: 0x964
+	filename: COS_A10_ICON.GIM	off: 0x7f80,	size: 0x964
+	filename: COS_A02_ICON.GIM	off: 0x8900,	size: 0x964
+	filename: COS_A29_ICON.GIM	off: 0x9280,	size: 0x964
+	filename: COS_B23_ICON.GIM	off: 0x9c00,	size: 0x964
+	filename: COS_B15_ICON.GIM	off: 0xa580,	size: 0x964
+	filename: COS_B07_ICON.GIM	off: 0xaf00,	size: 0x964
+	filename: COS_A23_ICON.GIM	off: 0xb880,	size: 0x960
+	filename: COS_A15_ICON.GIM	off: 0xc200,	size: 0x964
+	filename: COS_A07_ICON.GIM	off: 0xcb80,	size: 0x964
+	filename: COS_B01_ICON.GIM	off: 0xd500,	size: 0x964
+	filename: COS_B28_ICON.GIM	off: 0xde80,	size: 0x964
+	filename: COS_A01_ICON.GIM	off: 0xe800,	size: 0x964
+	filename: COS_A28_ICON.GIM	off: 0xf180,	size: 0x964
+	filename: COS_B30_ICON.GIM	off: 0xfb00,	size: 0x964
+	filename: COS_B22_ICON.GIM	off: 0x10480,	size: 0x964
+	filename: COS_B14_ICON.GIM	off: 0x10e00,	size: 0x964
+	filename: COS_B06_ICON.GIM	off: 0x11780,	size: 0x964
+	filename: COS_A30_ICON.GIM	off: 0x12100,	size: 0x964
+	filename: COS_A22_ICON.GIM	off: 0x12a80,	size: 0x964
+	filename: COS_A14_ICON.GIM	off: 0x13400,	size: 0x960
+	filename: COS_A06_ICON.GIM	off: 0x13d80,	size: 0x964
+	filename: COS_B27_ICON.GIM	off: 0x14700,	size: 0x964
+	filename: COS_B19_ICON.GIM	off: 0x15080,	size: 0x964
+	filename: COS_A27_ICON.GIM	off: 0x15a00,	size: 0x964
+	filename: COS_A19_ICON.GIM	off: 0x16380,	size: 0x964
+	filename: COS_B21_ICON.GIM	off: 0x16d00,	size: 0x964
+	filename: COS_B13_ICON.GIM	off: 0x17680,	size: 0x964
+	filename: COS_B05_ICON.GIM	off: 0x18000,	size: 0x964
+	filename: COS_A21_ICON.GIM	off: 0x18980,	size: 0x964
+	filename: COS_A13_ICON.GIM	off: 0x19300,	size: 0x964
+	filename: COS_A05_ICON.GIM	off: 0x19c80,	size: 0x964
+	filename: COS_B26_ICON.GIM	off: 0x1a600,	size: 0x964
+	filename: COS_B18_ICON.GIM	off: 0x1af80,	size: 0x964
+	filename: COS_A26_ICON.GIM	off: 0x1b900,	size: 0x964
+	filename: COS_A18_ICON.GIM	off: 0x1c280,	size: 0x964
+	filename: COS_B20_ICON.GIM	off: 0x1cc00,	size: 0x964
+	filename: COS_B12_ICON.GIM	off: 0x1d580,	size: 0x964
+	filename: COS_B04_ICON.GIM	off: 0x1df00,	size: 0x964
+	filename: COS_A20_ICON.GIM	off: 0x1e880,	size: 0x964
+	filename: COS_A12_ICON.GIM	off: 0x1f200,	size: 0x964
+	filename: COS_A04_ICON.GIM	off: 0x1fb80,	size: 0x964
+	filename: COS_B17_ICON.GIM	off: 0x20500,	size: 0x964
+	filename: COS_B09_ICON.GIM	off: 0x20e80,	size: 0x964
+	filename: COS_A25_ICON.GIM	off: 0x21800,	size: 0x964
+	filename: COS_A17_ICON.GIM	off: 0x22180,	size: 0x964
+	filename: COS_A09_ICON.GIM	off: 0x22b00,	size: 0x964
+	filename: COS_B11_ICON.GIM	off: 0x23480,	size: 0x964
+	filename: COS_B03_ICON.GIM	off: 0x23e00,	size: 0x964
+
+c:\dump\part274
+	filename: COS_01_ATAMA_07A.GIM	off: 0x500,	size: 0x8164
+	filename: COS_01_ATAMA_02A.GIM	off: 0x8680,	size: 0x8164
+	filename:       COS_01_GUM.GIM	off: 0x10800,	size: 0x8160
+	filename: COS_01_ATAMA_08B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_01_ATAMA_03B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_01_ATAMA_09A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_01_ATAMA_04A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_01_ATAMA_05B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_01_ATAMA_06A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_01_ATAMA_01A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_01_ATAMA_07B.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_01_ATAMA_02B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_01_ATAMA_08A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_01_ATAMA_03A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_01_ATAMA_09B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_01_ATAMA_04B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_01_ATAMA_05A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_01_ATAMA_06B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_01_ATAMA_01B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part275
+	filename: COS_02_ATAMA_04A.GIM	off: 0x500,	size: 0x8164
+	filename:       COS_02_GUM.GIM	off: 0x8680,	size: 0x8160
+	filename: COS_02_ATAMA_05B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_02_ATAMA_06A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_02_ATAMA_01A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_02_ATAMA_07B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_02_ATAMA_02B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_02_ATAMA_08A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_02_ATAMA_03A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_02_ATAMA_09B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_02_ATAMA_04B.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_02_ATAMA_05A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_02_ATAMA_06B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_02_ATAMA_01B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_02_ATAMA_07A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_02_ATAMA_02A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_02_ATAMA_08B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_02_ATAMA_03B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_02_ATAMA_09A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part276
+	filename: COS_03_ATAMA_02B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_03_ATAMA_09A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_03_ATAMA_06A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_03_ATAMA_03A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_03_ATAMA_07B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_03_ATAMA_04B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_03_ATAMA_01B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_03_ATAMA_08A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_03_ATAMA_05A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_03_ATAMA_02A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_03_ATAMA_09B.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_03_ATAMA_06B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_03_ATAMA_03B.GIM	off: 0x61700,	size: 0x8164
+	filename:       COS_03_GUM.GIM	off: 0x69880,	size: 0x8160
+	filename: COS_03_ATAMA_07A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_03_ATAMA_04A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_03_ATAMA_01A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_03_ATAMA_08B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_03_ATAMA_05B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part277
+	filename: COS_04_ATAMA_03A.GIM	off: 0x580,	size: 0x8164
+	filename: COS_04_ATAMA_03B.GIM	off: 0x8700,	size: 0x8164
+	filename: COS_04_ATAMA_07A.GIM	off: 0x10880,	size: 0x8164
+	filename: COS_04_ATAMA_07B.GIM	off: 0x18a00,	size: 0x8164
+	filename: COS_04_ATAMA_04A.GIM	off: 0x20b80,	size: 0x8164
+	filename: COS_04_ATAMA_04B.GIM	off: 0x28d00,	size: 0x8164
+	filename: COS_04_ATAMA_08A.GIM	off: 0x30e80,	size: 0x8164
+	filename: COS_04_ATAMA_08B.GIM	off: 0x39000,	size: 0x8164
+	filename: COS_04_ATAMA_01A.GIM	off: 0x41180,	size: 0x8164
+	filename: COS_04_ATAMA_01B.GIM	off: 0x49300,	size: 0x8164
+	filename: COS_04_ATAMA_05A.GIM	off: 0x51480,	size: 0x8164
+	filename: COS_04_ATAMA_05B.GIM	off: 0x59600,	size: 0x8164
+	filename: COS_04_ATAMA_09A.GIM	off: 0x61780,	size: 0x8164
+	filename: COS_04_ATAMA_09B.GIM	off: 0x69900,	size: 0x8164
+	filename: COS_04_ATAMA_02A.GIM	off: 0x71a80,	size: 0x8164
+	filename: COS_04_ATAMA_02B.GIM	off: 0x79c00,	size: 0x8164
+	filename: COS_04_ATAMA_06A.GIM	off: 0x81d80,	size: 0x8164
+	filename: COS_04_ATAMA_06B.GIM	off: 0x89f00,	size: 0x8164
+	filename:       COS_04_GUM.GIM	off: 0x92080,	size: 0x8160
+
+c:\dump\part278
+	filename: COS_05_ATAMA_06B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_05_ATAMA_01B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_05_ATAMA_07A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_05_ATAMA_02A.GIM	off: 0x18980,	size: 0x8164
+	filename:       COS_05_GUM.GIM	off: 0x20b00,	size: 0x8160
+	filename: COS_05_ATAMA_08B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_05_ATAMA_03B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_05_ATAMA_09A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_05_ATAMA_04A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_05_ATAMA_05B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_05_ATAMA_06A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_05_ATAMA_01A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_05_ATAMA_07B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_05_ATAMA_02B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_05_ATAMA_08A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_05_ATAMA_03A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_05_ATAMA_09B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_05_ATAMA_04B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_05_ATAMA_05A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part279
+	filename: COS_06_ATAMA_08B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_06_ATAMA_03B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_06_ATAMA_09A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_06_ATAMA_04A.GIM	off: 0x18980,	size: 0x8164
+	filename:       COS_06_GUM.GIM	off: 0x20b00,	size: 0x8160
+	filename: COS_06_ATAMA_05B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_06_ATAMA_06A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_06_ATAMA_01A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_06_ATAMA_07B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_06_ATAMA_02B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_06_ATAMA_08A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_06_ATAMA_03A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_06_ATAMA_09B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_06_ATAMA_04B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_06_ATAMA_05A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_06_ATAMA_06B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_06_ATAMA_01B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_06_ATAMA_07A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_06_ATAMA_02A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part280
+	filename: COS_07_ATAMA_08B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_07_ATAMA_05B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_07_ATAMA_02B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_07_ATAMA_09A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_07_ATAMA_06A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_07_ATAMA_03A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_07_ATAMA_07B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_07_ATAMA_04B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_07_ATAMA_01B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_07_ATAMA_08A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_07_ATAMA_05A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_07_ATAMA_02A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_07_ATAMA_09B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_07_ATAMA_06B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_07_ATAMA_03B.GIM	off: 0x71a00,	size: 0x8164
+	filename:       COS_07_GUM.GIM	off: 0x79b80,	size: 0x8160
+	filename: COS_07_ATAMA_07A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_07_ATAMA_04A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_07_ATAMA_01A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part281
+	filename: COS_08_ATAMA_04A.GIM	off: 0x580,	size: 0x8164
+	filename: COS_08_ATAMA_04B.GIM	off: 0x8700,	size: 0x8164
+	filename: COS_08_ATAMA_08A.GIM	off: 0x10880,	size: 0x8164
+	filename: COS_08_ATAMA_08B.GIM	off: 0x18a00,	size: 0x8164
+	filename: COS_08_ATAMA_01A.GIM	off: 0x20b80,	size: 0x8164
+	filename: COS_08_ATAMA_01B.GIM	off: 0x28d00,	size: 0x8164
+	filename: COS_08_ATAMA_05A.GIM	off: 0x30e80,	size: 0x8164
+	filename: COS_08_ATAMA_05B.GIM	off: 0x39000,	size: 0x8164
+	filename: COS_08_ATAMA_09A.GIM	off: 0x41180,	size: 0x8164
+	filename: COS_08_ATAMA_09B.GIM	off: 0x49300,	size: 0x8164
+	filename: COS_08_ATAMA_02A.GIM	off: 0x51480,	size: 0x8164
+	filename: COS_08_ATAMA_02B.GIM	off: 0x59600,	size: 0x8164
+	filename: COS_08_ATAMA_06A.GIM	off: 0x61780,	size: 0x8164
+	filename: COS_08_ATAMA_06B.GIM	off: 0x69900,	size: 0x8164
+	filename:       COS_08_GUM.GIM	off: 0x71a80,	size: 0x8160
+	filename: COS_08_ATAMA_03A.GIM	off: 0x79c00,	size: 0x8164
+	filename: COS_08_ATAMA_03B.GIM	off: 0x81d80,	size: 0x8164
+	filename: COS_08_ATAMA_07A.GIM	off: 0x89f00,	size: 0x8164
+	filename: COS_08_ATAMA_07B.GIM	off: 0x92080,	size: 0x8164
+
+c:\dump\part282
+	filename: COS_09_ATAMA_04B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_09_ATAMA_05A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_09_ATAMA_06B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_09_ATAMA_01B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_09_ATAMA_07A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_09_ATAMA_02A.GIM	off: 0x28c80,	size: 0x8164
+	filename:       COS_09_GUM.GIM	off: 0x30e00,	size: 0x8160
+	filename: COS_09_ATAMA_08B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_09_ATAMA_03B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_09_ATAMA_09A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_09_ATAMA_04A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_09_ATAMA_05B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_09_ATAMA_06A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_09_ATAMA_01A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_09_ATAMA_07B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_09_ATAMA_02B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_09_ATAMA_08A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_09_ATAMA_03A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_09_ATAMA_09B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part283
+	filename: COS_10_ATAMA_05A.GIM	off: 0x500,	size: 0x8164
+	filename: COS_10_ATAMA_02A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_10_ATAMA_09B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_10_ATAMA_06B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_10_ATAMA_03B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_10_ATAMA_07A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_10_ATAMA_04A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_10_ATAMA_01A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_10_ATAMA_08B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_10_ATAMA_05B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_10_ATAMA_02B.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_10_ATAMA_09A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_10_ATAMA_06A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_10_ATAMA_03A.GIM	off: 0x69880,	size: 0x8164
+	filename:       COS_10_GUM.GIM	off: 0x71a00,	size: 0x8160
+	filename: COS_10_ATAMA_07B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_10_ATAMA_04B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_10_ATAMA_01B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_10_ATAMA_08A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part284
+	filename: COS_11_ATAMA_03B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_11_ATAMA_08B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_11_ATAMA_02A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_11_ATAMA_07A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_11_ATAMA_01B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_11_ATAMA_06B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_11_ATAMA_05A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_11_ATAMA_04B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_11_ATAMA_09B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_11_ATAMA_03A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_11_ATAMA_08A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_11_ATAMA_02B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_11_ATAMA_07B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_11_ATAMA_01A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_11_ATAMA_06A.GIM	off: 0x71a00,	size: 0x8164
+	filename:       COS_11_GUM.GIM	off: 0x79b80,	size: 0x8160
+	filename: COS_11_ATAMA_05B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_11_ATAMA_04A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_11_ATAMA_09A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part285
+	filename: COS_12_ATAMA_06B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_12_ATAMA_01B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_12_ATAMA_07A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_12_ATAMA_02A.GIM	off: 0x18980,	size: 0x8164
+	filename:       COS_12_GUM.GIM	off: 0x20b00,	size: 0x8160
+	filename: COS_12_ATAMA_08B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_12_ATAMA_03B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_12_ATAMA_09A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_12_ATAMA_04A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_12_ATAMA_05B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_12_ATAMA_06A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_12_ATAMA_01A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_12_ATAMA_07B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_12_ATAMA_02B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_12_ATAMA_08A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_12_ATAMA_03A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_12_ATAMA_09B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_12_ATAMA_04B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_12_ATAMA_05A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part286
+	filename: COS_13_ATAMA_08B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_13_ATAMA_03B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_13_ATAMA_09A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_13_ATAMA_04A.GIM	off: 0x18980,	size: 0x8164
+	filename:       COS_13_GUM.GIM	off: 0x20b00,	size: 0x8160
+	filename: COS_13_ATAMA_05B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_13_ATAMA_06A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_13_ATAMA_01A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_13_ATAMA_07B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_13_ATAMA_02B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_13_ATAMA_08A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_13_ATAMA_03A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_13_ATAMA_09B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_13_ATAMA_04B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_13_ATAMA_05A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_13_ATAMA_06B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_13_ATAMA_01B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_13_ATAMA_07A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_13_ATAMA_02A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part287
+	filename: COS_14_ATAMA_04B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_14_ATAMA_01B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_14_ATAMA_08A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_14_ATAMA_05A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_14_ATAMA_02A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_14_ATAMA_09B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_14_ATAMA_06B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_14_ATAMA_03B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_14_ATAMA_07A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_14_ATAMA_04A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_14_ATAMA_01A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_14_ATAMA_08B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_14_ATAMA_05B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_14_ATAMA_02B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_14_ATAMA_09A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_14_ATAMA_06A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_14_ATAMA_03A.GIM	off: 0x81d00,	size: 0x8164
+	filename:       COS_14_GUM.GIM	off: 0x89e80,	size: 0x8160
+	filename: COS_14_ATAMA_07B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part288
+	filename: COS_15_ATAMA_04A.GIM	off: 0x500,	size: 0x8164
+	filename: COS_15_ATAMA_09A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_15_ATAMA_03B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_15_ATAMA_08B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_15_ATAMA_02A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_15_ATAMA_07A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_15_ATAMA_01B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_15_ATAMA_06B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_15_ATAMA_05A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_15_ATAMA_04B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_15_ATAMA_09B.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_15_ATAMA_03A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_15_ATAMA_08A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_15_ATAMA_02B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_15_ATAMA_07B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_15_ATAMA_01A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_15_ATAMA_06A.GIM	off: 0x81d00,	size: 0x8164
+	filename:       COS_15_GUM.GIM	off: 0x89e80,	size: 0x8160
+	filename: COS_15_ATAMA_05B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part289
+	filename: COS_16_ATAMA_04B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_16_ATAMA_05A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_16_ATAMA_06B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_16_ATAMA_01B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_16_ATAMA_07A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_16_ATAMA_02A.GIM	off: 0x28c80,	size: 0x8164
+	filename:       COS_16_GUM.GIM	off: 0x30e00,	size: 0x8160
+	filename: COS_16_ATAMA_08B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_16_ATAMA_03B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_16_ATAMA_09A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_16_ATAMA_04A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_16_ATAMA_05B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_16_ATAMA_06A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_16_ATAMA_01A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_16_ATAMA_07B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_16_ATAMA_02B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_16_ATAMA_08A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_16_ATAMA_03A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_16_ATAMA_09B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part290
+	filename: COS_17_ATAMA_01B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_17_ATAMA_07A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_17_ATAMA_02A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_17_ATAMA_08B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_17_ATAMA_03B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_17_ATAMA_09A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_17_ATAMA_04A.GIM	off: 0x30e00,	size: 0x8164
+	filename:       COS_17_GUM.GIM	off: 0x38f80,	size: 0x8160
+	filename: COS_17_ATAMA_05B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_17_ATAMA_06A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_17_ATAMA_01A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_17_ATAMA_07B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_17_ATAMA_02B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_17_ATAMA_08A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_17_ATAMA_03A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_17_ATAMA_09B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_17_ATAMA_04B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_17_ATAMA_05A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_17_ATAMA_06B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part291
+	filename:       COS_18_GUM.GIM	off: 0x500,	size: 0x8160
+	filename: COS_18_ATAMA_07B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_18_ATAMA_04B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_18_ATAMA_01B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_18_ATAMA_08A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_18_ATAMA_05A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_18_ATAMA_02A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_18_ATAMA_09B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_18_ATAMA_06B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_18_ATAMA_03B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_18_ATAMA_07A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_18_ATAMA_04A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_18_ATAMA_01A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_18_ATAMA_08B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_18_ATAMA_05B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_18_ATAMA_02B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_18_ATAMA_09A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_18_ATAMA_06A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_18_ATAMA_03A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part292
+	filename:       COS_19_GUM.GIM	off: 0x500,	size: 0x8160
+	filename: COS_19_ATAMA_05B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_19_ATAMA_04A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_19_ATAMA_09A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_19_ATAMA_03B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_19_ATAMA_08B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_19_ATAMA_02A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_19_ATAMA_07A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_19_ATAMA_01B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_19_ATAMA_06B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_19_ATAMA_05A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_19_ATAMA_04B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_19_ATAMA_09B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_19_ATAMA_03A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_19_ATAMA_08A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_19_ATAMA_02B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_19_ATAMA_07B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_19_ATAMA_01A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_19_ATAMA_06A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part293
+	filename: COS_20_ATAMA_08B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_20_ATAMA_03B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_20_ATAMA_09A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_20_ATAMA_04A.GIM	off: 0x18980,	size: 0x8164
+	filename:       COS_20_GUM.GIM	off: 0x20b00,	size: 0x8160
+	filename: COS_20_ATAMA_05B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_20_ATAMA_06A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_20_ATAMA_01A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_20_ATAMA_07B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_20_ATAMA_02B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_20_ATAMA_08A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_20_ATAMA_03A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_20_ATAMA_09B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_20_ATAMA_04B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_20_ATAMA_05A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_20_ATAMA_06B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_20_ATAMA_01B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_20_ATAMA_07A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_20_ATAMA_02A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part294
+	filename: COS_21_ATAMA_07A.GIM	off: 0x500,	size: 0x8164
+	filename: COS_21_ATAMA_04A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_21_ATAMA_01A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_21_ATAMA_08B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_21_ATAMA_05B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_21_ATAMA_02B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_21_ATAMA_09A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_21_ATAMA_06A.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_21_ATAMA_03A.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_21_ATAMA_07B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_21_ATAMA_04B.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_21_ATAMA_01B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_21_ATAMA_08A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_21_ATAMA_05A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_21_ATAMA_02A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_21_ATAMA_09B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_21_ATAMA_06B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_21_ATAMA_03B.GIM	off: 0x89e80,	size: 0x8164
+	filename:       COS_21_GUM.GIM	off: 0x92000,	size: 0x8160
+
+c:\dump\part295
+	filename: COS_22_ATAMA_08A.GIM	off: 0x580,	size: 0x8164
+	filename: COS_22_ATAMA_08B.GIM	off: 0x8700,	size: 0x8164
+	filename: COS_22_ATAMA_06A.GIM	off: 0x10880,	size: 0x8164
+	filename: COS_22_ATAMA_06B.GIM	off: 0x18a00,	size: 0x8164
+	filename: COS_22_ATAMA_04A.GIM	off: 0x20b80,	size: 0x8164
+	filename: COS_22_ATAMA_04B.GIM	off: 0x28d00,	size: 0x8164
+	filename: COS_22_ATAMA_02A.GIM	off: 0x30e80,	size: 0x8164
+	filename: COS_22_ATAMA_02B.GIM	off: 0x39000,	size: 0x8164
+	filename: COS_22_ATAMA_09A.GIM	off: 0x41180,	size: 0x8164
+	filename: COS_22_ATAMA_09B.GIM	off: 0x49300,	size: 0x8164
+	filename: COS_22_ATAMA_07A.GIM	off: 0x51480,	size: 0x8164
+	filename: COS_22_ATAMA_07B.GIM	off: 0x59600,	size: 0x8164
+	filename: COS_22_ATAMA_05A.GIM	off: 0x61780,	size: 0x8164
+	filename: COS_22_ATAMA_05B.GIM	off: 0x69900,	size: 0x8164
+	filename: COS_22_ATAMA_03A.GIM	off: 0x71a80,	size: 0x8164
+	filename: COS_22_ATAMA_03B.GIM	off: 0x79c00,	size: 0x8164
+	filename: COS_22_ATAMA_01A.GIM	off: 0x81d80,	size: 0x8164
+	filename: COS_22_ATAMA_01B.GIM	off: 0x89f00,	size: 0x8164
+	filename:       COS_22_GUM.GIM	off: 0x92080,	size: 0x8160
+
+c:\dump\part296
+	filename: COS_23_ATAMA_04B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_23_ATAMA_05A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_23_ATAMA_06B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_23_ATAMA_01B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_23_ATAMA_07A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_23_ATAMA_02A.GIM	off: 0x28c80,	size: 0x8164
+	filename:       COS_23_GUM.GIM	off: 0x30e00,	size: 0x8160
+	filename: COS_23_ATAMA_08B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_23_ATAMA_03B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_23_ATAMA_09A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_23_ATAMA_04A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_23_ATAMA_05B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_23_ATAMA_06A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_23_ATAMA_01A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_23_ATAMA_07B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_23_ATAMA_02B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_23_ATAMA_08A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_23_ATAMA_03A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_23_ATAMA_09B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part297
+	filename: COS_24_ATAMA_01B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_24_ATAMA_07A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_24_ATAMA_02A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_24_ATAMA_08B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_24_ATAMA_03B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_24_ATAMA_09A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_24_ATAMA_04A.GIM	off: 0x30e00,	size: 0x8164
+	filename:       COS_24_GUM.GIM	off: 0x38f80,	size: 0x8160
+	filename: COS_24_ATAMA_05B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_24_ATAMA_06A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_24_ATAMA_01A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_24_ATAMA_07B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_24_ATAMA_02B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_24_ATAMA_08A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_24_ATAMA_03A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_24_ATAMA_09B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_24_ATAMA_04B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_24_ATAMA_05A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_24_ATAMA_06B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part298
+	filename: COS_25_ATAMA_06B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_25_ATAMA_03B.GIM	off: 0x8680,	size: 0x8164
+	filename:       COS_25_GUM.GIM	off: 0x10800,	size: 0x8160
+	filename: COS_25_ATAMA_07A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_25_ATAMA_04A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_25_ATAMA_01A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_25_ATAMA_08B.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_25_ATAMA_05B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_25_ATAMA_02B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_25_ATAMA_09A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_25_ATAMA_06A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_25_ATAMA_03A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_25_ATAMA_07B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_25_ATAMA_04B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_25_ATAMA_01B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_25_ATAMA_08A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_25_ATAMA_05A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_25_ATAMA_02A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_25_ATAMA_09B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part299
+	filename:       COS_26_GUM.GIM	off: 0x580,	size: 0x8160
+	filename: COS_26_ATAMA_09A.GIM	off: 0x8700,	size: 0x8164
+	filename: COS_26_ATAMA_09B.GIM	off: 0x10880,	size: 0x8164
+	filename: COS_26_ATAMA_07A.GIM	off: 0x18a00,	size: 0x8164
+	filename: COS_26_ATAMA_07B.GIM	off: 0x20b80,	size: 0x8164
+	filename: COS_26_ATAMA_05A.GIM	off: 0x28d00,	size: 0x8164
+	filename: COS_26_ATAMA_05B.GIM	off: 0x30e80,	size: 0x8164
+	filename: COS_26_ATAMA_03A.GIM	off: 0x39000,	size: 0x8164
+	filename: COS_26_ATAMA_03B.GIM	off: 0x41180,	size: 0x8164
+	filename: COS_26_ATAMA_01A.GIM	off: 0x49300,	size: 0x8164
+	filename: COS_26_ATAMA_01B.GIM	off: 0x51480,	size: 0x8164
+	filename: COS_26_ATAMA_08A.GIM	off: 0x59600,	size: 0x8164
+	filename: COS_26_ATAMA_08B.GIM	off: 0x61780,	size: 0x8164
+	filename: COS_26_ATAMA_06A.GIM	off: 0x69900,	size: 0x8164
+	filename: COS_26_ATAMA_06B.GIM	off: 0x71a80,	size: 0x8164
+	filename: COS_26_ATAMA_04A.GIM	off: 0x79c00,	size: 0x8164
+	filename: COS_26_ATAMA_04B.GIM	off: 0x81d80,	size: 0x8164
+	filename: COS_26_ATAMA_02A.GIM	off: 0x89f00,	size: 0x8164
+	filename: COS_26_ATAMA_02B.GIM	off: 0x92080,	size: 0x8164
+
+c:\dump\part300
+	filename: COS_27_ATAMA_03A.GIM	off: 0x500,	size: 0x8164
+	filename: COS_27_ATAMA_09B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_27_ATAMA_04B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_27_ATAMA_05A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_27_ATAMA_06B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_27_ATAMA_01B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_27_ATAMA_07A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_27_ATAMA_02A.GIM	off: 0x38f80,	size: 0x8164
+	filename:       COS_27_GUM.GIM	off: 0x41100,	size: 0x8160
+	filename: COS_27_ATAMA_08B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_27_ATAMA_03B.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_27_ATAMA_09A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_27_ATAMA_04A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_27_ATAMA_05B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_27_ATAMA_06A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_27_ATAMA_01A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_27_ATAMA_07B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_27_ATAMA_02B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_27_ATAMA_08A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part301
+	filename: COS_28_ATAMA_06B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_28_ATAMA_01B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_28_ATAMA_07A.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_28_ATAMA_02A.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_28_ATAMA_08B.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_28_ATAMA_03B.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_28_ATAMA_09A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_28_ATAMA_04A.GIM	off: 0x38f80,	size: 0x8164
+	filename:       COS_28_GUM.GIM	off: 0x41100,	size: 0x8160
+	filename: COS_28_ATAMA_05B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_28_ATAMA_06A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_28_ATAMA_01A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_28_ATAMA_07B.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_28_ATAMA_02B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_28_ATAMA_08A.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_28_ATAMA_03A.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_28_ATAMA_09B.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_28_ATAMA_04B.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_28_ATAMA_05A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part302
+	filename: COS_29_ATAMA_09B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_29_ATAMA_06B.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_29_ATAMA_03B.GIM	off: 0x10800,	size: 0x8164
+	filename:       COS_29_GUM.GIM	off: 0x18980,	size: 0x8160
+	filename: COS_29_ATAMA_07A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_29_ATAMA_04A.GIM	off: 0x28c80,	size: 0x8164
+	filename: COS_29_ATAMA_01A.GIM	off: 0x30e00,	size: 0x8164
+	filename: COS_29_ATAMA_08B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_29_ATAMA_05B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_29_ATAMA_02B.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_29_ATAMA_09A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_29_ATAMA_06A.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_29_ATAMA_03A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_29_ATAMA_07B.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_29_ATAMA_04B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_29_ATAMA_01B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_29_ATAMA_08A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_29_ATAMA_05A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_29_ATAMA_02A.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part303
+	filename: COS_30_ATAMA_04B.GIM	off: 0x500,	size: 0x8164
+	filename: COS_30_ATAMA_05A.GIM	off: 0x8680,	size: 0x8164
+	filename: COS_30_ATAMA_06B.GIM	off: 0x10800,	size: 0x8164
+	filename: COS_30_ATAMA_01B.GIM	off: 0x18980,	size: 0x8164
+	filename: COS_30_ATAMA_07A.GIM	off: 0x20b00,	size: 0x8164
+	filename: COS_30_ATAMA_02A.GIM	off: 0x28c80,	size: 0x8164
+	filename:       COS_30_GUM.GIM	off: 0x30e00,	size: 0x8160
+	filename: COS_30_ATAMA_08B.GIM	off: 0x38f80,	size: 0x8164
+	filename: COS_30_ATAMA_03B.GIM	off: 0x41100,	size: 0x8164
+	filename: COS_30_ATAMA_09A.GIM	off: 0x49280,	size: 0x8164
+	filename: COS_30_ATAMA_04A.GIM	off: 0x51400,	size: 0x8164
+	filename: COS_30_ATAMA_05B.GIM	off: 0x59580,	size: 0x8164
+	filename: COS_30_ATAMA_06A.GIM	off: 0x61700,	size: 0x8164
+	filename: COS_30_ATAMA_01A.GIM	off: 0x69880,	size: 0x8164
+	filename: COS_30_ATAMA_07B.GIM	off: 0x71a00,	size: 0x8164
+	filename: COS_30_ATAMA_02B.GIM	off: 0x79b80,	size: 0x8164
+	filename: COS_30_ATAMA_08A.GIM	off: 0x81d00,	size: 0x8164
+	filename: COS_30_ATAMA_03A.GIM	off: 0x89e80,	size: 0x8164
+	filename: COS_30_ATAMA_09B.GIM	off: 0x92000,	size: 0x8164
+
+c:\dump\part304
+	filename: COS_01_KARADA_03A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_01_KARADA_09B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_01_KARADA_04B.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_01_KARADA_05A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_01_KARADA_06B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_01_KARADA_01B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_01_KARADA_07A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_01_KARADA_02A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_01_KARADA_08B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_01_KARADA_03B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_01_KARADA_09A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_01_KARADA_04A.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_01_KARADA_05B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_01_KARADA_06A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_01_KARADA_01A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_01_KARADA_07B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_01_KARADA_02B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_01_KARADA_08A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part305
+	filename: COS_02_KARADA_05B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_02_KARADA_06A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_02_KARADA_01A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_02_KARADA_07B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_02_KARADA_02B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_02_KARADA_08A.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_02_KARADA_03A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_02_KARADA_09B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_02_KARADA_04B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_02_KARADA_05A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_02_KARADA_06B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_02_KARADA_01B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_02_KARADA_07A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_02_KARADA_02A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_02_KARADA_08B.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_02_KARADA_03B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_02_KARADA_09A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_02_KARADA_04A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part306
+	filename: COS_03_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_03_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_03_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_03_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_03_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_03_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_03_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_03_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_03_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_03_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_03_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_03_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_03_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_03_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_03_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_03_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_03_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_03_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part307
+	filename: COS_04_KARADA_08A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_04_KARADA_03A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_04_KARADA_09B.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_04_KARADA_04B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_04_KARADA_05A.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_04_KARADA_06B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_04_KARADA_01B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_04_KARADA_07A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_04_KARADA_02A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_04_KARADA_08B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_04_KARADA_03B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_04_KARADA_09A.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_04_KARADA_04A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_04_KARADA_05B.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_04_KARADA_06A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_04_KARADA_01A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_04_KARADA_07B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_04_KARADA_02B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part308
+	filename: COS_05_KARADA_05B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_05_KARADA_06A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_05_KARADA_01A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_05_KARADA_07B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_05_KARADA_02B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_05_KARADA_08A.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_05_KARADA_03A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_05_KARADA_09B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_05_KARADA_04B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_05_KARADA_05A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_05_KARADA_06B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_05_KARADA_01B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_05_KARADA_07A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_05_KARADA_02A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_05_KARADA_08B.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_05_KARADA_03B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_05_KARADA_09A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_05_KARADA_04A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part309
+	filename: COS_06_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_06_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_06_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_06_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_06_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_06_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_06_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_06_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_06_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_06_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_06_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_06_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_06_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_06_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_06_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_06_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_06_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_06_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part310
+	filename: COS_07_KARADA_02B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_07_KARADA_08A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_07_KARADA_03A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_07_KARADA_09B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_07_KARADA_04B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_07_KARADA_05A.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_07_KARADA_06B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_07_KARADA_01B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_07_KARADA_07A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_07_KARADA_02A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_07_KARADA_08B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_07_KARADA_03B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_07_KARADA_09A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_07_KARADA_04A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_07_KARADA_05B.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_07_KARADA_06A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_07_KARADA_01A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_07_KARADA_07B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part311
+	filename: COS_08_KARADA_04A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_08_KARADA_05B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_08_KARADA_06A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_08_KARADA_01A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_08_KARADA_07B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_08_KARADA_02B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_08_KARADA_08A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_08_KARADA_03A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_08_KARADA_09B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_08_KARADA_04B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_08_KARADA_05A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_08_KARADA_06B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_08_KARADA_01B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_08_KARADA_07A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_08_KARADA_02A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_08_KARADA_08B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_08_KARADA_03B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_08_KARADA_09A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part312
+	filename: COS_09_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_09_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_09_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_09_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_09_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_09_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_09_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_09_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_09_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_09_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_09_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_09_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_09_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_09_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_09_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_09_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_09_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_09_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part313
+	filename: COS_10_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_10_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_10_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_10_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_10_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_10_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_10_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_10_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_10_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_10_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_10_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_10_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_10_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_10_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_10_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_10_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_10_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_10_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part314
+	filename: COS_11_KARADA_08A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_11_KARADA_03A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_11_KARADA_09B.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_11_KARADA_04B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_11_KARADA_05A.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_11_KARADA_06B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_11_KARADA_01B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_11_KARADA_07A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_11_KARADA_02A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_11_KARADA_08B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_11_KARADA_03B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_11_KARADA_09A.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_11_KARADA_04A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_11_KARADA_05B.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_11_KARADA_06A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_11_KARADA_01A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_11_KARADA_07B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_11_KARADA_02B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part315
+	filename: COS_12_KARADA_05B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_12_KARADA_06A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_12_KARADA_01A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_12_KARADA_07B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_12_KARADA_02B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_12_KARADA_08A.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_12_KARADA_03A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_12_KARADA_09B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_12_KARADA_04B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_12_KARADA_05A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_12_KARADA_06B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_12_KARADA_01B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_12_KARADA_07A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_12_KARADA_02A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_12_KARADA_08B.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_12_KARADA_03B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_12_KARADA_09A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_12_KARADA_04A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part316
+	filename: COS_13_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_13_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_13_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_13_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_13_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_13_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_13_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_13_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_13_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_13_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_13_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_13_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_13_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_13_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_13_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_13_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_13_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_13_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part317
+	filename: COS_14_KARADA_02B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_14_KARADA_08A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_14_KARADA_03A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_14_KARADA_09B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_14_KARADA_04B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_14_KARADA_05A.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_14_KARADA_06B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_14_KARADA_01B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_14_KARADA_07A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_14_KARADA_02A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_14_KARADA_08B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_14_KARADA_03B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_14_KARADA_09A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_14_KARADA_04A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_14_KARADA_05B.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_14_KARADA_06A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_14_KARADA_01A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_14_KARADA_07B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part318
+	filename: COS_15_KARADA_04A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_15_KARADA_05B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_15_KARADA_06A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_15_KARADA_01A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_15_KARADA_07B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_15_KARADA_02B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_15_KARADA_08A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_15_KARADA_03A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_15_KARADA_09B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_15_KARADA_04B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_15_KARADA_05A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_15_KARADA_06B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_15_KARADA_01B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_15_KARADA_07A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_15_KARADA_02A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_15_KARADA_08B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_15_KARADA_03B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_15_KARADA_09A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part319
+	filename: COS_16_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_16_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_16_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_16_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_16_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_16_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_16_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_16_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_16_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_16_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_16_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_16_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_16_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_16_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_16_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_16_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_16_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_16_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part320
+	filename: COS_17_KARADA_07B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_17_KARADA_02B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_17_KARADA_08A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_17_KARADA_03A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_17_KARADA_09B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_17_KARADA_04B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_17_KARADA_05A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_17_KARADA_06B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_17_KARADA_01B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_17_KARADA_07A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_17_KARADA_02A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_17_KARADA_08B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_17_KARADA_03B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_17_KARADA_09A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_17_KARADA_04A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_17_KARADA_05B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_17_KARADA_06A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_17_KARADA_01A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part321
+	filename: COS_18_KARADA_09A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_18_KARADA_04A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_18_KARADA_05B.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_18_KARADA_06A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_18_KARADA_01A.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_18_KARADA_07B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_18_KARADA_02B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_18_KARADA_08A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_18_KARADA_03A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_18_KARADA_09B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_18_KARADA_04B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_18_KARADA_05A.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_18_KARADA_06B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_18_KARADA_01B.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_18_KARADA_07A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_18_KARADA_02A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_18_KARADA_08B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_18_KARADA_03B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part322
+	filename: COS_19_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_19_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_19_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_19_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_19_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_19_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_19_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_19_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_19_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_19_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_19_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_19_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_19_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_19_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_19_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_19_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_19_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_19_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part323
+	filename: COS_20_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_20_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_20_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_20_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_20_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_20_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_20_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_20_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_20_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_20_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_20_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_20_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_20_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_20_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_20_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_20_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_20_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_20_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part324
+	filename: COS_21_KARADA_02B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_21_KARADA_08A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_21_KARADA_03A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_21_KARADA_09B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_21_KARADA_04B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_21_KARADA_05A.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_21_KARADA_06B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_21_KARADA_01B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_21_KARADA_07A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_21_KARADA_02A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_21_KARADA_08B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_21_KARADA_03B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_21_KARADA_09A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_21_KARADA_04A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_21_KARADA_05B.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_21_KARADA_06A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_21_KARADA_01A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_21_KARADA_07B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part325
+	filename: COS_22_KARADA_04A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_22_KARADA_05B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_22_KARADA_06A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_22_KARADA_01A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_22_KARADA_07B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_22_KARADA_02B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_22_KARADA_08A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_22_KARADA_03A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_22_KARADA_09B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_22_KARADA_04B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_22_KARADA_05A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_22_KARADA_06B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_22_KARADA_01B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_22_KARADA_07A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_22_KARADA_02A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_22_KARADA_08B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_22_KARADA_03B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_22_KARADA_09A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part326
+	filename: COS_23_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_23_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_23_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_23_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_23_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_23_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_23_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_23_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_23_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_23_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_23_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_23_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_23_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_23_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_23_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_23_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_23_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_23_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part327
+	filename: COS_24_KARADA_07B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_24_KARADA_02B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_24_KARADA_08A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_24_KARADA_03A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_24_KARADA_09B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_24_KARADA_04B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_24_KARADA_05A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_24_KARADA_06B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_24_KARADA_01B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_24_KARADA_07A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_24_KARADA_02A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_24_KARADA_08B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_24_KARADA_03B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_24_KARADA_09A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_24_KARADA_04A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_24_KARADA_05B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_24_KARADA_06A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_24_KARADA_01A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part328
+	filename: COS_26_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_26_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_26_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_26_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_26_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_26_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_26_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_26_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_26_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_26_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_26_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_26_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_26_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_26_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_26_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_26_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_26_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_26_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part329
+	filename: COS_27_KARADA_07B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_27_KARADA_02B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_27_KARADA_08A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_27_KARADA_03A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_27_KARADA_09B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_27_KARADA_04B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_27_KARADA_05A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_27_KARADA_06B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_27_KARADA_01B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_27_KARADA_07A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_27_KARADA_02A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_27_KARADA_08B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_27_KARADA_03B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_27_KARADA_09A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_27_KARADA_04A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_27_KARADA_05B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_27_KARADA_06A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_27_KARADA_01A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part330
+	filename: COS_28_KARADA_03B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_28_KARADA_09A.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_28_KARADA_04A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_28_KARADA_05B.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_28_KARADA_06A.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_28_KARADA_01A.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_28_KARADA_07B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_28_KARADA_02B.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_28_KARADA_08A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_28_KARADA_03A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_28_KARADA_09B.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_28_KARADA_04B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_28_KARADA_05A.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_28_KARADA_06B.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_28_KARADA_01B.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_28_KARADA_07A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_28_KARADA_02A.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_28_KARADA_08B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part331
+	filename: COS_29_KARADA_05A.GIM	off: 0x500,	size: 0x8168
+	filename: COS_29_KARADA_06B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_29_KARADA_01B.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_29_KARADA_07A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_29_KARADA_02A.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_29_KARADA_08B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_29_KARADA_03B.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_29_KARADA_09A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_29_KARADA_04A.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_29_KARADA_05B.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_29_KARADA_06A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_29_KARADA_01A.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_29_KARADA_07B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_29_KARADA_02B.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_29_KARADA_08A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_29_KARADA_03A.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_29_KARADA_09B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_29_KARADA_04B.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part332
+	filename: COS_30_KARADA_06B.GIM	off: 0x500,	size: 0x8168
+	filename: COS_30_KARADA_01B.GIM	off: 0x8680,	size: 0x8168
+	filename: COS_30_KARADA_07A.GIM	off: 0x10800,	size: 0x8168
+	filename: COS_30_KARADA_02A.GIM	off: 0x18980,	size: 0x8168
+	filename: COS_30_KARADA_08B.GIM	off: 0x20b00,	size: 0x8168
+	filename: COS_30_KARADA_03B.GIM	off: 0x28c80,	size: 0x8168
+	filename: COS_30_KARADA_09A.GIM	off: 0x30e00,	size: 0x8168
+	filename: COS_30_KARADA_04A.GIM	off: 0x38f80,	size: 0x8168
+	filename: COS_30_KARADA_05B.GIM	off: 0x41100,	size: 0x8168
+	filename: COS_30_KARADA_06A.GIM	off: 0x49280,	size: 0x8168
+	filename: COS_30_KARADA_01A.GIM	off: 0x51400,	size: 0x8168
+	filename: COS_30_KARADA_07B.GIM	off: 0x59580,	size: 0x8168
+	filename: COS_30_KARADA_02B.GIM	off: 0x61700,	size: 0x8168
+	filename: COS_30_KARADA_08A.GIM	off: 0x69880,	size: 0x8168
+	filename: COS_30_KARADA_03A.GIM	off: 0x71a00,	size: 0x8168
+	filename: COS_30_KARADA_09B.GIM	off: 0x79b80,	size: 0x8168
+	filename: COS_30_KARADA_04B.GIM	off: 0x81d00,	size: 0x8168
+	filename: COS_30_KARADA_05A.GIM	off: 0x89e80,	size: 0x8168
+
+c:\dump\part333
+	filename: DANCER_06_INFO.DAT	off: 0x580,	size: 0xc4
+	filename: DANCER_09_INFO.DAT	off: 0x680,	size: 0xc4
+	filename: DANCER_11_INFO.DAT	off: 0x780,	size: 0xc4
+	filename: DANCER_14_INFO.DAT	off: 0x880,	size: 0xc4
+	filename: DANCER_17_INFO.DAT	off: 0x980,	size: 0xc4
+	filename: DANCER_22_INFO.DAT	off: 0xa80,	size: 0xc4
+	filename: DANCER_01_INFO.DAT	off: 0xb80,	size: 0xc4
+	filename: DANCER_04_INFO.DAT	off: 0xc80,	size: 0xc4
+	filename: DANCER_07_INFO.DAT	off: 0xd80,	size: 0xc4
+	filename: DANCER_12_INFO.DAT	off: 0xe80,	size: 0xc4
+	filename: DANCER_15_INFO.DAT	off: 0xf80,	size: 0xc4
+	filename: DANCER_20_INFO.DAT	off: 0x1080,	size: 0xc4
+	filename: DANCER_02_INFO.DAT	off: 0x1180,	size: 0xc4
+	filename: DANCER_05_INFO.DAT	off: 0x1280,	size: 0xc4
+	filename: DANCER_08_INFO.DAT	off: 0x1380,	size: 0xc4
+	filename: DANCER_10_INFO.DAT	off: 0x1480,	size: 0xc4
+	filename: DANCER_13_INFO.DAT	off: 0x1580,	size: 0xc4
+	filename: DANCER_16_INFO.DAT	off: 0x1680,	size: 0xc4
+	filename: DANCER_19_INFO.DAT	off: 0x1780,	size: 0xc4
+	filename: DANCER_21_INFO.DAT	off: 0x1880,	size: 0xc4
+	filename: DANCER_24_INFO.DAT	off: 0x1980,	size: 0xc4
+	filename: DANCER_00_INFO.DAT	off: 0x1a80,	size: 0xc4
+	filename: DANCER_03_INFO.DAT	off: 0x1b80,	size: 0xc4
+
+c:\dump\part334
+	filename: DANCE_CHEER_MIZUMARI.LM	off: 0x300,	size: 0x459c
+	filename:     DANCE_CHEER_NEKO.LM	off: 0x4900,	size: 0x691c
+	filename:    DANCE_CHEER_DONKO.LM	off: 0xb280,	size: 0x47ac
+	filename:     DANCE_CHEER_HANA.LM	off: 0xfa80,	size: 0x476c
+	filename:       DANCER_00.TEXPACK	off: 0x14200,	size: 0x1a1ce4
+	filename:   DANCE_CHEER_MIMIZU.LM	off: 0x1b5f00,	size: 0x57b4
+
+c:\dump\part335
+	filename: DANCE_DONKO_KOROMO_01.LM	off: 0x300,	size: 0x2698
+	filename:        DANCER_01.TEXPACK	off: 0x2a00,	size: 0xab7e8
+	filename:   DANCE_DONKO_HANA_01.LM	off: 0xae200,	size: 0x2648
+	filename:  DANCE_DONKO_SENSU_01.LM	off: 0xb0880,	size: 0x284c
+
+c:\dump\part336
+	filename:   DANCE_DONKO_HANA02_01.LM	off: 0x300,	size: 0x2498
+	filename:          DANCER_02.TEXPACK	off: 0x2800,	size: 0xbc1e8
+	filename: DANCE_DONKO_KOROMO02_01.LM	off: 0xbea00,	size: 0x28b8
+	filename:  DANCE_DONKO_SENSU02_01.LM	off: 0xc1300,	size: 0x2614
+
+c:\dump\part337
+	filename:  DANCE_HAGE_04.LM	off: 0x300,	size: 0x3a38
+	filename: DANCER_03.TEXPACK	off: 0x3d80,	size: 0x11f2e8
+	filename:  DANCE_HAGE_03.LM	off: 0x123080,	size: 0x3a38
+	filename:  DANCE_HAGE_02.LM	off: 0x126b00,	size: 0x39f0
+	filename:  DANCE_HAGE_01.LM	off: 0x12a500,	size: 0x39e4
+
+c:\dump\part338
+	filename: DANCE_HAGE_02_04.LM	off: 0x300,	size: 0x5364
+	filename:   DANCER_04.TEXPACK	off: 0x5680,	size: 0x1523f0
+	filename: DANCE_HAGE_02_03.LM	off: 0x157a80,	size: 0x5364
+	filename: DANCE_HAGE_02_02.LM	off: 0x15ce00,	size: 0x5310
+	filename: DANCE_HAGE_02_01.LM	off: 0x162180,	size: 0x5304
+
+c:\dump\part339
+	filename:  DANCE_OMEN_01.LM	off: 0x300,	size: 0x94e0
+	filename:   DANCE_HYO_01.LM	off: 0x9800,	size: 0x8828
+	filename: DANCE_OKAME_01.LM	off: 0x12080,	size: 0x9408
+	filename: DANCER_05.TEXPACK	off: 0x1b500,	size: 0xf9c64
+
+c:\dump\part340
+	filename:  DANCE_OMEN_02.LM	off: 0x300,	size: 0x8094
+	filename:   DANCE_HYO_02.LM	off: 0x8400,	size: 0x73fc
+	filename: DANCE_OKAME_02.LM	off: 0xf800,	size: 0x7fd4
+	filename: DANCER_06.TEXPACK	off: 0x17800,	size: 0xb3e60
+
+c:\dump\part341
+	filename: DANCER_07.TEXPACK	off: 0x300,	size: 0x721ec
+	filename:  DANCE_OMEN_04.LM	off: 0x72500,	size: 0x313c
+	filename:   DANCE_HYO_04.LM	off: 0x75680,	size: 0x3110
+	filename: DANCE_OKAME_04.LM	off: 0x78800,	size: 0x3144
+
+c:\dump\part342
+	filename: DANCE_SHISHI_02.LM	off: 0x300,	size: 0x4b00
+	filename: DANCE_SHISHI_01.LM	off: 0x4e80,	size: 0x4b38
+	filename:  DANCER_08.TEXPACK	off: 0x9a00,	size: 0x16c068
+	filename: DANCE_SHISHI_04.LM	off: 0x175a80,	size: 0x4b1c
+	filename: DANCE_SHISHI_03.LM	off: 0x17a600,	size: 0x4b44
+
+c:\dump\part343
+	filename: DANCE_SHISHI_02_02.LM	off: 0x300,	size: 0x4be8
+	filename:     DANCER_09.TEXPACK	off: 0x4f00,	size: 0x17bee4
+	filename: DANCE_SHISHI_02_01.LM	off: 0x180e00,	size: 0x4c20
+	filename: DANCE_SHISHI_02_04.LM	off: 0x185a80,	size: 0x4c04
+	filename: DANCE_SHISHI_02_03.LM	off: 0x18a700,	size: 0x4c24
+
+c:\dump\part344
+	filename:   DANCE_IKA_03.LM	off: 0x300,	size: 0x35d4
+	filename:   DANCE_IKA_02.LM	off: 0x3900,	size: 0x35c0
+	filename:   DANCE_IKA_01.LM	off: 0x6f00,	size: 0x35c0
+	filename: DANCER_10.TEXPACK	off: 0xa500,	size: 0xf52ec
+	filename:   DANCE_IKA_04.LM	off: 0xff800,	size: 0x35f8
+
+c:\dump\part345
+	filename: DANCE_IKA_02_01.LM	off: 0x300,	size: 0x3788
+	filename:  DANCER_11.TEXPACK	off: 0x3b00,	size: 0x10626c
+	filename: DANCE_IKA_02_04.LM	off: 0x109d80,	size: 0x37c0
+	filename: DANCE_IKA_02_03.LM	off: 0x10d580,	size: 0x379c
+	filename: DANCE_IKA_02_02.LM	off: 0x110d80,	size: 0x3788
+
+c:\dump\part346
+	filename:      DANCE_INU.LM	off: 0x280,	size: 0x3f9c
+	filename:     DANCE_JOHN.LM	off: 0x4280,	size: 0x3f9c
+	filename: DANCER_12.TEXPACK	off: 0x8280,	size: 0x72068
+
+c:\dump\part347
+	filename:    DANCE_JOHN2.LM	off: 0x280,	size: 0x4e2c
+	filename: DANCER_13.TEXPACK	off: 0x5100,	size: 0x78068
+	filename:     DANCE_INU2.LM	off: 0x7d180,	size: 0x4e44
+
+c:\dump\part348
+	filename: DANCE_KAME_02_01.LM	off: 0x300,	size: 0x4248
+	filename:   DANCER_14.TEXPACK	off: 0x4580,	size: 0xc24f0
+	filename: DANCE_KAME_02_04.LM	off: 0xc6a80,	size: 0x41ec
+	filename: DANCE_KAME_02_03.LM	off: 0xcac80,	size: 0x4248
+	filename: DANCE_KAME_02_02.LM	off: 0xcef00,	size: 0x41ec
+
+c:\dump\part349
+	filename:  DANCE_TORA_01.LM	off: 0x300,	size: 0x384c
+	filename: DANCER_15.TEXPACK	off: 0x3b80,	size: 0xd7064
+	filename:  DANCE_TORA_03.LM	off: 0xdac00,	size: 0x38d4
+	filename:  DANCE_TORA_02.LM	off: 0xde500,	size: 0x38d4
+
+c:\dump\part350
+	filename: DANCE_UNAGI_03.LM	off: 0x300,	size: 0x30f0
+	filename: DANCE_UNAGI_02.LM	off: 0x3400,	size: 0x30f0
+	filename: DANCE_UNAGI_01.LM	off: 0x6500,	size: 0x30f0
+	filename: DANCER_16.TEXPACK	off: 0x9600,	size: 0xd7af4
+	filename: DANCE_UNAGI_04.LM	off: 0xe1100,	size: 0x30f0
+
+c:\dump\part351
+	filename: DANCE_UNAGI_02_04.LM	off: 0x300,	size: 0x368c
+	filename: DANCE_UNAGI_02_03.LM	off: 0x3a00,	size: 0x3654
+	filename:    DANCER_17.TEXPACK	off: 0x7080,	size: 0xf98f4
+	filename: DANCE_UNAGI_02_02.LM	off: 0x100980,	size: 0x368c
+	filename: DANCE_UNAGI_02_01.LM	off: 0x104080,	size: 0x3654
+
+c:\dump\part352
+	filename: DANCE_MONKASEI.LM	off: 0x280,	size: 0x19164
+	filename: DANCER_19.TEXPACK	off: 0x19400,	size: 0x25e8
+
+c:\dump\part353
+	filename:   DANCE_IDOL_MAMI.LM	off: 0x300,	size: 0x2940
+	filename: DANCE_IDOL_TAKANE.LM	off: 0x2c80,	size: 0x2938
+	filename:   DANCE_IDOL_MIKI.LM	off: 0x5600,	size: 0x2938
+	filename:    DANCER_20.TEXPACK	off: 0x7f80,	size: 0x1883a8
+	filename: DANCE_IDOL_HARUKA.LM	off: 0x190380,	size: 0x2938
+	filename: DANCE_IDOL_HIBIKI.LM	off: 0x192d00,	size: 0x2938
+
+c:\dump\part354
+	filename: DANCE_MONHAN_05.LM	off: 0x300,	size: 0x32d0
+	filename: DANCE_MONHAN_04.LM	off: 0x3600,	size: 0x31d0
+	filename: DANCE_MONHAN_03.LM	off: 0x6800,	size: 0x31d0
+	filename:  DANCER_21.TEXPACK	off: 0x9a00,	size: 0xb3164
+	filename: DANCE_MONHAN_02.LM	off: 0xbcb80,	size: 0x31d0
+	filename: DANCE_MONHAN_01.LM	off: 0xbfd80,	size: 0x31d0
+
+c:\dump\part355
+	filename:   DANCE_RYU_KIRYU.LM	off: 0x300,	size: 0x2df8
+	filename: DANCE_RYU_AKIYAMA.LM	off: 0x3100,	size: 0x2dd4
+	filename:    DANCER_22.TEXPACK	off: 0x5f00,	size: 0xdef20
+	filename:  DANCE_RYU_MAJIMA.LM	off: 0xe4e80,	size: 0x2dd4
+	filename:   DANCE_RYU_RYUJI.LM	off: 0xe7c80,	size: 0x2dd4
+	filename:  DANCE_RYU_HARUKA.LM	off: 0xeaa80,	size: 0x2d70
+
+c:\dump\part356
+	filename:  DANCE_MIKU_03.LM	off: 0x300,	size: 0x3944
+	filename:  DANCE_MIKU_02.LM	off: 0x3c80,	size: 0x3944
+	filename:  DANCE_MIKU_01.LM	off: 0x7600,	size: 0x3834
+	filename: DANCER_24.TEXPACK	off: 0xae80,	size: 0x19b62c
+	filename:  DANCE_MIKU_05.LM	off: 0x1a6500,	size: 0x3944
+	filename:  DANCE_MIKU_04.LM	off: 0x1a9e80,	size: 0x3944
+
+c:\dump\part357
+	filename: FEVER_01_INFO.DAT	off: 0x300,	size: 0x40
+	filename: FEVER_20_INFO.DAT	off: 0x380,	size: 0x40
+	filename: FEVER_21_INFO.DAT	off: 0x400,	size: 0x40
+	filename: FEVER_22_INFO.DAT	off: 0x480,	size: 0x40
+	filename: FEVER_24_INFO.DAT	off: 0x500,	size: 0x40
+	filename: FEVER_00_INFO.DAT	off: 0x580,	size: 0x40
+
+c:\dump\part358
+	filename:      FEVER_01.LM	off: 0x280,	size: 0x3b48
+	filename: FEVER_00.TEXPACK	off: 0x3e00,	size: 0x11d24
+
+c:\dump\part359
+	filename:      FEVER_02.LM	off: 0x280,	size: 0x3e3c
+	filename: FEVER_01.TEXPACK	off: 0x4100,	size: 0x11d24
+
+c:\dump\part360
+	filename:    FEVER_IDOL.LM	off: 0x280,	size: 0x2224
+	filename: FEVER_20.TEXPACK	off: 0x2500,	size: 0x20d28
+
+c:\dump\part361
+	filename: FEVER_21.TEXPACK	off: 0x280,	size: 0x3a9b0
+	filename:  FEVER_MONHAN.LM	off: 0x3ac80,	size: 0x17cac
+
+c:\dump\part362
+	filename:     FEVER_RYU.LM	off: 0x280,	size: 0x2160
+	filename: FEVER_22.TEXPACK	off: 0x2400,	size: 0x107a0
+
+c:\dump\part363
+	filename: FEVER_24.TEXPACK	off: 0x280,	size: 0x20d28
+	filename:    FEVER_MIKU.LM	off: 0x21000,	size: 0x2224
+
+c:\dump\part364
+	filename:     DON_COS00_DIET.LM	off: 0x280,	size: 0x3c6dc
+	filename: COS_BASE_DIET.TEXPACK	off: 0x3c980,	size: 0x56f68
+
+c:\dump\part365
+	filename: M_DON.TEXPACK	off: 0x280,	size: 0x94768
+	filename:      M_DON.LM	off: 0x94a00,	size: 0x24254
+
+c:\dump\part864
+
+c:\dump\part871
+
+c:\dump\part878
+
+c:\dump\part885
+	filename: SONG_H_RIGHT_MI_10TAI.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_10TAI.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_10TAI.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_10TAI.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_10TAI.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_10TAI.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part892
+	filename: SONG_H_RIGHT_MI_7OOPS.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_7OOPS.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_7OOPS.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_7OOPS.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_7OOPS.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_7OOPS.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part899
+	filename: SONG_H_RIGHT_MI_AKBHVY.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_AKBHVY.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_AKBHVY.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_AKBHVY.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_AKBHVY.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_AKBHVY.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part906
+	filename:    SONG_V_SHORT_AKUKAN.GIM	off: 0x380,	size: 0x1164
+	filename:    SONG_H_RIGHT_AKUKAN.GIM	off: 0x1500,	size: 0x2164
+	filename:   SONG_H_CENTER_AKUKAN.GIM	off: 0x3680,	size: 0x2168
+	filename:     SONG_H_LEFT_AKUKAN.GIM	off: 0x5800,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_AKUKAN.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_V_FULL_AKUKAN.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part913
+	filename:     SONG_H_LEFT_AONOSE.GIM	off: 0x380,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_AONOSE.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_V_FULL_AONOSE.GIM	off: 0x4680,	size: 0x2164
+	filename:    SONG_V_SHORT_AONOSE.GIM	off: 0x6800,	size: 0x1164
+	filename:    SONG_H_RIGHT_AONOSE.GIM	off: 0x7980,	size: 0x2164
+	filename:   SONG_H_CENTER_AONOSE.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part920
+	filename:     SONG_V_FULL_ARIGAT.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_ARIGAT.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_ARIGAT.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_ARIGAT.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_ARIGAT.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_ARIGAT.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part927
+	filename:    SONG_V_SHORT_BAMBI.GIM	off: 0x300,	size: 0x1164
+	filename:   SONG_H_CENTER_BAMBI.GIM	off: 0x1480,	size: 0x2164
+	filename:     SONG_H_LEFT_BAMBI.GIM	off: 0x3600,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_BAMBI.GIM	off: 0x5780,	size: 0x2168
+	filename:     SONG_V_FULL_BAMBI.GIM	off: 0x7900,	size: 0x2164
+	filename:    SONG_H_RIGHT_BAMBI.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part934
+	filename:    SONG_V_SHORT_BKO4.GIM	off: 0x300,	size: 0x1164
+	filename:     SONG_H_LEFT_BKO4.GIM	off: 0x1480,	size: 0x2164
+	filename:     SONG_V_FULL_BKO4.GIM	off: 0x3600,	size: 0x2164
+	filename:   SONG_H_CENTER_BKO4.GIM	off: 0x5780,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_BKO4.GIM	off: 0x7900,	size: 0x2168
+	filename:    SONG_H_RIGHT_BKO4.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part941
+	filename:   SONG_H_CENTER_BURU2.GIM	off: 0x300,	size: 0x2164
+	filename:     SONG_H_LEFT_BURU2.GIM	off: 0x2480,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_BURU2.GIM	off: 0x4600,	size: 0x2168
+	filename:     SONG_V_FULL_BURU2.GIM	off: 0x6780,	size: 0x2164
+	filename:    SONG_H_RIGHT_BURU2.GIM	off: 0x8900,	size: 0x2164
+	filename:    SONG_V_SHORT_BURU2.GIM	off: 0xaa80,	size: 0x1164
+
+c:\dump\part948
+	filename: SONG_H_RIGHT_MI_BUTOU6.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_BUTOU6.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_BUTOU6.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_BUTOU6.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_BUTOU6.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_BUTOU6.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part955
+	filename: SONG_H_RIGHT_MI_BUTOU8.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_BUTOU8.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_BUTOU8.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_BUTOU8.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_BUTOU8.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_BUTOU8.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part962
+	filename:    SONG_H_RIGHT_CASTLE.GIM	off: 0x380,	size: 0x2164
+	filename:   SONG_H_CENTER_CASTLE.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_H_LEFT_CASTLE.GIM	off: 0x4680,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_CASTLE.GIM	off: 0x6800,	size: 0x2168
+	filename:     SONG_V_FULL_CASTLE.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_CASTLE.GIM	off: 0xab00,	size: 0x1164
+
+c:\dump\part969
+	filename: SONG_H_RIGHT_MI_EXCAST.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_EXCAST.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_EXCAST.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_EXCAST.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_EXCAST.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_EXCAST.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part976
+	filename: SONG_H_RIGHT_MI_CATDOG.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_CATDOG.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_CATDOG.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_CATDOG.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_CATDOG.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_CATDOG.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part983
+	filename: SONG_H_RIGHT_MI_CLS12R.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_CLS12R.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_CLS12R.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_CLS12R.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_CLS12R.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_CLS12R.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part990
+	filename:    SONG_V_SHORT_EXCL12.GIM	off: 0x380,	size: 0x1164
+	filename:    SONG_H_RIGHT_EXCL12.GIM	off: 0x1500,	size: 0x2164
+	filename:   SONG_H_CENTER_EXCL12.GIM	off: 0x3680,	size: 0x2168
+	filename:     SONG_H_LEFT_EXCL12.GIM	off: 0x5800,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_EXCL12.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_V_FULL_EXCL12.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part997
+	filename:   SONG_H_CENTER_CLSINE.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_H_LEFT_CLSINE.GIM	off: 0x2500,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_CLSINE.GIM	off: 0x4680,	size: 0x2168
+	filename:     SONG_V_FULL_CLSINE.GIM	off: 0x6800,	size: 0x2164
+	filename:    SONG_V_SHORT_CLSINE.GIM	off: 0x8980,	size: 0x1164
+	filename:    SONG_H_RIGHT_CLSINE.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1004
+	filename: SONG_H_RIGHT_MI_CLSKKH.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_CLSKKH.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_CLSKKH.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_CLSKKH.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_CLSKKH.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_CLSKKH.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1011
+	filename: SONG_H_RIGHT_MI_CLSMNK.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_CLSMNK.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_CLSMNK.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_CLSMNK.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_CLSMNK.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_CLSMNK.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1018
+	filename:   SONG_H_CENTER_CLSPVN.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_H_LEFT_CLSPVN.GIM	off: 0x2500,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_CLSPVN.GIM	off: 0x4680,	size: 0x2168
+	filename:     SONG_V_FULL_CLSPVN.GIM	off: 0x6800,	size: 0x2164
+	filename:    SONG_V_SHORT_CLSPVN.GIM	off: 0x8980,	size: 0x1164
+	filename:    SONG_H_RIGHT_CLSPVN.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1025
+	filename: SONG_H_RIGHT_MI_CLSRAD.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_CLSRAD.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_CLSRAD.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_CLSRAD.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_CLSRAD.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_CLSRAD.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1032
+	filename: SONG_H_RIGHT_MI_CLSVIO.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_CLSVIO.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_CLSVIO.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_CLSVIO.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_CLSVIO.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_CLSVIO.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1039
+	filename: SONG_H_RIGHT_MI_COSMB.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_COSMB.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_COSMB.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_COSMB.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_COSMB.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_COSMB.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1046
+	filename: SONG_H_RIGHT_MI_DAIKU.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_DAIKU.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_DAIKU.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_DAIKU.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_DAIKU.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_DAIKU.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1053
+	filename:     SONG_V_FULL_DEN.GIM	off: 0x300,	size: 0x2160
+	filename:   SONG_H_CENTER_DEN.GIM	off: 0x2480,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_DEN.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_DEN.GIM	off: 0x6780,	size: 0x1164
+	filename:    SONG_H_RIGHT_DEN.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_DEN.GIM	off: 0x9a80,	size: 0x2160
+
+c:\dump\part1060
+	filename: SONG_H_RIGHT_MI_GOTH.GIM	off: 0x300,	size: 0x2168
+	filename:    SONG_H_RIGHT_GOTH.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_V_SHORT_GOTH.GIM	off: 0x4600,	size: 0x1164
+	filename:     SONG_H_LEFT_GOTH.GIM	off: 0x5780,	size: 0x2164
+	filename:     SONG_V_FULL_GOTH.GIM	off: 0x7900,	size: 0x2164
+	filename:   SONG_H_CENTER_GOTH.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1067
+	filename:     SONG_V_FULL_EXGOTH.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_EXGOTH.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_EXGOTH.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_EXGOTH.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_EXGOTH.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_EXGOTH.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1074
+	filename:    SONG_V_SHORT_HAYA.GIM	off: 0x300,	size: 0x1164
+	filename:     SONG_H_LEFT_HAYA.GIM	off: 0x1480,	size: 0x2164
+	filename:     SONG_V_FULL_HAYA.GIM	off: 0x3600,	size: 0x2164
+	filename:   SONG_H_CENTER_HAYA.GIM	off: 0x5780,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_HAYA.GIM	off: 0x7900,	size: 0x2168
+	filename:    SONG_H_RIGHT_HAYA.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1081
+	filename: SONG_H_RIGHT_MI_HEAVY2.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_HEAVY2.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_HEAVY2.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_HEAVY2.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_HEAVY2.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_HEAVY2.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1088
+	filename:   SONG_H_CENTER_HPP.GIM	off: 0x300,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_HPP.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_V_SHORT_HPP.GIM	off: 0x4600,	size: 0x1164
+	filename:    SONG_H_RIGHT_HPP.GIM	off: 0x5780,	size: 0x2164
+	filename:     SONG_H_LEFT_HPP.GIM	off: 0x7900,	size: 0x2160
+	filename:     SONG_V_FULL_HPP.GIM	off: 0x9a80,	size: 0x2160
+
+c:\dump\part1095
+	filename: SONG_H_RIGHT_MI_IMAS2T.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_IMAS2T.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_IMAS2T.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_IMAS2T.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_IMAS2T.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_IMAS2T.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1102
+	filename: SONG_H_RIGHT_MI_INDENI.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_INDENI.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_INDENI.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_INDENI.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_INDENI.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_INDENI.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1109
+	filename:     SONG_V_FULL_INUHOE.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_INUHOE.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_INUHOE.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_INUHOE.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_INUHOE.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_INUHOE.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1116
+	filename:     SONG_V_FULL_IWISH.GIM	off: 0x300,	size: 0x2164
+	filename:    SONG_H_RIGHT_IWISH.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_V_SHORT_IWISH.GIM	off: 0x4600,	size: 0x1164
+	filename:   SONG_H_CENTER_IWISH.GIM	off: 0x5780,	size: 0x2164
+	filename:     SONG_H_LEFT_IWISH.GIM	off: 0x7900,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_IWISH.GIM	off: 0x9a80,	size: 0x2168
+
+c:\dump\part1123
+	filename: SONG_H_RIGHT_MI_JOYFUL.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_JOYFUL.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_JOYFUL.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_JOYFUL.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_JOYFUL.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_JOYFUL.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1130
+	filename: SONG_H_RIGHT_MI_KAHIM.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_KAHIM.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_KAHIM.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_KAHIM.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_KAHIM.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_KAHIM.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1137
+	filename: SONG_H_RIGHT_MI_KIRAME.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_KIRAME.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_KIRAME.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_KIRAME.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_KIRAME.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_KIRAME.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1144
+	filename:     SONG_V_FULL_KSRAIN.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_KSRAIN.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_KSRAIN.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_KSRAIN.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_KSRAIN.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_KSRAIN.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1151
+	filename:   SONG_H_CENTER_LION.GIM	off: 0x300,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_LION.GIM	off: 0x2480,	size: 0x2168
+	filename:    SONG_H_RIGHT_LION.GIM	off: 0x4600,	size: 0x100d4
+	filename:    SONG_V_SHORT_LION.GIM	off: 0x14700,	size: 0x1164
+	filename:     SONG_H_LEFT_LION.GIM	off: 0x15880,	size: 0x2164
+	filename:     SONG_V_FULL_LION.GIM	off: 0x17a00,	size: 0x2164
+
+c:\dump\part1158
+	filename:     SONG_V_FULL_LOV193.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_LOV193.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_LOV193.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_LOV193.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_LOV193.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_LOV193.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1165
+	filename:     SONG_H_LEFT_MAGLIT.GIM	off: 0x380,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_MAGLIT.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_V_FULL_MAGLIT.GIM	off: 0x4680,	size: 0x2164
+	filename:    SONG_V_SHORT_MAGLIT.GIM	off: 0x6800,	size: 0x1164
+	filename:    SONG_H_RIGHT_MAGLIT.GIM	off: 0x7980,	size: 0x2164
+	filename:   SONG_H_CENTER_MAGLIT.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1172
+	filename: SONG_H_RIGHT_MI_MAPPY2.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_MAPPY2.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_MAPPY2.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_MAPPY2.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_MAPPY2.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_MAPPY2.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1179
+	filename: SONG_H_RIGHT_MI_MGKISS.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_MGKISS.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_MGKISS.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_MGKISS.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_MGKISS.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_MGKISS.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1186
+	filename: SONG_H_RIGHT_MI_MIKUGK.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_MIKUGK.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_MIKUGK.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_MIKUGK.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_MIKUGK.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_MIKUGK.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1193
+	filename:     SONG_V_FULL_EXMIKU.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_EXMIKU.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_EXMIKU.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_EXMIKU.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_EXMIKU.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_EXMIKU.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1200
+	filename:   SONG_H_CENTER_MISTER.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_H_LEFT_MISTER.GIM	off: 0x2500,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_MISTER.GIM	off: 0x4680,	size: 0x2168
+	filename:     SONG_V_FULL_MISTER.GIM	off: 0x6800,	size: 0x2164
+	filename:    SONG_V_SHORT_MISTER.GIM	off: 0x8980,	size: 0x1164
+	filename:    SONG_H_RIGHT_MISTER.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1207
+	filename: SONG_H_RIGHT_MI_MONHN2.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_MONHN2.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_MONHN2.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_MONHN2.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_MONHN2.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_MONHN2.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1214
+	filename:    SONG_V_SHORT_MSCL1.GIM	off: 0x300,	size: 0x1164
+	filename:   SONG_H_CENTER_MSCL1.GIM	off: 0x1480,	size: 0x2164
+	filename:     SONG_H_LEFT_MSCL1.GIM	off: 0x3600,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_MSCL1.GIM	off: 0x5780,	size: 0x2168
+	filename:     SONG_V_FULL_MSCL1.GIM	off: 0x7900,	size: 0x2164
+	filename:    SONG_H_RIGHT_MSCL1.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1221
+	filename: SONG_H_RIGHT_MI_MUJIHI.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_MUJIHI.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_MUJIHI.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_MUJIHI.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_MUJIHI.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_MUJIHI.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1228
+	filename:     SONG_H_LEFT_MULBER.GIM	off: 0x380,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_MULBER.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_V_FULL_MULBER.GIM	off: 0x4680,	size: 0x2164
+	filename:    SONG_V_SHORT_MULBER.GIM	off: 0x6800,	size: 0x1164
+	filename:    SONG_H_RIGHT_MULBER.GIM	off: 0x7980,	size: 0x2164
+	filename:   SONG_H_CENTER_MULBER.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1235
+	filename: SONG_H_RIGHT_MI_NATSU.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_NATSU.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_NATSU.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_NATSU.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_NATSU.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_NATSU.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1242
+	filename:   SONG_H_CENTER_NIKU.GIM	off: 0x300,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_NIKU.GIM	off: 0x2480,	size: 0x2168
+	filename:    SONG_H_RIGHT_NIKU.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_NIKU.GIM	off: 0x6780,	size: 0x1164
+	filename:     SONG_H_LEFT_NIKU.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_V_FULL_NIKU.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1249
+	filename: SONG_H_RIGHT_MI_NOBUTS.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_NOBUTS.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_NOBUTS.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_NOBUTS.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_NOBUTS.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_NOBUTS.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1256
+	filename:     SONG_V_FULL_NYCYOK.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_NYCYOK.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_NYCYOK.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_NYCYOK.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_NYCYOK.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_NYCYOK.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1263
+	filename: SONG_H_RIGHT_MI_ONEDAY.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_ONEDAY.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_ONEDAY.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_ONEDAY.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_ONEDAY.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_ONEDAY.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1270
+	filename: SONG_H_RIGHT_MI_OUTRUN.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_OUTRUN.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_OUTRUN.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_OUTRUN.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_OUTRUN.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_OUTRUN.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1277
+	filename: SONG_H_RIGHT_MI_PSP3BS.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_PSP3BS.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_PSP3BS.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_PSP3BS.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_PSP3BS.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1284
+	filename: SONG_H_RIGHT_MI_PSP3OP.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_PSP3OP.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3OP.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_PSP3OP.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_PSP3OP.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_PSP3OP.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1291
+	filename: SONG_H_RIGHT_MI_PUNISH.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_PUNISH.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_PUNISH.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_PUNISH.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_PUNISH.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_PUNISH.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1298
+	filename:    SONG_H_RIGHT_RINREN.GIM	off: 0x380,	size: 0x2164
+	filename:   SONG_H_CENTER_RINREN.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_H_LEFT_RINREN.GIM	off: 0x4680,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_RINREN.GIM	off: 0x6800,	size: 0x2168
+	filename:     SONG_V_FULL_RINREN.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_RINREN.GIM	off: 0xab00,	size: 0x1164
+
+c:\dump\part1305
+	filename:    SONG_V_SHORT_ROT3.GIM	off: 0x300,	size: 0x1164
+	filename:     SONG_H_LEFT_ROT3.GIM	off: 0x1480,	size: 0x2164
+	filename:     SONG_V_FULL_ROT3.GIM	off: 0x3600,	size: 0x2164
+	filename:   SONG_H_CENTER_ROT3.GIM	off: 0x5780,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_ROT3.GIM	off: 0x7900,	size: 0x2168
+	filename:    SONG_H_RIGHT_ROT3.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1312
+	filename:     SONG_V_FULL_SKASKA.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_SKASKA.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_SKASKA.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_SKASKA.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_SKASKA.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_SKASKA.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1319
+	filename:     SONG_H_LEFT_EXSKAS.GIM	off: 0x380,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_EXSKAS.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_V_FULL_EXSKAS.GIM	off: 0x4680,	size: 0x2164
+	filename:    SONG_V_SHORT_EXSKAS.GIM	off: 0x6800,	size: 0x1164
+	filename:    SONG_H_RIGHT_EXSKAS.GIM	off: 0x7980,	size: 0x2164
+	filename:   SONG_H_CENTER_EXSKAS.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1326
+	filename: SONG_H_RIGHT_MI_SOROBA.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_SOROBA.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_SOROBA.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_SOROBA.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_SOROBA.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_SOROBA.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1333
+	filename:     SONG_V_FULL_SQR.GIM	off: 0x300,	size: 0x2160
+	filename:   SONG_H_CENTER_SQR.GIM	off: 0x2480,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_SQR.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_SQR.GIM	off: 0x6780,	size: 0x1164
+	filename:    SONG_H_RIGHT_SQR.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_SQR.GIM	off: 0x9a80,	size: 0x2160
+
+c:\dump\part1340
+	filename: SONG_H_RIGHT_MI_EXSQR.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_EXSQR.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_EXSQR.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_EXSQR.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_EXSQR.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_EXSQR.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1347
+	filename:     SONG_V_FULL_STMIC8.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_STMIC8.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_STMIC8.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_STMIC8.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_STMIC8.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_STMIC8.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1354
+	filename: SONG_H_RIGHT_MI_SWEEP1.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_SWEEP1.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_SWEEP1.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_SWEEP1.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_SWEEP1.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_SWEEP1.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1361
+	filename:    SONG_H_RIGHT_EXSWP1.GIM	off: 0x380,	size: 0x2164
+	filename:   SONG_H_CENTER_EXSWP1.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_H_LEFT_EXSWP1.GIM	off: 0x4680,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_EXSWP1.GIM	off: 0x6800,	size: 0x2168
+	filename:     SONG_V_FULL_EXSWP1.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_EXSWP1.GIM	off: 0xab00,	size: 0x1164
+
+c:\dump\part1368
+	filename:   SONG_H_CENTER_SWEEP2.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_H_LEFT_SWEEP2.GIM	off: 0x2500,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_SWEEP2.GIM	off: 0x4680,	size: 0x2168
+	filename:     SONG_V_FULL_SWEEP2.GIM	off: 0x6800,	size: 0x2164
+	filename:    SONG_V_SHORT_SWEEP2.GIM	off: 0x8980,	size: 0x1164
+	filename:    SONG_H_RIGHT_SWEEP2.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1375
+	filename: SONG_H_RIGHT_MI_EXSWP2.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_EXSWP2.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_EXSWP2.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_EXSWP2.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_EXSWP2.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_EXSWP2.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1382
+	filename:    SONG_H_RIGHT_TAIRIK.GIM	off: 0x380,	size: 0x2164
+	filename:   SONG_H_CENTER_TAIRIK.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_H_LEFT_TAIRIK.GIM	off: 0x4680,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_TAIRIK.GIM	off: 0x6800,	size: 0x2168
+	filename:     SONG_V_FULL_TAIRIK.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_TAIRIK.GIM	off: 0xab00,	size: 0x1164
+
+c:\dump\part1389
+	filename: SONG_H_RIGHT_MI_TEKEN6.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_TEKEN6.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_TEKEN6.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_TEKEN6.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_TEKEN6.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_TEKEN6.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1396
+	filename:    SONG_H_RIGHT_WHROSE.GIM	off: 0x380,	size: 0x2164
+	filename:   SONG_H_CENTER_WHROSE.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_H_LEFT_WHROSE.GIM	off: 0x4680,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_WHROSE.GIM	off: 0x6800,	size: 0x2168
+	filename:     SONG_V_FULL_WHROSE.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_WHROSE.GIM	off: 0xab00,	size: 0x1164
+
+c:\dump\part1403
+	filename:     SONG_H_LEFT_EXWHRO.GIM	off: 0x380,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_EXWHRO.GIM	off: 0x2500,	size: 0x2168
+	filename:     SONG_V_FULL_EXWHRO.GIM	off: 0x4680,	size: 0x2164
+	filename:    SONG_V_SHORT_EXWHRO.GIM	off: 0x6800,	size: 0x1164
+	filename:    SONG_H_RIGHT_EXWHRO.GIM	off: 0x7980,	size: 0x2164
+	filename:   SONG_H_CENTER_EXWHRO.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1410
+	filename: SONG_H_RIGHT_MI_XDAY2K.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_XDAY2K.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_XDAY2K.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_XDAY2K.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_XDAY2K.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_XDAY2K.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1417
+	filename:     SONG_V_FULL_XJAPAN.GIM	off: 0x380,	size: 0x2164
+	filename:    SONG_V_SHORT_XJAPAN.GIM	off: 0x2500,	size: 0x1164
+	filename:    SONG_H_RIGHT_XJAPAN.GIM	off: 0x3680,	size: 0x2164
+	filename:   SONG_H_CENTER_XJAPAN.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_XJAPAN.GIM	off: 0x7980,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_XJAPAN.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1424
+	filename: SONG_H_RIGHT_MI_YMYRPG.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_V_FULL_YMYRPG.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_YMYRPG.GIM	off: 0x4680,	size: 0x1164
+	filename:    SONG_H_RIGHT_YMYRPG.GIM	off: 0x5800,	size: 0x2164
+	filename:   SONG_H_CENTER_YMYRPG.GIM	off: 0x7980,	size: 0x2168
+	filename:     SONG_H_LEFT_YMYRPG.GIM	off: 0x9b00,	size: 0x2164
+
+c:\dump\part1431
+	filename:     SONG_V_FULL_YPP.GIM	off: 0x300,	size: 0x2160
+	filename:   SONG_H_CENTER_YPP.GIM	off: 0x2480,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_YPP.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_YPP.GIM	off: 0x6780,	size: 0x1164
+	filename:    SONG_H_RIGHT_YPP.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_YPP.GIM	off: 0x9a80,	size: 0x2160
+
+c:\dump\part1438
+	filename: SONG_H_RIGHT_MI_EXYPP.GIM	off: 0x300,	size: 0x2168
+	filename:     SONG_V_FULL_EXYPP.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_H_RIGHT_EXYPP.GIM	off: 0x4600,	size: 0x2164
+	filename:    SONG_V_SHORT_EXYPP.GIM	off: 0x6780,	size: 0x1164
+	filename:   SONG_H_CENTER_EXYPP.GIM	off: 0x7900,	size: 0x2164
+	filename:     SONG_H_LEFT_EXYPP.GIM	off: 0x9a80,	size: 0x2164
+
+c:\dump\part1445
+	filename:     SONG_H_LEFT_PSP3BS1.GIM	off: 0x380,	size: 0x2164
+	filename:     SONG_V_FULL_PSP3BS1.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS1.GIM	off: 0x4680,	size: 0x1168
+	filename:    SONG_H_RIGHT_PSP3BS1.GIM	off: 0x5800,	size: 0x2168
+	filename:   SONG_H_CENTER_PSP3BS1.GIM	off: 0x7980,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_PSP3BS1.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1452
+	filename:    SONG_H_RIGHT_PSP3BS2.GIM	off: 0x380,	size: 0x2168
+	filename:   SONG_H_CENTER_PSP3BS2.GIM	off: 0x2500,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_PSP3BS2.GIM	off: 0x4680,	size: 0x2168
+	filename:     SONG_H_LEFT_PSP3BS2.GIM	off: 0x6800,	size: 0x2164
+	filename:     SONG_V_FULL_PSP3BS2.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS2.GIM	off: 0xab00,	size: 0x1168
+
+c:\dump\part1459
+	filename:     SONG_H_LEFT_PSP3BS3.GIM	off: 0x380,	size: 0x2164
+	filename:     SONG_V_FULL_PSP3BS3.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS3.GIM	off: 0x4680,	size: 0x1168
+	filename:    SONG_H_RIGHT_PSP3BS3.GIM	off: 0x5800,	size: 0x2168
+	filename:   SONG_H_CENTER_PSP3BS3.GIM	off: 0x7980,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_PSP3BS3.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1466
+	filename:    SONG_H_RIGHT_PSP3BS4.GIM	off: 0x380,	size: 0x2168
+	filename:   SONG_H_CENTER_PSP3BS4.GIM	off: 0x2500,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_PSP3BS4.GIM	off: 0x4680,	size: 0x2168
+	filename:     SONG_H_LEFT_PSP3BS4.GIM	off: 0x6800,	size: 0x2164
+	filename:     SONG_V_FULL_PSP3BS4.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS4.GIM	off: 0xab00,	size: 0x1168
+
+c:\dump\part1473
+	filename:     SONG_H_LEFT_PSP3BS5.GIM	off: 0x380,	size: 0x2164
+	filename:     SONG_V_FULL_PSP3BS5.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS5.GIM	off: 0x4680,	size: 0x1168
+	filename:    SONG_H_RIGHT_PSP3BS5.GIM	off: 0x5800,	size: 0x2168
+	filename:   SONG_H_CENTER_PSP3BS5.GIM	off: 0x7980,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_PSP3BS5.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1480
+	filename:    SONG_H_RIGHT_PSP3BS6.GIM	off: 0x380,	size: 0x2168
+	filename:   SONG_H_CENTER_PSP3BS6.GIM	off: 0x2500,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_PSP3BS6.GIM	off: 0x4680,	size: 0x2168
+	filename:     SONG_H_LEFT_PSP3BS6.GIM	off: 0x6800,	size: 0x2164
+	filename:     SONG_V_FULL_PSP3BS6.GIM	off: 0x8980,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS6.GIM	off: 0xab00,	size: 0x1168
+
+c:\dump\part1487
+	filename:     SONG_H_LEFT_PSP3BS7.GIM	off: 0x380,	size: 0x2164
+	filename:     SONG_V_FULL_PSP3BS7.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_PSP3BS7.GIM	off: 0x4680,	size: 0x1168
+	filename:    SONG_H_RIGHT_PSP3BS7.GIM	off: 0x5800,	size: 0x2168
+	filename:   SONG_H_CENTER_PSP3BS7.GIM	off: 0x7980,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_PSP3BS7.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1494
+	filename:     SONG_H_LEFT_WTOU080.GIM	off: 0x380,	size: 0x2164
+	filename:     SONG_V_FULL_WTOU080.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_WTOU080.GIM	off: 0x4680,	size: 0x1168
+	filename:    SONG_H_RIGHT_WTOU080.GIM	off: 0x5800,	size: 0x2168
+	filename:   SONG_H_CENTER_WTOU080.GIM	off: 0x7980,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_WTOU080.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1500
+	filename:     SONG_H_LEFT_WTOU116.GIM	off: 0x380,	size: 0x2164
+	filename:     SONG_V_FULL_WTOU116.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_WTOU116.GIM	off: 0x4680,	size: 0x1168
+	filename:    SONG_H_RIGHT_WTOU116.GIM	off: 0x5800,	size: 0x2168
+	filename:   SONG_H_CENTER_WTOU116.GIM	off: 0x7980,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_WTOU116.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1517
+	filename:     SONG_H_LEFT_WTOU180.GIM	off: 0x380,	size: 0x2164
+	filename:     SONG_V_FULL_WTOU180.GIM	off: 0x2500,	size: 0x2164
+	filename:    SONG_V_SHORT_WTOU180.GIM	off: 0x4680,	size: 0x1168
+	filename:    SONG_H_RIGHT_WTOU180.GIM	off: 0x5800,	size: 0x2168
+	filename:   SONG_H_CENTER_WTOU180.GIM	off: 0x7980,	size: 0x2168
+	filename: SONG_H_RIGHT_MI_WTOU180.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1528
+	filename:    SONG_V_SHORT_W2TOUA116.GIM	off: 0x380,	size: 0x1168
+	filename: SONG_H_RIGHT_MI_W2TOUA116.GIM	off: 0x1500,	size: 0x216c
+	filename:     SONG_V_FULL_W2TOUA116.GIM	off: 0x3680,	size: 0x2168
+	filename:   SONG_H_CENTER_W2TOUA116.GIM	off: 0x5800,	size: 0x2168
+	filename:     SONG_H_LEFT_W2TOUA116.GIM	off: 0x7980,	size: 0x2168
+	filename:    SONG_H_RIGHT_W2TOUA116.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1532
+	filename:   SONG_H_CENTER_W2TOUC116.GIM	off: 0x380,	size: 0x2168
+	filename:     SONG_H_LEFT_W2TOUC116.GIM	off: 0x2500,	size: 0x2168
+	filename:    SONG_H_RIGHT_W2TOUC116.GIM	off: 0x4680,	size: 0x2168
+	filename:    SONG_V_SHORT_W2TOUC116.GIM	off: 0x6800,	size: 0x1168
+	filename: SONG_H_RIGHT_MI_W2TOUC116.GIM	off: 0x7980,	size: 0x216c
+	filename:     SONG_V_FULL_W2TOUC116.GIM	off: 0x9b00,	size: 0x2168
+
+c:\dump\part1537
+	filename:  SONG_V_SHORT_NYCYOK.GIM	off: 0x3000,	size: 0x1164
+	filename:  SONG_V_SHORT_NOBUTS.GIM	off: 0x4180,	size: 0x1164
+	filename:  SONG_V_SHORT_RINREN.GIM	off: 0x5300,	size: 0x1164
+	filename:  SONG_V_SHORT_MIKUGK.GIM	off: 0x6480,	size: 0x1164
+	filename: SONG_V_SHORT_PSP3BS3.GIM	off: 0x7600,	size: 0x1168
+	filename:  SONG_V_SHORT_EXSWP2.GIM	off: 0x8780,	size: 0x1164
+	filename:  SONG_V_SHORT_ARIGAT.GIM	off: 0x9900,	size: 0x1164
+	filename:  SONG_V_SHORT_EXMIKU.GIM	off: 0xaa80,	size: 0x1164
+	filename:  SONG_V_SHORT_INDENI.GIM	off: 0xbc00,	size: 0x1164
+	filename:     SONG_V_SHORT_DEN.GIM	off: 0xcd80,	size: 0x1164
+	filename:   SONG_V_SHORT_COSMB.GIM	off: 0xdf00,	size: 0x1164
+	filename:  SONG_V_SHORT_YMYRPG.GIM	off: 0xf080,	size: 0x1164
+	filename:  SONG_V_SHORT_KIRAME.GIM	off: 0x10200,	size: 0x1164
+	filename:  SONG_V_SHORT_XJAPAN.GIM	off: 0x11380,	size: 0x1164
+	filename:  SONG_V_SHORT_PSP3BS.GIM	off: 0x12500,	size: 0x1164
+	filename:  SONG_V_SHORT_MISTER.GIM	off: 0x13680,	size: 0x1164
+	filename:  SONG_V_SHORT_CLS12R.GIM	off: 0x14800,	size: 0x1164
+	filename:  SONG_V_SHORT_CLSPVN.GIM	off: 0x15980,	size: 0x1164
+	filename:     SONG_V_SHORT_SQR.GIM	off: 0x16b00,	size: 0x1164
+	filename:     SONG_V_SHORT_HPP.GIM	off: 0x17c80,	size: 0x1164
+	filename:  SONG_V_SHORT_EXSKAS.GIM	off: 0x18e00,	size: 0x1164
+	filename:     SONG_V_SHORT_YPP.GIM	off: 0x19f80,	size: 0x1164
+	filename: SONG_V_SHORT_PSP3BS5.GIM	off: 0x1b100,	size: 0x1168
+	filename:   SONG_V_SHORT_10TAI.GIM	off: 0x1c280,	size: 0x1164
+	filename:  SONG_V_SHORT_CLSMNK.GIM	off: 0x1d400,	size: 0x1164
+	filename:  SONG_V_SHORT_CASTLE.GIM	off: 0x1e580,	size: 0x1164
+	filename:    SONG_V_SHORT_HAYA.GIM	off: 0x1f700,	size: 0x1164
+	filename:  SONG_V_SHORT_STMIC8.GIM	off: 0x20880,	size: 0x1164
+	filename:  SONG_V_SHORT_TAIRIK.GIM	off: 0x21a00,	size: 0x1164
+	filename:   SONG_V_SHORT_EXSQR.GIM	off: 0x22b80,	size: 0x1164
+	filename:  SONG_V_SHORT_CLSRAD.GIM	off: 0x23d00,	size: 0x1164
+	filename:  SONG_V_SHORT_JOYFUL.GIM	off: 0x24e80,	size: 0x1164
+	filename:  SONG_V_SHORT_SWEEP2.GIM	off: 0x26000,	size: 0x1164
+	filename:  SONG_V_SHORT_HEAVY2.GIM	off: 0x27180,	size: 0x1164
+	filename:  SONG_V_SHORT_MGKISS.GIM	off: 0x28300,	size: 0x1164
+	filename:   SONG_V_SHORT_EXYPP.GIM	off: 0x29480,	size: 0x1164
+	filename: SONG_V_SHORT_PSP3BS7.GIM	off: 0x2a600,	size: 0x1168
+	filename:    SONG_V_SHORT_BKO4.GIM	off: 0x2b780,	size: 0x1164
+	filename:  SONG_V_SHORT_MONHN2.GIM	off: 0x2c900,	size: 0x1164
+	filename: SONG_V_SHORT_PSP3BS2.GIM	off: 0x2da80,	size: 0x1168
+	filename:  SONG_V_SHORT_EXSWP1.GIM	off: 0x2ec00,	size: 0x1164
+	filename:   SONG_V_SHORT_DAIKU.GIM	off: 0x2fd80,	size: 0x1164
+	filename:  SONG_V_SHORT_MAGLIT.GIM	off: 0x30f00,	size: 0x1164
+	filename:   SONG_V_SHORT_MSCL1.GIM	off: 0x32080,	size: 0x1164
+	filename:  SONG_V_SHORT_BUTOU6.GIM	off: 0x33200,	size: 0x1164
+	filename:  SONG_V_SHORT_TEKEN6.GIM	off: 0x34380,	size: 0x1164
+	filename:    SONG_V_SHORT_ROT3.GIM	off: 0x35500,	size: 0x1164
+	filename:   SONG_V_SHORT_KAHIM.GIM	off: 0x36680,	size: 0x1164
+	filename:   SONG_V_SHORT_NATSU.GIM	off: 0x37800,	size: 0x1164
+	filename:  SONG_V_SHORT_EXCAST.GIM	off: 0x38980,	size: 0x1164
+	filename:  SONG_V_SHORT_CLSINE.GIM	off: 0x39b00,	size: 0x1164
+	filename: SONG_V_SHORT_PSP3BS4.GIM	off: 0x3ac80,	size: 0x1168
+	filename:   SONG_V_SHORT_IWISH.GIM	off: 0x3be00,	size: 0x1164
+	filename:  SONG_V_SHORT_IMAS2T.GIM	off: 0x3cf80,	size: 0x1164
+	filename:  SONG_V_SHORT_OUTRUN.GIM	off: 0x3e100,	size: 0x1164
+	filename:  SONG_V_SHORT_PUNISH.GIM	off: 0x3f280,	size: 0x1164
+	filename:  SONG_V_SHORT_MUJIHI.GIM	off: 0x40400,	size: 0x1164
+	filename:  SONG_V_SHORT_BUTOU8.GIM	off: 0x41580,	size: 0x1164
+	filename:  SONG_V_SHORT_EXWHRO.GIM	off: 0x42700,	size: 0x1164
+	filename:  SONG_V_SHORT_MULBER.GIM	off: 0x43880,	size: 0x1164
+	filename:   SONG_V_SHORT_BURU2.GIM	off: 0x44a00,	size: 0x1164
+	filename:  SONG_V_SHORT_INUHOE.GIM	off: 0x45b80,	size: 0x1164
+	filename:  SONG_V_SHORT_EXGOTH.GIM	off: 0x46d00,	size: 0x1164
+	filename:    SONG_V_SHORT_NIKU.GIM	off: 0x47e80,	size: 0x1164
+	filename:  SONG_V_SHORT_SOROBA.GIM	off: 0x49000,	size: 0x1164
+	filename:  SONG_V_SHORT_AONOSE.GIM	off: 0x4a180,	size: 0x1164
+	filename:  SONG_V_SHORT_CLSVIO.GIM	off: 0x4b300,	size: 0x1164
+	filename:  SONG_V_SHORT_SWEEP1.GIM	off: 0x4c480,	size: 0x1164
+	filename:  SONG_V_SHORT_WHROSE.GIM	off: 0x4d600,	size: 0x1164
+	filename:  SONG_V_SHORT_XDAY2K.GIM	off: 0x4e780,	size: 0x1164
+	filename:  SONG_V_SHORT_CATDOG.GIM	off: 0x4f900,	size: 0x1164
+	filename:  SONG_V_SHORT_SKASKA.GIM	off: 0x50a80,	size: 0x1164
+	filename: SONG_V_SHORT_PSP3BS6.GIM	off: 0x51c00,	size: 0x1168
+	filename:  SONG_V_SHORT_ONEDAY.GIM	off: 0x52d80,	size: 0x1164
+	filename:   SONG_V_SHORT_BAMBI.GIM	off: 0x53f00,	size: 0x1164
+	filename: SONG_V_SHORT_PSP3BS1.GIM	off: 0x55080,	size: 0x1168
+	filename:  SONG_V_SHORT_AKUKAN.GIM	off: 0x56200,	size: 0x1164
+	filename:  SONG_V_SHORT_EXCL12.GIM	off: 0x57380,	size: 0x1164
+	filename:  SONG_V_SHORT_MAPPY2.GIM	off: 0x58500,	size: 0x1164
+	filename:    SONG_V_SHORT_LION.GIM	off: 0x59680,	size: 0x1164
+	filename:  SONG_V_SHORT_CLSKKH.GIM	off: 0x5a800,	size: 0x1164
+	filename:  SONG_V_SHORT_PSP3OP.GIM	off: 0x5b980,	size: 0x1164
+	filename:    SONG_V_SHORT_GOTH.GIM	off: 0x5cb00,	size: 0x1164
+	filename:   SONG_V_SHORT_7OOPS.GIM	off: 0x5dc80,	size: 0x1164
+	filename:  SONG_V_SHORT_KSRAIN.GIM	off: 0x5ee00,	size: 0x1164
+	filename:  SONG_V_SHORT_AKBHVY.GIM	off: 0x5ff80,	size: 0x1164
+	filename:  SONG_V_SHORT_LOV193.GIM	off: 0x61100,	size: 0x1164
+
+c:\dump\part1538
+	filename:     SONG_V_FULL_0000X.GIM	off: 0x300,	size: 0x2164
+	filename:    SONG_H_RIGHT_0000X.GIM	off: 0x2480,	size: 0x2164
+	filename:    SONG_V_SHORT_0000X.GIM	off: 0x4600,	size: 0x1164
+	filename:   SONG_H_CENTER_0000X.GIM	off: 0x5780,	size: 0x2164
+	filename:     SONG_H_LEFT_0000X.GIM	off: 0x7900,	size: 0x2164
+	filename: SONG_H_RIGHT_MI_0000X.GIM	off: 0x9a80,	size: 0x2168
+
