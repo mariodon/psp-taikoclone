@@ -57,6 +57,9 @@ if (tag == 0xFF00) {//end tag?
 
 //0x000A    0x89f1c2c   //s7->0xC->0x44->0x34,s7->0xC->0x44->0x64
 //0xF022    0x89f1618   //build s7->0xC->0x44->0x88, s7->0xC->0x44->0x84块
+//      +0x0(2)     tag_type
+//      +0x2(2)     tag_size
+//      +0x4(2)     ??(某id性质的东西)
 //
 //0xF023~? -0xF103 s7->0xC->0x44->0x18,//s7->0xC->0x44->0x48,目测没有其他值，只有F023
 //
@@ -66,7 +69,7 @@ if (tag == 0xFF00) {//end tag?
 //                      +0x0(4)     tag0027addr
 //                      +0x4(4)     按size=tag0027->0xA(2) *4申请内存，保存所有tag002b的addr
 //                      +0x8(4)     按size=tag0027->0xC(2) *4申请内存，保存所有tag0001的addr
-//                      +0xC(4)     按size=tag0027->0xE(2) *4申请内存
+//                      +0xC(4)     按size=tag0027->0xE(2) *4申请内存, 保存所有tagf105的addr
 //
 //
 //                      s7->0xC->0x44->0x84 + 偏移 * 4  偏移=tag0027->0x4(2)
@@ -80,9 +83,13 @@ if (tag == 0xFF00) {//end tag?
 //      +0x4(2)     ??(某id性质的东西)
 //      +0xA(2)     cnt_tag002b_followed
 //      +0xC(2)     cnt_tag0001_followed
+//      +0xE(2)     cnt_tagf105_followed
 //
 //tag0001
 //      +0x6(2)     接下来还有几个tag0004
 //
 //tag0004
 //      +0x20(2)    ??决定跳过几个tag
+//
+//tagf105
+//      +0x6(2)     后面还有几个tag0004
