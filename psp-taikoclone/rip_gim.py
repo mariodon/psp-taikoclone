@@ -125,6 +125,78 @@ def list_tag002b_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]	
 
+def list_tag0027_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0x0027:
+			depth = struct.unpack("<I", data[0x4:0x8])[0]
+			tag0001_cnt = struct.unpack("<H", data[0xC:0xE])[0]
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\ttag0001=%d\tdepth=%d" % \
+				(tag_type, off, tag_size_bytes, tag0001_cnt, depth)
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+		
+def list_tagF023_symbol(lm_data, off1, off2):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF023:
+			v = struct.unpack("<H", data[off1:off2])[0]
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tv=%x" % (tag_type, off, \
+				tag_size_bytes, v)
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+
+def list_tagF023_img(lm_data):
+	data = lm_data[0x40:]
+	symbol_list = get_symbol_list(data)
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF022:
+			depth = struct.unpack("<H", data[0x8:0xa])[0]
+			print "depth:%d" % depth
+		if tag_type == 0xF023:
+			id, flag = struct.unpack("<HH", data[0x44:0x48])
+			if flag == 0x41:
+				cnt = 0
+				for sb in symbol_list:
+					if sb.endswith(".png") and cnt == id:
+						print "\ttag:0x%04x, off=0x%x,\tsize=0x%x,\t%s" % \
+							(tag_type, off, tag_size_bytes, sb)
+						break
+					if sb.endswith(".png"):
+						cnt += 1
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+			
+def list_tagF022_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF022:
+			depth = struct.unpack("<H", data[0x8:0xa])[0]
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tdepth=%d" % \
+				(tag_type, 	off, tag_size_bytes, depth)
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+			
 if __name__ == "__main__":
 	parser = optparse.OptionParser()
 	parser.add_option("-f", dest="filename")
@@ -157,6 +229,14 @@ if __name__ == "__main__":
 			tag_list(data)
 		elif options.tag_id == 0x002b:
 			list_tag002b_symbol(data)
-			
+		elif options.tag_id == 0x0027:
+			list_tag0027_symbol(data)
+		elif options.tag_id == 0xF023:
+#			for off in range(0, 0x48, 2):
+#				print "off %x~%x" % (off, off+2)
+#				list_tagF023_symbol(data, off, off+2)
+			list_tagF023_img(data)
+		elif options.tag_id == 0xF022:
+			list_tagF022_symbol(data)
 	else:						# deal with sub files in a LWARC file
 		rip_file(options.filename, options.subfile)
