@@ -197,11 +197,55 @@ def list_tagF022_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
 			
+def shuffle_tagF022(lm_data):
+	head = ""
+	tail = ""
+	tagF022_list = []
+	tagF022 = ""
+	
+	head += lm_data[:0x40]
+	data = lm_data[0x40:]
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		
+		if tagF022 and tag_type != 0xF023:
+			tagF022_list.append(tagF022)
+			tagF022 = ""
+			#print "TAG BLOCK END"
+			
+		if not tagF022 and tag_type == 0xF022:
+			pass
+			#print "TAG BLOCK BEGIN"
+			
+		if tagF022 or tag_type == 0xF022:
+			tagF022 += data[:tag_size_bytes]
+			#print "\tTAG%04x" % tag_type
+		elif tagF022_list:
+			#print "================"
+			break
+		else:
+			head += data[:tag_size_bytes]
+			#print "APPEND TO HEAD TAG%04x" % tag_type
+				
+		data = data[tag_size_bytes:]
+	tail = data
+	
+	tot_len = len(head) + len(tail) + sum([len(s) for s in tagF022_list])
+	assert tot_len == len(lm_data), "%x %x (%x) != %x"  % (len(head), len(tail), len(tagF022_list), len(lm_data))
+	
+	import random
+	random.shuffle(tagF022_list)
+	
+	return head+"".join(tagF022_list)+tail
+			
 if __name__ == "__main__":
 	parser = optparse.OptionParser()
 	parser.add_option("-f", dest="filename")
+	parser.add_option("-o", dest="outfile")
 	parser.add_option("-s", action="store_true", dest="print_symbol")
 	parser.add_option("-t", action="store_true", dest="print_tag")
+	parser.add_option("-S", action="store_true", dest="shuffle_tagF022")
 	parser.add_option("-i", type="int", action="store", dest="tag_id")
 	parser.add_option("-F", dest="subfile")
 	
@@ -238,5 +282,14 @@ if __name__ == "__main__":
 			list_tagF023_img(data)
 		elif options.tag_id == 0xF022:
 			list_tagF022_symbol(data)
+	elif options.shuffle_tagF022:
+		f = open(options.filename, "rb")
+		data = f.read()
+		f.close()
+		
+		fout = open(options.outfile, "wb")
+		fout.write(shuffle_tagF022(data))
+		fout.close()
+	
 	else:						# deal with sub files in a LWARC file
 		rip_file(options.filename, options.subfile)
