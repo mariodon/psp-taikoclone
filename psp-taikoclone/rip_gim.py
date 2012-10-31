@@ -250,7 +250,78 @@ def list_tag0004_symbol(lm_data):
 			break
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
+
+def list_tagF103_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF103:
+			v_cnt = struct.unpack("<I", data[0x4:0x8])[0]
+			v_list = []
+			for i in range(v_cnt):
+				v_list.append(struct.unpack("<ff", data[0x8+i*0x8:0x8+i*0x8+0x8]))
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
+				(tag_type, off, tag_size_bytes)
+			print "\t", v_list
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+
+def list_tagF004_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF004:
+			v_cnt = struct.unpack("<I", data[0x4:0x8])[0]
+			v_list = []
+			for i in range(v_cnt):
+				v_list.append(struct.unpack("<ffff", data[0x8+i*0x8:0x8+i*0x8+0x10]))
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
+				(tag_type, off, tag_size_bytes)
+			for v in v_list:
+				print "\t", v
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+		
+
+def list_tagF007_symbol(lm_data):
+	data = lm_data[0x40:]
+	symbol_list = get_symbol_list(data)
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF007:
+			v_cnt = struct.unpack("<I", data[0x4:0x8])[0]
+			v_list = []
+			for i in range(v_cnt):
+				v = list(struct.unpack("<HHff", data[0x8+i*0xc:0x8+i*0xc+0xc]))
+				j = 0
+				for sb in symbol_list:
+					if sb.endswith(".png") and j == i:
+						v.append(sb)
+						break
+					if sb.endswith(".png"):
+						j += 1
+						
+				v_list.append(v)
 			
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
+				(tag_type, off, tag_size_bytes)
+			for v in v_list:
+				print "\t", v
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+												
 def shuffle_tagF022(lm_data):
 	head = ""
 	tail = ""
@@ -340,7 +411,13 @@ if __name__ == "__main__":
 			list_tag0001_symbol(data)
 		elif options.tag_id == 0x0004:
 			list_tag0004_symbol(data)
-			
+		elif options.tag_id == 0xF103:
+			list_tagF103_symbol(data)
+		elif options.tag_id == 0xF004:
+			list_tagF004_symbol(data)
+		elif options.tag_id == 0xF007:
+			list_tagF007_symbol(data)
+					
 	elif options.shuffle_tagF022:
 		f = open(options.filename, "rb")
 		data = f.read()
