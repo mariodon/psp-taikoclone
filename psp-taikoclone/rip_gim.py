@@ -141,6 +141,21 @@ def list_tag0027_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
 		
+def list_tagF022_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF022:
+			depth = struct.unpack("<I", data[0x4:0x8])[0]
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tdepth=%d" % \
+				(tag_type, off, tag_size_bytes, depth)
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+		
 def list_tagF023_symbol(lm_data, off1, off2):
 	data = lm_data[0x40:]
 	off = 0x40
@@ -168,30 +183,69 @@ def list_tagF023_img(lm_data):
 			print "depth:%d" % depth
 		if tag_type == 0xF023:
 			id, flag = struct.unpack("<HH", data[0x44:0x48])
+			fv_list = []
+			for off1 in xrange(0x4, 0x44, 0x4):
+				fv = struct.unpack("<f", data[off1:off1+0x4])[0]
+				fv_list.append(fv)
 			if flag == 0x41:
 				cnt = 0
 				for sb in symbol_list:
 					if sb.endswith(".png") and cnt == id:
-						print "\ttag:0x%04x, off=0x%x,\tsize=0x%x,\t%s" % \
-							(tag_type, off, tag_size_bytes, sb)
+						print "\ttag:0x%04x, off=0x%x,\tsize=0x%x,\t%s" \
+							% (tag_type, off, tag_size_bytes, sb)
+						print "\t\t",fv_list[:4]
+						print "\t\t",fv_list[4:8]
+						print "\t\t",fv_list[8:12]
+						print "\t\t",fv_list[12:]
 						break
 					if sb.endswith(".png"):
 						cnt += 1
+			else:
+				print "\ttag:0x%04x, off=0x%x,\tsize=0x%x" \
+					% (tag_type, off, tag_size_bytes)
+				print "\t\t",fv_list[:4]
+				print "\t\t",fv_list[4:8]
+				print "\t\t",fv_list[8:12]
+				print "\t\t",fv_list[12:]			
+				
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
 			
-def list_tagF022_symbol(lm_data):
+def list_tag0001_symbol(lm_data):
 	data = lm_data[0x40:]
 	off = 0x40
 	while True:
 		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 		tag_size_bytes = tag_size * 4 + 4
-		if tag_type == 0xF022:
-			depth = struct.unpack("<H", data[0x8:0xa])[0]
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tdepth=%d" % \
-				(tag_type, 	off, tag_size_bytes, depth)
+		if tag_type == 0001:
+			v1, v2 = struct.unpack("<hh", data[0x4:0x8])
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tv1=0x%x,\tv2=0x%x" % 	\
+				(tag_type, off, tag_size_bytes, v1, v2)
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+	
+def list_tag0004_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0x0027:
+			print "====================="
+		elif tag_type == 0x0001 or tag_type == 0xf014:
+			print
+		if tag_type == 0x0004:	
+			v_list = struct.unpack("<HhHHHHHHHHIhHHH", data[0x4:0x24])
+
+			if True or v_list[4] == 1:
+				print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
+					tag_size_bytes)			
+				print "\t%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%08x,%d,%d,%d,%d" % \
+					v_list
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
@@ -282,6 +336,11 @@ if __name__ == "__main__":
 			list_tagF023_img(data)
 		elif options.tag_id == 0xF022:
 			list_tagF022_symbol(data)
+		elif options.tag_id == 0x0001:
+			list_tag0001_symbol(data)
+		elif options.tag_id == 0x0004:
+			list_tag0004_symbol(data)
+			
 	elif options.shuffle_tagF022:
 		f = open(options.filename, "rb")
 		data = f.read()
