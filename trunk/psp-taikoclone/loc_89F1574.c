@@ -50,7 +50,10 @@ if (tag == 0xFF00) {//end tag?
 //      +0x4(4)     元件大小对应表，貌似从未被读取过
 //      +0x8(+)
 //
-//0xF005    0x89f1940   //s7->0xC->0x44->0x20,(if!0),申请内存，s7...0x50，展开成4字节对齐 
+//0xF005    0x89f1940   //s7->0xC->0x44->0x20,(if!0),申请内存，s7...0x50，展开成4字节对齐 actionscript?
+//      +0x4(4)     actionscript个数！
+//      +0x8~??     bytecodelength + bytes(4字节对齐)
+//
 //0xF007    0x89f1a14   //s7->0xC->0x44->0x24,(if s7->0x0->0x8 func? and !0)s7->0xC->0x44->0x54, fill this mem?  
 //0xF008    0x89f1ae4   //s7->0xC->0x44->0x28,(if s7->0x0->0x8 func? and !0)s7->0xC->0x44->0x58, fill this mem?  
 //0xF009    0x89f1bb4   //s7->0xC->0x44->0x2C,s7->0xC->0x44->0x5C 
@@ -150,7 +153,7 @@ PLAYER_SELECT.LM
 //tagf105   缩放
 //      +0x6(2)     后面还有几个tag0004
 //
-//tagf104   旋转
+//tagf104   前一个tag的元件会被旋转
 //
 //
 //tagf105 alpha变化？
@@ -162,3 +165,6 @@ PLAYER_SELECT.LM
 // F022
 // 0027
 // tag0027可以引用F022
+//
+// script解析:
+// 0x8a30e80

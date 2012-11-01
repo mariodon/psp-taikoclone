@@ -193,20 +193,20 @@ def list_tagF023_img(lm_data):
 					if sb.endswith(".png") and cnt == id:
 						print "\ttag:0x%04x, off=0x%x,\tsize=0x%x,\t%s" \
 							% (tag_type, off, tag_size_bytes, sb)
-#						print "\t\t",fv_list[:4]
-#						print "\t\t",fv_list[4:8]
-#						print "\t\t",fv_list[8:12]
-#						print "\t\t",fv_list[12:]
+						print "\t\t",fv_list[:4]
+						print "\t\t",fv_list[4:8]
+						print "\t\t",fv_list[8:12]
+						print "\t\t",fv_list[12:]
 						break
 					if sb.endswith(".png"):
 						cnt += 1
 			else:
 				print "\ttag:0x%04x, off=0x%x,\tsize=0x%x" \
 					% (tag_type, off, tag_size_bytes)
-#				print "\t\t",fv_list[:4]
-#				print "\t\t",fv_list[4:8]
-#				print "\t\t",fv_list[8:12]
-#				print "\t\t",fv_list[12:]			
+				print "\t\t",fv_list[:4]
+				print "\t\t",fv_list[4:8]
+				print "\t\t",fv_list[8:12]
+				print "\t\t",fv_list[12:]			
 				
 		if tag_type == 0xFF00:
 			break
@@ -236,7 +236,8 @@ def list_tag0004_symbol(lm_data):
 		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 		tag_size_bytes = tag_size * 4 + 4
 		if tag_type == 0x0027:
-			print "====================="
+			id = struct.unpack("<H", data[0x4:0x6])[0]
+			print "=====================, CharacterID=%d" % id
 		elif tag_type == 0x0001 or tag_type == 0xf014:
 			print
 		if tag_type == 0x0004:
