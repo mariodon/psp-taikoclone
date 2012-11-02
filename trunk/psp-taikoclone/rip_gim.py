@@ -262,10 +262,10 @@ def list_tag0004_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
 
-	print "{{{{{{{{{{{{{{{{{{{{{{{{{{{"
-	for k, v in off0x4_cnt.items():
-		print "\t%d:%d" % (k, v)
-	print "}}}}}}}}}}}}}}}}}}}}}}}}}}}"		
+#	print "{{{{{{{{{{{{{{{{{{{{{{{{{{{"
+#	for k, v in off0x4_cnt.items():
+#		print "\t%d:%d" % (k, v)
+#	print "}}}}}}}}}}}}}}}}}}}}}}}}}}}"		
 
 def list_tagF103_symbol(lm_data):
 	data = lm_data[0x40:]
@@ -353,7 +353,22 @@ def list_tagF007_symbol(lm_data):
 			break
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
-												
+						
+def list_tagF005_symbol(lm_data):
+	data = lm_data[0x40:]
+	symbol_table = get_symbol_list(lm_data)
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF005:
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
+				tag_size_bytes)		
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+			
 def shuffle_tagF022(lm_data):
 	head = ""
 	tail = ""

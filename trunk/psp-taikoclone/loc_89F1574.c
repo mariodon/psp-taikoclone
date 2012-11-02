@@ -168,3 +168,130 @@ PLAYER_SELECT.LM
 //
 // script解析:
 // 0x8a30e80
+//
+//0x96:set variable?
+//0x2:接下来的长度
+//0x8:?
+//0x8:符号表的索引
+
+//0x96:
+
+
+//as@PLAYER_SELECT_BG.LM+0x1f8(0x25)
+
+//ActionPush type:constant8(0x8) value:0x8			//8
+
+//ActionGetVariable									//"this"	
+
+//ActionPush type:constant8(0x8) value:0x9			//"this"
+//			 type:constant8(0x8) value:0x8			//9
+													//8
+			 
+//ActionGetVariable									//"this"
+													//9
+													//"this"
+
+//ActionPush type:constant8(0x8) value:0x9			//"this"
+													//9
+													//"this"
+													//9
+
+//ActionGetMember									//"this"
+													//9
+													//v0	(v0=this._rotation)
+
+//ActionPush type:double(0x6) value=\x9a\x99\x99\x99\x99\x99\xc9\x3f=0.2
+													//"this"
+													//9
+													//v0
+													//0.2
+
+//ActionAdd2										//"this"
+													//9
+													//v1 (v1=v0+0.2)
+
+//ActionSetMember									//NULL	(this._rotation=v1)
+
+//ascode:
+//	this._rotation += 0.2
+
+					
+//as@PLAYER_SELECT_BG.LM+0x250(0x61)
+
+//ActionPush type:constant8(0x8) value:0xA			//0xA
+
+//ActionDefineFunction name:anonymous(0x0), numParam:0x0, codeSize:0x50
+
+		//ActionPush type:constant8(0x8) value:0x3	//0x3
+		
+		//ActionGetVariable							//"mc_bg"
+		
+		//ActionPush type:constant8(0x8) value:0xB	//"mc_bg"
+		//			 type:constant8(0x8) value:0x3	//0xB
+													//0x3
+
+		//ActionGetVariable							//"mc_bg"
+													//0xB
+													//"mc_bg"
+													
+		//ActionPush type:constant8(0x8) value:0xB	//"mc_bg"
+													//0xB
+													//"mc_Bg"
+													//0xB
+		
+		//ActionGetMember							//"mc_bg"
+													//0xB
+													//v0 (v0=mc_bg._x)
+		
+		//ActionPush type:double(0x6) value:0.4		//"mc_bg"
+													//0xB
+													//v0
+													//0.4
+		
+		//ActionSubstract							//"mc_bg"
+													//0xB
+													//v1	(v0-0.4)
+		
+		//ActionSetMember							//NULL	(mc_bg._x = v1)
+		
+
+													
+		//ActionPush 								//0x3
+
+		//ActionGetVariable							//"mc_bg"
+													
+		//ActionPush								//"mc_bg"
+													//0xB
+													
+		//ActionGetMember							//v0 (v0=mc_bg._x)
+
+		//ActionPush								//v0
+													//-480
+													
+		//ActionGreater								//v1 (v1=(v0>-480))
+													
+		//ActionNot									//v2 (v2=!v1=(v0<=-480)
+													
+		//ActionNot									//v1
+													
+		//ActionIf									
+		
+		//ActionNot									
+
+		//ActionPush								//0x3
+		
+		//ActionGetVariable							//"mc_bg"
+		
+		//ActionPush								//"mc_bg"
+													//0xB
+													//0(integer)
+													
+		//ActionSetMember							//mc._x=0
+					
+//ascode:		
+//onEnterFrame = function() {
+//	mc_bg._x -= 0.4
+//	if (mc_bg._x <= -480) {
+//		mc_bg._x = 0
+//	}
+//}
