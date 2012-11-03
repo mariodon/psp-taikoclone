@@ -139,6 +139,7 @@ PLAYER_SELECT.LM
 //      +0xA(2)     cnt_tag002b_followed
 //      +0xC(2)     cnt_tag0001_followed
 //      +0xE(2)     cnt_tagf105_followed
+//      +0x10(4)    cnt_kind_of_Character?
 //
 //tag0001
 //		+0x4(2)		帧序号
@@ -295,3 +296,11 @@ PLAYER_SELECT.LM
 //		mc_bg._x = 0
 //	}
 //}
+//
+//ascode@ONP_FLY_DON_D.LM+0x52c(0x3)
+//stop()
+//
+//ascode@ONP_FLY_DON_D.LM+0x534(0x1A)
+//ActionGetURL  FSCommand:event end
+//ExternalInterface.call("FSCommand:event", "end")
+//stop()
