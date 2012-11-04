@@ -44,6 +44,7 @@ if (tag == 0xFF00) {//end tag?
 //0xF001    0x89f170c   //build some table, s7->0xC->0x44->0xC,申请好内存,到0x38,再来一片，对应每个符号查表地址到3C
 //0xF002    0x89f188c   //s7->0xC->0x44->0x10,s7->0xC->0x44->0x40 
 //0xF003    0x89f18c8   //s7->0xC->0x44->0x14,s7->0xC->0x44->0x44 
+//      color transform!
 //0xF004    0x89f1904   //s7->0xC->0x44->0x1C,s7->0xC->0x44->0x4C 
 //      +0x0(2)     tag_type
 //      +0x2(2)     tag_size
@@ -148,8 +149,10 @@ PLAYER_SELECT.LM
 //tag0004
 //      +0x20(2)    ??决定跳过几个tag
 //		+0x4(2)		CharacterID
-//		+0x10(2)	某种计数,-0x3FFF=?
+//		+0xa(2)     name_idx(符号表)
+//		+0x10(2)	depth
 //		+0x12(2)	-0x3FFF=?
+//		+0x1a(2)    colorAddTransform_idx(F002表)
 //
 //tagf105   缩放
 //      +0x6(2)     后面还有几个tag0004
@@ -301,6 +304,7 @@ PLAYER_SELECT.LM
 //stop()
 //
 //ascode@ONP_FLY_DON_D.LM+0x534(0x1A)
-//ActionGetURL  FSCommand:event end
 //ExternalInterface.call("FSCommand:event", "end")
 //stop()
+//
+//

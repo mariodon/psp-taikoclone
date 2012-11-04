@@ -255,9 +255,14 @@ def list_tag0004_symbol(lm_data):
 			v_list.append(struct.unpack("<H", data[0x4:0x6])[0])
 			#xy_idx = struct.unpack("<H", data[0x10:0x12])[0]
 			xy_idx = struct.unpack("<B", data[0x18:0x19])[0]
-			x, y = xy_list[xy_idx]
+			if xy_idx < len(xy_list):
+				x, y = xy_list[xy_idx]
+			else:
+				x, y = (0, 0)
 			name_idx = struct.unpack("<H", data[0xa:0xc])[0]
 			name = symbol_list[name_idx] or "null"
+			depth = struct.unpack("<H", data[0x10:0x12])[0]
+			v_list.append(depth)
 			v_list.append(x)
 			v_list.append(y)
 			v_list.append(struct.unpack("<H", data[0x6:0x8])[0])
@@ -271,7 +276,7 @@ def list_tag0004_symbol(lm_data):
 						
 			if True:
 				print "PlaceObject, off=0x%x,\tsize=0x%x" % (off,	tag_size_bytes)			
-				print "\tID=%d,\t(%.1f,%.1f),\t0x%04x,\t%d,\t%d,\t0x%04x,\t0x%04x,\t0x%04x,\tname=%s" % tuple(v_list)
+				print "\tID=%d,\tdepth=%d,\t(%.1f,%.1f),\t0x%04x,\t%d,\t%d,\t0x%04x,\t0x%04x,\t0x%04x,\tname=%s" % tuple(v_list)
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
