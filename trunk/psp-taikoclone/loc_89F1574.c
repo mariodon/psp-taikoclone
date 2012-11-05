@@ -146,23 +146,32 @@ PLAYER_SELECT.LM
 //		+0x4(2)		帧序号
 //      +0x6(2)     接下来还有几个tag0004	
 //
-//tag0004
-//      +0x20(2)    ??决定跳过几个tag
+//tag0004	PlaceObject
 //		+0x4(2)		CharacterID
 //		+0xa(2)     name_idx(符号表)
+//		+0xc(2)		flags(1=PlaceFlagHasCharacter, 2=PlaceFlagMove)
 //		+0x10(2)	depth
-//		+0x12(2)	-0x3FFF=?
-//		+0x1a(2)    colorAddTransform_idx(F002表)
+//		+0x12(2)	instanceID
+//		+0x1a(2)    colorMulIdx
+//		+0x1c(2)	colorAddIdx
+//      +0x20(2)    ??决定跳过几个tag
 //
-//tagf105   缩放
+//tag0005	RemoveObject
+//		+0x0(2)		tag_type
+//		+0x2(2)		tag_size
+//		+0x6(2)		depth
+//
+//		
+//tagf105	定义关键帧参考
 //      +0x6(2)     后面还有几个tag0004
 //
-//tagf104   前一个tag的元件会被旋转
+//tagf014   执行ClipAction,target为前一个PlaceObject的对象
 //
-//
-//tagf105 alpha变化？
-//
-//
+//tag002b	定义一个命名标签
+//		+0x0(2)		tag_type
+//		+0x2(2)		tag_size
+//		+0x4(2)		name_idx
+//		+0x6(2)		frame_idx
 //
 //关于CharacterID:
 // 可以产生CharacterID的tag：

@@ -188,7 +188,7 @@ def list_tagF023_img(lm_data):
 			fv_list = []
 			for off1 in xrange(0x4, 0x44, 0x4):
 				fv = struct.unpack("<f", data[off1:off1+0x4])[0]
-				fv_list.append(fv)
+				fv_list.append(fv)	# (x, y, u, v)
 			if flag == 0x41:
 				cnt = 0
 				for sb in symbol_list:
@@ -230,24 +230,65 @@ def list_tag0001_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
 	
-def list_tag0004_symbol(lm_data):
-	xy_list = list_tagF103_symbol(lm_data)
+def get_xref(lm_data):
+	ref_table = {}
 	data = lm_data[0x40:]
 	symbol_list = get_symbol_list(data)
 	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0x0004:
+			id = struct.unpack("<H", data[0x4:0x6])[0]
+			name_idx = struct.unpack("<h", data[0xa:0xc])[0]
+			if name_idx > 0:
+				name = symbol_list[name_idx]
+				name_set = ref_table.setdefault(id, set())
+				name_set.add(name)
+				ref_table[id] = name_set
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+	return ref_table
+	
+def list_tag0004_symbol(lm_data):
+	ref_table = get_xref(lm_data)
+	
+	xy_list = list_tagF103_symbol(lm_data)
+	data = lm_data[0x40:]
+	symbol_list = get_symbol_list(data)
+	color_list = list_tagF002_symbol(lm_data)
+	off = 0x40
 	off0x4_cnt = {}
+	flag = False
 	while True:
 		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 		tag_size_bytes = tag_size * 4 + 4
 		if tag_type == 0x0027:
+			flag = True
 			id = struct.unpack("<H", data[0x4:0x6])[0]
-			print "=====================, CharacterID=%d" % id
+			print "=====================, CharacterID=%d, %s" % (id, id in ref_table and "Ref As %s" % ("".join(list(ref_table[id]))) or "")
 		elif tag_type == 0x0001:
 			print "Frame %d" % struct.unpack("<H", data[0x4:0x6])
 		elif tag_type == 0xf014:
-			print "Do Action type:f014"
+			print ">>>>>>>>>Do ClipAction type:f014"
 		elif tag_type == 0xf105:
-			print "Do Action type:f015"
+			print
+			print ">>>>>>>>>KeyFrame: v=%d" % struct.unpack("<H", data[0x4:0x6])
+		elif tag_type == 0x000c:
+			print ">>>>>>>>>Do Action %d" % struct.unpack("<I", data[0x4:0x8])
+		elif tag_type == 0x0005:
+			print ">>>>>>>>>RemoveObject at depth%d" % struct.unpack("<H", data[0x6:0x8])
+		elif tag_type == 0x002b:
+			idx, frame, unk = struct.unpack("<HHI", data[0x4:0xc])
+			print ">>>>>>>>>FrameLabel: %s@%d, %d" % (symbol_list[idx], frame, unk)
+		elif flag and tag_type not in (0x0004, 0xFF00):
+			print
+			print "!!!!!!!!!!!!!!!!!!!!!"
+			print "unknown tag 0x%04x, off=0x%x" % (tag_type, off)
+			print "!!!!!!!!!!!!!!!!!!!!!"
+			print
 		if tag_type == 0x0004:
 			v_cnt = struct.unpack("<H", data[0x4:0x6])[0]
 			off0x4_cnt[v_cnt] = off0x4_cnt.setdefault(v_cnt, 0) + 1		
@@ -265,18 +306,34 @@ def list_tag0004_symbol(lm_data):
 			v_list.append(depth)
 			v_list.append(x)
 			v_list.append(y)
-			v_list.append(struct.unpack("<H", data[0x6:0x8])[0])
-			v_list.append(struct.unpack("<H", data[0xc:0xe])[0])
+			v_list.append(struct.unpack("<h", data[0x6:0x8])[0])
+			flags = struct.unpack("<H", data[0xc:0xe])[0]
+			flags_str = ""
+			flags_str += (flags & 1) and "N" or "-"
+			flags_str += (flags & 2) and "M" or "-"
+			v_list.append(flags_str)
 			v_list.append(struct.unpack("<H", data[0x12:0x14])[0])
 			v_list.append(struct.unpack("<H", data[0x18:0x1a])[0])
-			v_list.append(struct.unpack("<H", data[0x1a:0x1c])[0])
-			v_list.append(struct.unpack("<H", data[0x1c:0x1e])[0])
+			color_mul_idx = struct.unpack("<h", data[0x1a:0x1c])[0]
+			color_add_idx = struct.unpack("<h", data[0x1c:0x1e])[0]
+			if color_mul_idx < 0:
+				color_mul_str = "null"
+			else:
+				color_mul = color_list[color_mul_idx]
+				color_mul_str = "(%.1f,%.1f,%.1f,%.1f)" % tuple([c/256.0 for c in color_mul])
+			if color_add_idx < 0:
+				color_add_str = "null"
+			else:
+				color_add = color_list[color_add_idx]
+				color_add_str = "(%d,%d,%d,%d)" % tuple(color_add)			
+			v_list.append(color_mul_str)
+			v_list.append(color_add_str)
 			v_list.append(name)
 			
 						
 			if True:
 				print "PlaceObject, off=0x%x,\tsize=0x%x" % (off,	tag_size_bytes)			
-				print "\tID=%d,\tdepth=%d,\t(%.1f,%.1f),\t0x%04x,\t%d,\t%d,\t0x%04x,\t0x%04x,\t0x%04x,\tname=%s" % tuple(v_list)
+				print "\tID=%d,\tdepth=%d,\t(%.1f,%.1f),\tInstID=%d,\tflags=%s,\t%d,\t0x%04x,\tcolMul=%s,\tcolAdd=%s,\tname=%s" % tuple(v_list)
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
@@ -386,7 +443,26 @@ def list_tagF005_symbol(lm_data):
 			break
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
-	
+
+def list_tagF002_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	color_list = []
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF002:
+			color_cnt, = struct.unpack("<I", data[0x4:0x8])
+			for i in xrange(color_cnt):
+				color = struct.unpack("<HHHH", \
+					data[0x8+0x8*i:0x8+0x8*i+0x8])
+				color_list.append(color)
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+	return color_list
+			
 def list_tagF003_symbol(lm_data):
 	data = lm_data[0x40:]
 	off = 0x40
@@ -400,8 +476,8 @@ def list_tagF003_symbol(lm_data):
 				v_list.append(struct.unpack("<ffffff", data[0x8+i*0x8:0x8+i*0x8+0x4*6]))
 			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
 				(tag_type, off, tag_size_bytes)
-			for v in v_list:
-				print "\t", v
+			for i, v in enumerate(v_list):
+				print "0x%x\t[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]" % ((i,)+v)
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
@@ -453,7 +529,6 @@ if __name__ == "__main__":
 	parser = optparse.OptionParser()
 	parser.add_option("-f", dest="filename")
 	parser.add_option("-o", dest="outfile")
-	parser.add_option("-s", action="store_true", dest="print_symbol")
 	parser.add_option("-t", action="store_true", dest="print_tag")
 	parser.add_option("-S", action="store_true", dest="shuffle_tagF022")
 	parser.add_option("-i", type="int", action="store", dest="tag_id")
@@ -463,17 +538,7 @@ if __name__ == "__main__":
 	
 	if not options.filename:
 		print "No filename is specified!"
-	
-	if options.print_symbol:	# print symbols in LM file
-		f = open(options.filename, "rb")
-		data = f.read()
-		f.close()
-		
-		tag = data[0x40:]
-		symbol_list = get_symbol_list(tag)
-		print "symbols:"
-		for symbol in symbol_list:
-			print symbol.decode("utf8")
+
 	elif options.print_tag:		# print tag info in LM file
 		f = open(options.filename, "rb")
 		data = f.read()
@@ -502,11 +567,32 @@ if __name__ == "__main__":
 			list_tag0004_symbol(data)
 		elif options.tag_id == 0xF103:
 			xy_list = list_tagF103_symbol(data)
-			print xy_list
+			if xy_list:
+				print "point list:"
+				for i, point in enumerate(xy_list):
+					print "0x%x\t" % i, point
+		elif options.tag_id == 0xF001:
+			f = open(options.filename, "rb")
+			data = f.read()
+			f.close()
+		
+			tag = data[0x40:]
+			symbol_list = get_symbol_list(tag)
+			print "symbols:"
+			for symbol in symbol_list:
+				print symbol.decode("utf8")			
+		elif options.tag_id == 0xF002:
+			color_list = list_tagF002_symbol(data)
+			if color_list:
+				print "color list:"
+				for i, color in enumerate(color_list):
+					print "0x%x\t" % i, color				
 		elif options.tag_id == 0xF003:
-			list_tagF003_symbol(data)			
+			list_tagF003_symbol(data)
 		elif options.tag_id == 0xF004:
 			list_tagF004_symbol(data)
+		elif options.tag_id == 0xF005:
+			print "Actionscript!"
 		elif options.tag_id == 0xF007:
 			list_tagF007_symbol(data)
 		elif options.tag_id == 0xF00C:
