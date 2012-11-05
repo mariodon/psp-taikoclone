@@ -290,7 +290,7 @@ def list_tag0004_symbol(lm_data):
 			print "!!!!!!!!!!!!!!!!!!!!!"
 			print
 		if tag_type == 0x0004:
-			v_cnt = struct.unpack("<H", data[0x4:0x6])[0]
+			v_cnt = struct.unpack("<H", data[0x18:0x1a])[0]
 			off0x4_cnt[v_cnt] = off0x4_cnt.setdefault(v_cnt, 0) + 1		
 			v_list = []
 			v_list.append(struct.unpack("<H", data[0x4:0x6])[0])
@@ -339,10 +339,10 @@ def list_tag0004_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
 
-#	print "{{{{{{{{{{{{{{{{{{{{{{{{{{{"
-#	for k, v in off0x4_cnt.items():
-#		print "\t%d:%d" % (k, v)
-#	print "}}}}}}}}}}}}}}}}}}}}}}}}}}}"		
+	print "{{{{{{{{{{{{{{{{{{{{{{{{{{{"
+	for k, v in sorted(off0x4_cnt.items()):
+		print "\t%x:%d" % (k, v)
+	print "}}}}}}}}}}}}}}}}}}}}}}}}}}}"		
 
 def list_tagF103_symbol(lm_data):
 	data = lm_data[0x40:]
@@ -473,7 +473,7 @@ def list_tagF003_symbol(lm_data):
 			v_cnt = struct.unpack("<I", data[0x4:0x8])[0]
 			v_list = []
 			for i in range(v_cnt):
-				v_list.append(struct.unpack("<ffffff", data[0x8+i*0x8:0x8+i*0x8+0x4*6]))
+				v_list.append(struct.unpack("<ffffff", data[0x8+i*0x4*6:0x8+i*0x4*6+0x4*6]))
 			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
 				(tag_type, off, tag_size_bytes)
 			for i, v in enumerate(v_list):
