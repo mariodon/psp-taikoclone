@@ -148,10 +148,17 @@ PLAYER_SELECT.LM
 //
 //tag0004	PlaceObject
 //		+0x4(2)		CharacterID
+//		+0x6(2)     instanceID 
+//		+0x8(2)     $zr
 //		+0xa(2)     name_idx(符号表)
 //		+0xc(2)		flags(1=PlaceFlagHasCharacter, 2=PlaceFlagMove)
+//		+0xe(2)     $zr
 //		+0x10(2)	depth
 //		+0x12(2)	instanceID
+//		+0x14(2)
+//		+0x16(2)    $zr
+//		+0x18(2)    if v & 0x8000, v2=v & 0xF= matrix index;
+//		            if ! (v & 0x8000), v2 = v = xy_index;
 //		+0x1a(2)    colorMulIdx
 //		+0x1c(2)	colorAddIdx
 //      +0x20(2)    ??决定跳过几个tag
