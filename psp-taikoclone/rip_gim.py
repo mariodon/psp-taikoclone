@@ -259,6 +259,7 @@ def list_tag0004_symbol(lm_data):
 	data = lm_data[0x40:]
 	symbol_list = get_symbol_list(data)
 	color_list = list_tagF002_symbol(lm_data)
+	matrix_list = list_tagF003_symbol(lm_data)
 	off = 0x40
 	off0x4_cnt = {}
 	flag = False
@@ -272,7 +273,7 @@ def list_tag0004_symbol(lm_data):
 		elif tag_type == 0x0001:
 			print "Frame %d" % struct.unpack("<H", data[0x4:0x6])
 		elif tag_type == 0xf014:
-			print ">>>>>>>>>Do ClipAction type:f014"
+			print ">>>>>>>>>Do ClipAction: %d" % struct.unpack("<H", data[0x4:0x6])
 		elif tag_type == 0xf105:
 			print
 			print ">>>>>>>>>KeyFrame: v=%d" % struct.unpack("<H", data[0x4:0x6])
@@ -294,18 +295,29 @@ def list_tag0004_symbol(lm_data):
 			off0x4_cnt[v_cnt] = off0x4_cnt.setdefault(v_cnt, 0) + 1		
 			v_list = []
 			v_list.append(struct.unpack("<H", data[0x4:0x6])[0])
-			#xy_idx = struct.unpack("<H", data[0x10:0x12])[0]
-			xy_idx = struct.unpack("<B", data[0x18:0x19])[0]
-			if xy_idx < len(xy_list):
-				x, y = xy_list[xy_idx]
+			trans_idx = struct.unpack("<H", data[0x18:0x1a])[0]
+			if trans_idx == 0xFFFF:
+				translate = scale = rotateskew = "null"
+			elif (trans_idx & 0x8000) == 0:
+				translate = "(%.1f, %.1f)" % (matrix_list[trans_idx][4],
+					matrix_list[trans_idx][5])
+				scale = "(%.1f, %.1f)" % (matrix_list[trans_idx][0],
+					matrix_list[trans_idx][3])
+				rotateskew = "(%.1f, %.1f)" % (
+					matrix_list[trans_idx][1], 
+					matrix_list[trans_idx][2])
 			else:
-				x, y = (0, 0)
+				trans_idx &= 0xFF
+				translate = "(%.1f, %.1f)" % xy_list[trans_idx]
+				scale = rotateskew = "null"
+			
 			name_idx = struct.unpack("<H", data[0xa:0xc])[0]
 			name = symbol_list[name_idx] or "null"
 			depth = struct.unpack("<H", data[0x10:0x12])[0]
 			v_list.append(depth)
-			v_list.append(x)
-			v_list.append(y)
+			v_list.append(translate)
+			v_list.append(scale)
+			v_list.append(rotateskew)
 			v_list.append(struct.unpack("<h", data[0x6:0x8])[0])
 			flags = struct.unpack("<H", data[0xc:0xe])[0]
 			flags_str = ""
@@ -313,7 +325,6 @@ def list_tag0004_symbol(lm_data):
 			flags_str += (flags & 2) and "M" or "-"
 			v_list.append(flags_str)
 			v_list.append(struct.unpack("<H", data[0x12:0x14])[0])
-			v_list.append(struct.unpack("<H", data[0x18:0x1a])[0])
 			color_mul_idx = struct.unpack("<h", data[0x1a:0x1c])[0]
 			color_add_idx = struct.unpack("<h", data[0x1c:0x1e])[0]
 			if color_mul_idx < 0:
@@ -333,16 +344,16 @@ def list_tag0004_symbol(lm_data):
 						
 			if True:
 				print "PlaceObject, off=0x%x,\tsize=0x%x" % (off,	tag_size_bytes)			
-				print "\tID=%d,\tdepth=%d,\t(%.1f,%.1f),\tInstID=%d,\tflags=%s,\t%d,\t0x%04x,\tcolMul=%s,\tcolAdd=%s,\tname=%s" % tuple(v_list)
+				print "\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d,\tflags=%s,\t%d,\tcolMul=%s,\tcolAdd=%s,\tname=%s" % tuple(v_list)
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
-
-	print "{{{{{{{{{{{{{{{{{{{{{{{{{{{"
-	for k, v in sorted(off0x4_cnt.items()):
-		print "\t%x:%d" % (k, v)
-	print "}}}}}}}}}}}}}}}}}}}}}}}}}}}"		
+#
+#	print "{{{{{{{{{{{{{{{{{{{{{{{{{{{"
+#	for k, v in sorted(off0x4_cnt.items()):
+#		print "\t%x:%d" % (k, v)
+#	print "}}}}}}}}}}}}}}}}}}}}}}}}}}}"		
 
 def list_tagF103_symbol(lm_data):
 	data = lm_data[0x40:]
@@ -372,7 +383,7 @@ def list_tagF004_symbol(lm_data):
 			v_cnt = struct.unpack("<I", data[0x4:0x8])[0]
 			v_list = []
 			for i in range(v_cnt):
-				v_list.append(struct.unpack("<ffff", data[0x8+i*0x8:0x8+i*0x8+0x10]))
+				v_list.append(struct.unpack("<ffff", data[0x8+i*0x10:0x8+i*0x10+0x10]))
 			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
 				(tag_type, off, tag_size_bytes)
 			for v in v_list:
@@ -466,6 +477,7 @@ def list_tagF002_symbol(lm_data):
 def list_tagF003_symbol(lm_data):
 	data = lm_data[0x40:]
 	off = 0x40
+	matrix_list = []
 	while True:
 		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 		tag_size_bytes = tag_size * 4 + 4
@@ -474,15 +486,29 @@ def list_tagF003_symbol(lm_data):
 			v_list = []
 			for i in range(v_cnt):
 				v_list.append(struct.unpack("<ffffff", data[0x8+i*0x4*6:0x8+i*0x4*6+0x4*6]))
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
-				(tag_type, off, tag_size_bytes)
-			for i, v in enumerate(v_list):
-				print "0x%x\t[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]" % ((i,)+v)
+				matrix_list.append(v_list[-1])
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
+	return matrix_list
 					
+def list_tagF00D_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0xF00D:	
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
+				tag_size_bytes)
+			print "\timg_cnt=%d, mc_cnt=%d, %d, %d" % struct.unpack("<IIII", data[0x4:0x14])
+			break
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+		
 def shuffle_tagF022(lm_data):
 	head = ""
 	tail = ""
@@ -588,7 +614,11 @@ if __name__ == "__main__":
 				for i, color in enumerate(color_list):
 					print "0x%x\t" % i, color				
 		elif options.tag_id == 0xF003:
-			list_tagF003_symbol(data)
+			matrix_list = list_tagF003_symbol(data)
+			if matrix_list:
+				print "matrix list:"	
+				for i, v in enumerate(matrix_list):
+					print "0x%x\t[%.3f, %.3f, %.3f, %.3f, %.3f, %.3f]" % ((i,)+v)			
 		elif options.tag_id == 0xF004:
 			list_tagF004_symbol(data)
 		elif options.tag_id == 0xF005:
@@ -597,6 +627,8 @@ if __name__ == "__main__":
 			list_tagF007_symbol(data)
 		elif options.tag_id == 0xF00C:
 			list_tagF00C_symbol(data)
+		elif options.tag_id == 0xF00D:
+			list_tagF00D_symbol(data)			
 					
 	elif options.shuffle_tagF022:
 		f = open(options.filename, "rb")
