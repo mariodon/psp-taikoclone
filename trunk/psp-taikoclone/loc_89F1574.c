@@ -180,6 +180,13 @@ PLAYER_SELECT.LM
 //		+0x4(2)		name_idx
 //		+0x6(2)		frame_idx
 //
+//tagF00C	FileAttributes
+//		+0x
+//
+//tagF00D
+//		+0x4(4)		tagF022 cnt image count
+//		+0x8(4)		tag0027 cnt sprites count
+//
 //关于CharacterID:
 // 可以产生CharacterID的tag：
 // F022
