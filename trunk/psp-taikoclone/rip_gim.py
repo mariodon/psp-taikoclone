@@ -203,8 +203,8 @@ def list_tagF023_img(lm_data):
 					if sb.endswith(".png"):
 						cnt += 1
 			else:
-				print "\ttag:0x%04x, off=0x%x,\tsize=0x%x" \
-					% (tag_type, off, tag_size_bytes)
+				print "\ttag:0x%04x, off=0x%x,\tsize=0x%x,fill_color_idx=0x%x" \
+					% (tag_type, off, tag_size_bytes,id)
 				print "\t\t",fv_list[:4]
 				print "\t\t",fv_list[4:8]
 				print "\t\t",fv_list[8:12]
