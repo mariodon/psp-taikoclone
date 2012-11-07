@@ -96,6 +96,10 @@ def get_symbol_list(tag):
 		
 	return symbol_list
 
+def seek_next_tag(data):
+	tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+	return data[tag_size * 4 + 4:]
+	
 def tag_list(lm_data):
 	data = lm_data[0x40:]
 	off = 0x40

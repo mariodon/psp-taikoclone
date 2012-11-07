@@ -78,7 +78,7 @@ if (tag == 0xFF00) {//end tag?
 //0xF022    0x89f1618   //build s7->0xC->0x44->0x88, s7->0xC->0x44->0x84块
 //      +0x0(2)     tag_type
 //      +0x2(2)     tag_size
-//      +0x4(2)     ??(某id性质的东西)
+//      +0x4(2)     CharacterID
 //		+0x8(2)	    元件的大小？(还缺一个查询表)
 //		+0xa(2)		cnt_tagF023_followed
 //
