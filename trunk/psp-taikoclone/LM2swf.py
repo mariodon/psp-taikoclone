@@ -30,9 +30,40 @@ def get_image_dict(lm_data, image_root):
             image_dict[sb] = image_data
     return image_dict
     
-def get_texture_sprite_tags(lm_data, image_2_id, image_dict):
+def get_shape_dict(lm_data):
     data = lm_data[0x40:]
+    color_list = rip_gim.list_tagF002_symbol(lm_data)
+    off = 0x40
+    ret = {}
+    while True:
+        tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+        tag_size_bytes = tag_size * 4 + 4
+        if tag_type == 0xF022:
+            sprite_id, = struct.unpack("<I", data[0x4:0x8])
+            img_cnt, = struct.unpack("<H", data[0xa:0xc])
+            for i in xrange(img_cnt):
+                data = rip_gim.seek_next_tag(data)
+                img_fname_idx, flag = struct.unpack("<HH", data[0x44:0x48])
+                if flag == 0x00:
+                    all_floats = struct.unpack("<"+"f"*16, 
+                        data[0x4:0x4+0x4*16])
+                    xs = all_floats[::4]
+                    ys = all_floats[1::4]
+                    xmin, xmax = min(xs), max(xs)
+                    ymin, ymax = min(ys), max(ys)
+                    width = xmax - xmin
+                    height = ymax - ymin                
+                    ret[(sprite_id << 16)+i] = (color_list[img_fname_idx], 
+                        (int(width), int(height)))
+            continue
+        if tag_type == 0xFF00:
+            break
+        off += tag_size_bytes
+        data = data[tag_size_bytes:]
+    return ret
     
+def get_texture_sprite_tags(lm_data, image_2_id, shape_2_id, image_dict):
+    data = lm_data[0x40:]
     symbol_list = rip_gim.get_symbol_list(data)
     img_fname_list = [symbol for symbol in symbol_list \
         if symbol.endswith(".png")]
@@ -45,24 +76,41 @@ def get_texture_sprite_tags(lm_data, image_2_id, image_dict):
             sprite_id, = struct.unpack("<I", data[0x4:0x8])
             img_cnt, = struct.unpack("<H", data[0xa:0xc])
             place_object2_tags = []
-            for i in xrange(img_cnt):    # handle each F022 tag
+            for i in xrange(img_cnt):    # handle each F023 tag
                 data = rip_gim.seek_next_tag(data)
                 img_fname_idx, flag = struct.unpack("<HH", data[0x44:0x48])
-                assert flag == 0x41, "not supported (Shape?) atm!"
-                img_fname = img_fname_list[img_fname_idx]
-                all_floats = struct.unpack("<"+"f"*16, data[0x4:0x4+0x4*16])
-                xs = all_floats[::4]
-                ys = all_floats[1::4]
-                xmin, xmax = min(xs), max(xs)
-                ymin, ymax = min(ys), max(ys)
-                width = xmax - xmin
-                height = ymax - ymin
-                img_data = image_dict[img_fname]
-                ori_width, ori_height = struct.unpack(">II", img_data[0x10:0x18])
-                scale_x = width / ori_width
-                scale_y = height / ori_height
-                matrix = swf_helper.pack_matrix((scale_x, scale_y), None, (xmin, ymin))
-                place_object2_tag = swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER | swf_helper.PLACE_FLAG_HAS_MATRIX, i+1, id=image_2_id[img_fname], matrix=matrix)
+                if flag == 0x00:    # solid fill
+                    all_floats = struct.unpack("<"+"f"*16, 
+                        data[0x4:0x4+0x4*16])
+                    xs = all_floats[::4]
+                    ys = all_floats[1::4]
+                    xmin, xmax = min(xs), max(xs)
+                    ymin, ymax = min(ys), max(ys)
+                    width = xmax - xmin
+                    height = ymax - ymin
+                    matrix = swf_helper.pack_matrix(None, None, (xmin, ymin))
+                    shape_id = shape_2_id[(sprite_id<<16) + i]
+                else:
+                    assert flag == 0x41, "not supported (fill type) atm!"
+                    img_fname = img_fname_list[img_fname_idx]
+                    all_floats = struct.unpack("<"+"f"*16, 
+                        data[0x4:0x4+0x4*16])
+                    xs = all_floats[::4]
+                    ys = all_floats[1::4]
+                    xmin, xmax = min(xs), max(xs)
+                    ymin, ymax = min(ys), max(ys)
+                    width = xmax - xmin
+                    height = ymax - ymin
+                    img_data = image_dict[img_fname]
+                    ori_width, ori_height = struct.unpack(">II",     
+                        img_data[0x10:0x18])
+                    scale_x = width / ori_width
+                    scale_y = height / ori_height
+                    shape_id = image_2_id[img_fname]
+                    matrix = swf_helper.pack_matrix((scale_x, scale_y), None, 
+                        (xmin, ymin))
+                        
+                place_object2_tag = swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER | swf_helper.PLACE_FLAG_HAS_MATRIX, i+1, id=shape_id, matrix=matrix)
                 place_object2_tags.append(place_object2_tag)
             show_frame_tag = swf_helper.make_show_frame_tag()
             
@@ -107,6 +155,10 @@ def get_define_sprite_tags(lm_data):
                         depth, = struct.unpack("<H", data[0x6:0x8])
                         control_tags.append(
                             swf_helper.make_remove_object2_tag(depth))    
+                        continue
+                    if _type == 0x000c:
+                        control_tags.append(
+                            swf_helper.make_do_action_tag(["\x07"]))
                         continue
                     elif _type != 0x0004:
                         print "Ignore other tags ATM"
@@ -186,7 +238,7 @@ def get_define_sprite_tags(lm_data):
     return define_sprite_tags
             
 def test(fname):
-    image_root = "D:\\tmp_dl\\disasmTNT\\GimConv\\png"
+    image_root = r"C:\Users\delguoqing\Downloads\disasmTNT\png"
 #    fname = "CHIBI_1P_BALLOON_01.LM"
     f = open(fname, "rb")
     lm_data = f.read()
@@ -195,7 +247,7 @@ def test(fname):
     max_characterID = get_max_characterID(lm_data)
     
     image_dict = get_image_dict(lm_data, image_root)
-    
+    shape_dict = get_shape_dict(lm_data)
     # all tags append to this list
     all_tags = []
     
@@ -219,20 +271,28 @@ def test(fname):
     # make all DefineShape tags
     define_shape_tags = []
     image_2_shape_id = {}
+    shape_2_shape_id = {}
     id = max_characterID + len(image_dict) + 1
     for k, v in image_dict.iteritems():
         img_data = image_dict[k]
         width, height = struct.unpack(">II", img_data[0x10:0x18])
-        tag = swf_helper.make_define_shape_tag_bitmap_simple(id, 
+        tag = swf_helper.make_define_shape3_tag_bitmap_simple(id, 
             image_2_id[k], width, height)
         image_2_shape_id[k] = id
+        id += 1
+        define_shape_tags.append(tag)
+        
+    for k, (color, size) in shape_dict.iteritems():
+        tag = swf_helper.make_define_shape3_tag_solid_simple(id, size[0],
+            size[1], swf_helper.pack_color(color))
+        shape_2_shape_id[k] = id
         id += 1
         define_shape_tags.append(tag)
         
     all_tags.extend(define_shape_tags)
 
     # make all texture mc tags
-    define_sprite_tags = get_texture_sprite_tags(lm_data, image_2_shape_id, image_dict)
+    define_sprite_tags = get_texture_sprite_tags(lm_data, image_2_shape_id, shape_2_shape_id, image_dict)
     all_tags.extend(define_sprite_tags)
 
     # make all general mc tags
@@ -241,8 +301,15 @@ def test(fname):
     
     # test basic display
     tmp_tags = []
-    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX, 1, id=max_characterID, matrix=swf_helper.pack_matrix(None, None, (0, 0))))
-#    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_NAME|swf_helper.PLACE_FLAG_HAS_MATRIX, 1, name="test2", id=0x3, matrix=swf_helper.pack_matrix(None, None, (128, 128))))
+    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME, 1, id=max_characterID, matrix=swf_helper.pack_matrix(None, None, (0, 0)), name="main"))
+
+    action_records = []
+    action_records.append("\x8B\x05\x00main\x00")   # ActionSetTarget "main"
+    action_records.append("\x81\x02\x00\x01\x00")
+    action_records.append("\x06")
+    action_records.append("\x8B\x01\x00")
+    tmp_tags.append(swf_helper.make_do_action_tag(action_records))
+    
     tmp_tags.append(swf_helper.make_show_frame_tag())
     
     all_tags.extend(tmp_tags)

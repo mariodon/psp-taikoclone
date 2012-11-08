@@ -192,13 +192,17 @@ def pack_color_transform_with_alpha(color_add, color_mul):
     
     return pack_bits(vs, bits)
     
-def pack_fill_style(type, bitmap_id=None, bitmap_matrix=None):
-    assert type == 0x43, "don't support this fill style atm!"
+def pack_fill_style(type, bitmap_id=None, bitmap_matrix=None, color=None):
+    assert type in (0x00, 0x40, 0x41, 0x42, 0x43), "don't support this fill style atm!"
     data = ""
-    if type == 0x43:
+    if type in (0x40, 0x41, 0x42, 0x43):
         data += pack_ubyte(type)
         data += pack_uhalf(bitmap_id)
         data += bitmap_matrix
+        return data
+    elif type in (0x00, ):
+        data += pack_ubyte(type)
+        data += color
         return data
     
 def pack_line_style(width, color):
@@ -266,12 +270,11 @@ def make_define_sprite_tag(id, frame_count, control_tags):
 #    print "id=%d, control_tag_count = %d\n" % (id, len(control_tags))
     return make_record_header(39, len(data)) + data
     
-def make_define_shape_tag_bitmap_simple(shape_id, bitmap_id, width, height):
+def make_define_shape3_tag_solid_simple(shape_id, width, height, color):
     data = pack_uhalf(shape_id)
     data += pack_rect(0, 0, width, height)
     
-    bitmap_matrix = pack_matrix((20.0, 20.0), None, (0, 0))
-    fill_style = pack_fill_style(0x43, bitmap_id, bitmap_matrix)
+    fill_style = pack_fill_style(0x0, color=color)
     fill_style_array = pack_fill_style_array((fill_style,))
     data += fill_style_array
     
@@ -316,17 +319,69 @@ def make_define_shape_tag_bitmap_simple(shape_id, bitmap_id, width, height):
     
     data += pack_bits(vs, bits)
     
-    return make_record_header(2, len(data)) + data
+    return make_record_header(32, len(data)) + data    
+    
+def make_define_shape3_tag_bitmap_simple(shape_id, bitmap_id, width, height):
+    data = pack_uhalf(shape_id)
+    data += pack_rect(0, 0, width, height)
+    
+    bitmap_matrix = pack_matrix((20.0, 20.0), None, (0, 0))
+    fill_style = pack_fill_style(0x41, bitmap_id=bitmap_id, bitmap_matrix=bitmap_matrix)
+    fill_style_array = pack_fill_style_array((fill_style,))
+    data += fill_style_array
+    
+    line_style_array = pack_line_style_array(())
+    data += line_style_array
+    
+    data += pack_ubyte(0x10)
+    
+    # shape record (style change) flags
+    vs = [0, 0, 0, 1, 0, 0]
+    bits = [1, 1, 1, 1, 1, 1]
+    # state fill style1
+    vs.append(1)
+    bits.append(1)
+    # shape record (straight edge): (0, 0) --> (width, 0)
+    nbits = calc_nbits(width*TWIPS_PER_PIXEL)
+    nbits = max(0, nbits-2)
+    assert nbits <= 0xF, "TOO LARGE NUMBER"    
+    vs.extend([1, 1, nbits, 0, 0, width*TWIPS_PER_PIXEL])
+    bits.extend([1, 1, 4, 1, 1, nbits+2])
+    # shape record (straight edge): (width, 0) --> (width, height)
+    nbits = calc_nbits(height*TWIPS_PER_PIXEL)
+    nbits = max(0, nbits-2)
+    assert nbits <= 0xF, "TOO LARGE NUMBER"    
+    vs.extend([1, 1, nbits, 0, 1, height*TWIPS_PER_PIXEL])
+    bits.extend([1, 1, 4, 1, 1, nbits+2])    
+    # shape record (straight edge): (width, height) --> (0, height)
+    nbits = calc_nbits(-width*TWIPS_PER_PIXEL)
+    nbits = max(0, nbits-2)
+    assert nbits <= 0xF, "TOO LARGE NUMBER"    
+    vs.extend([1, 1, nbits, 0, 0, -width*TWIPS_PER_PIXEL])
+    bits.extend([1, 1, 4, 1, 1, nbits+2])    
+    # shape record (straight edge): (0, height) --> (0, 0)
+    nbits = calc_nbits(-height*TWIPS_PER_PIXEL)
+    nbits = max(0, nbits-2)
+    assert nbits <= 0xF, "TOO LARGE NUMBER"    
+    vs.extend([1, 1, nbits, 0, 1, -height*TWIPS_PER_PIXEL])
+    bits.extend([1, 1, 4, 1, 1, nbits+2])        
+    # shape record (end)
+    vs.extend([0, 0])
+    bits.extend([1, 5])
+    
+    data += pack_bits(vs, bits)
+    
+    return make_record_header(32, len(data)) + data
     
 def make_set_background_color_tag(r, g, b):
     data = pack_color((r, g, b))
     return make_record_header(9, len(data)) + data
     
-def make_define_shape_tag(id, bounding_rect, shapes):
+def make_define_shape3_tag(id, bounding_rect, shapes):
     data = pack_uhalf(id)
     data += bounding_rect
     data += shapes
-    return make_record_header(2, len(data)) + data
+    return make_record_header(32, len(data)) + data
     
 def make_show_frame_tag():
     return make_record_header(1, 0)
@@ -355,6 +410,11 @@ def make_place_object2_tag(flags, depth, id=None, matrix=None,
     
 def make_end_tag():
     return make_record_header(0, 0)
+    
+def make_do_action_tag(action_records):
+    data = "".join(action_records)
+    data += pack_ubyte(0)
+    return make_record_header(12, len(data)) + data
     
 def make_remove_object2_tag(id):
     ret = make_record_header(28, 2)
