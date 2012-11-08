@@ -19,7 +19,7 @@ SHAPE_FLAG_STATE_MOVE_TO = 0x8
 def calc_nbits(v):
     v = abs(v)
     if v == 0:
-        nbits = 1
+        return 0
     else:
         nbits = 0
         while v != 0:
@@ -68,7 +68,7 @@ def pack_word(v):
 def pack_half(v):
     return struct.pack("<h", v)
         
-def pack_bits(vs, bits):
+def pack_bits(vs, bits, debug=False):
     totbits = sum(bits)
     padbits = (totbits + 7) / 8 * 8 - totbits
     vs = list(vs)
@@ -99,6 +99,9 @@ def pack_bits(vs, bits):
 #            print
             cur_byte &= (1 << cur_bits) - 1
     return ret    
+    
+def pack_string(str):
+    return str + "\x00"
     
 def pack_rect(xmin, ymin, xmax, ymax):
     vmax = max(abs(xmin), abs(ymin), abs(xmax), abs(ymax)) * TWIPS_PER_PIXEL
@@ -167,22 +170,24 @@ def pack_color_transform_with_alpha(color_add, color_mul):
     vs.extend((int(has_add_items), int(has_mul_items)))
     bits.extend((1, 1))
     
+    tmp_vs = []
     nbits = 0
+    if has_mul_items:
+        for v in color_mul:
+            v = to_fixed16(v)
+            nbits = max(nbits, calc_nbits(v))
+            tmp_vs.append(v)    
     if has_add_items:
         for v in color_add:
             nbits = max(nbits, calc_nbits(v))
-            vs.append(v)
-    if has_mul_items:
-        for v in color_mul:
-            v = pack_fixed16(v)
-            nbits = max(nbits, calc_nbits(v))
-            vs.append(v)
+            tmp_vs.append(v)
     assert nbits <= 0xF, "TOO LARGE VALUE %d" % nbits
-    added_cnt = len(vs) - len(bits)
+    added_cnt = len(tmp_vs)
     
     vs.append(nbits)
     bits.append(4)
     
+    vs.extend(tmp_vs)
     bits.extend([nbits] * added_cnt)
     
     return pack_bits(vs, bits)
@@ -243,6 +248,11 @@ def make_swf_header(version, file_length, frame_width, frame_height,
     ret += pack_uhalf(frame_count)
     return ret
     
+def make_remove_object2_tag(depth):
+    ret = make_record_header(28, 2)
+    ret += pack_uhalf(depth)
+    return ret
+    
 def make_define_bits_JPEG2_tag(id, image_data):
     ret = make_record_header(21, 2+len(image_data))
     ret += pack_uhalf(id)
@@ -260,7 +270,7 @@ def make_define_shape_tag_bitmap_simple(shape_id, bitmap_id, width, height):
     data = pack_uhalf(shape_id)
     data += pack_rect(0, 0, width, height)
     
-    bitmap_matrix = pack_matrix(None, None, (0, 0))
+    bitmap_matrix = pack_matrix((20.0, 20.0), None, (0, 0))
     fill_style = pack_fill_style(0x43, bitmap_id, bitmap_matrix)
     fill_style_array = pack_fill_style_array((fill_style,))
     data += fill_style_array
@@ -289,13 +299,13 @@ def make_define_shape_tag_bitmap_simple(shape_id, bitmap_id, width, height):
     vs.extend([1, 1, nbits, 0, 1, height*TWIPS_PER_PIXEL])
     bits.extend([1, 1, 4, 1, 1, nbits+2])    
     # shape record (straight edge): (width, height) --> (0, height)
-    nbits = calc_nbits(width*TWIPS_PER_PIXEL)
+    nbits = calc_nbits(-width*TWIPS_PER_PIXEL)
     nbits = max(0, nbits-2)
     assert nbits <= 0xF, "TOO LARGE NUMBER"    
     vs.extend([1, 1, nbits, 0, 0, -width*TWIPS_PER_PIXEL])
     bits.extend([1, 1, 4, 1, 1, nbits+2])    
     # shape record (straight edge): (0, height) --> (0, 0)
-    nbits = calc_nbits(height*TWIPS_PER_PIXEL)
+    nbits = calc_nbits(-height*TWIPS_PER_PIXEL)
     nbits = max(0, nbits-2)
     assert nbits <= 0xF, "TOO LARGE NUMBER"    
     vs.extend([1, 1, nbits, 0, 1, -height*TWIPS_PER_PIXEL])
@@ -340,7 +350,7 @@ def make_place_object2_tag(flags, depth, id=None, matrix=None,
     if flags & PLACE_FLAG_HAS_COLOR_TRANSFORM:
         data += color_trans        
     if flags & PLACE_FLAG_HAS_NAME:
-        data += name
+        data += pack_string(name)
     return make_record_header(26, len(data)) + data
     
 def make_end_tag():
@@ -355,4 +365,5 @@ if __name__ == "__main__":
 #    f, = struct.unpack("<f", "\x00\x00\x70\x42")
 #    print repr(pack_fixed16(f))
 #    print calc_nbits(0x10000)
-    pass
+#   print len(pack_bits((1, 0, 1, ), (8, 0, 8,)))
+    pack_color_transform_with_alpha((0,0,0,0), (1.0,1.0,1.0))
