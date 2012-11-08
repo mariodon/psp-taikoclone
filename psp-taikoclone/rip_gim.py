@@ -128,8 +128,9 @@ def list_tag002b_symbol(lm_data):
         tag_size_bytes = tag_size * 4 + 4
         if tag_type == 0x002b:
             symbol_idx = struct.unpack("<H", data[0x4:0x6])[0]
-            print "tag:0x%04x, off=0x%x,\tsize=0x%x,\t%s" % (tag_type, off, \
-                tag_size_bytes, symbol_list[symbol_idx])
+            frame = struct.unpack("<H", data[0x6:0x8])[0]
+            print "tag:0x%04x, off=0x%x,\tsize=0x%x,\t%s, frame=%x" % (tag_type, off, \
+                tag_size_bytes, symbol_list[symbol_idx], frame)
         if tag_type == 0xFF00:
             break
         off += tag_size_bytes
