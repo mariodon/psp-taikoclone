@@ -124,7 +124,7 @@ def get_texture_sprite_tags(lm_data, image_2_id, shape_2_id, image_dict):
             data = rip_gim.seek_next_tag(data)
     return define_sprite_tags
     
-def get_define_sprite_tags(lm_data):
+def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
     # some tables for referrence
     color_list = rip_gim.list_tagF002_symbol(lm_data)
     point_list = rip_gim.list_tagF103_symbol(lm_data)
@@ -157,8 +157,10 @@ def get_define_sprite_tags(lm_data):
                             swf_helper.make_remove_object2_tag(depth))    
                         continue
                     if _type == 0x000c:
+                        as_idx, = struct.unpack("<I", data[0x4:0x8])
                         control_tags.append(
-                            swf_helper.make_do_action_tag(["\x07"]))
+                            swf_helper.make_do_action_tag([action_constant_pool
+                            , action_record_list[as_idx]]))
                         continue
                     elif _type != 0x0004:
                         print "Ignore other tags ATM"
@@ -236,13 +238,120 @@ def get_define_sprite_tags(lm_data):
             data = rip_gim.seek_next_tag(data)
             
     return define_sprite_tags
+        
+def fix_action_record(data):
+    ret = []
+    while data:
+        action_code, = struct.unpack("<B", data[:0x1])
+        if action_code == 0x0:
+            data = data[0x1:]
+            print "empty record trimmed"
+            continue
+        if action_code < 0x80:
+            ret.append(data[0])
+            data = data[0x1:]
+        else:
+            length, = struct.unpack("<H", data[0x1:0x3])
+            record = data[:length + 0x3]
             
+            # trim some record
+            if action_code == 0x9B:
+                func_name_len = 0
+                while data[0x3 + func_name_len] != '\x00':
+                    func_name_len += 1
+                func_name = data[0x3:0x3+func_name_len]
+                # off:0x4+func_name_len
+                num_param, = struct.unpack("<H", 
+                    data[0x4+func_name_len:0x6+func_name_len])
+                # off:0x6+func_name_len
+                str_cnt = 0
+                idx = 0x6 + func_name_len
+                while str_cnt < num_param:
+                    if data[idx] == '\x00':
+                        str_cnt += 1
+                    else:
+                        idx += 1
+                if num_param > 0:
+                    idx += 1
+
+                # off: idx
+                
+                code_size, = struct.unpack("<H", data[idx+1:idx+3])
+                print "code size = %x" % code_size
+                # off:idx+2
+                
+                assert idx+2 <= length+0x3
+                # fix record size
+                record = record[0x0:0x1] + struct.pack("<H", length-1) + \
+                    record[0x3:0x3+length-3] + record[-2:]
+                print "define func trimmed %d" % (length - idx + 1)
+                    
+                # trim sub block
+                print "sub=======, %x" % \
+                    len(data[length+0x3:length+0x3+code_size])
+                sub = fix_action_record(data[length+0x3:length+0x3+code_size])
+                # fix code_size
+               
+                ret.append(record+sub)
+                data = data[length + 0x3 + code_size:]
+                print "fixed_code_size %x %x" % (code_size, len(sub))
+            elif action_code == 0x9D:
+                branch_off, = struct.unpack("<H", record[-2:])
+                record = record[:0x3] + struct.pack("<H", branch_off-1)
+                ret.append(record)
+                data = data[length + 0x3:]
+            elif action_code == 0x96:   # ActionPush
+                fixed_record = ""
+                
+                raw_items = record[0x3:]
+                fixed_record = record[:0x3]
+                while raw_items != "":
+                    push_type, = struct.unpack("<B", raw_items[0x0:0x1])
+                    if push_type in (0x4, 0x5, 0x8):
+                        bytes = raw_items[0x1:0x2]
+                    elif push_type in (0x9,):
+                        bytes = raw_items[0x1:0x3]
+                    elif push_type in (0x1, 0x7):
+                        bytes = raw_items[0x1:0x5]
+                    elif push_type in (0x6,):
+                        bytes = raw_items[0x5:0x9] + raw_items[0x1:0x5]
+                    elif push_type == 0x0:
+                        bytes, = raw_items.split("\x00")
+                        bytes += "\x00"
+                    else:
+                        assert False, "not supported push type %x" % push_type
+                    fixed_record += raw_items[0x0:0x1] + bytes
+                    raw_items = raw_items[len(bytes) + 1:]
+                
+                assert len(fixed_record) == len(record)
+                ret.append(fixed_record)
+                data = data[length + 0x3:]
+            else:
+                ret.append(record)
+                data = data[length + 0x3:]
+            
+    print "===="
+    return "".join(ret)
+    
 def test(fname):
-    image_root = r"C:\Users\delguoqing\Downloads\disasmTNT\png"
+    image_root = r"D:\tmp_dl\disasmTNT\GimConv\png"
 #    fname = "CHIBI_1P_BALLOON_01.LM"
     f = open(fname, "rb")
     lm_data = f.read()
     f.close()
+    
+    # init
+    symbol_table = rip_gim.get_symbol_list(lm_data[0x40:])
+    assert symbol_table[0] == ""
+    constant_pool = "".join([str+"\x00" for str in symbol_table])
+    action_constant_pool = struct.pack("<BHH", 0x88, 2+len(constant_pool), 
+        len(symbol_table)) + constant_pool
+    action_record_list = rip_gim.list_tagF005_symbol(lm_data)
+#    action_record_list = map(fix_action_record, action_record_list)
+    print len(action_record_list)
+    for i in xrange(len(action_record_list)):
+        action_record_list[i] = fix_action_record(action_record_list[i])
+#    fix_action_record(action_record_list[2])
     
     max_characterID = get_max_characterID(lm_data)
     
@@ -296,19 +405,19 @@ def test(fname):
     all_tags.extend(define_sprite_tags)
 
     # make all general mc tags
-    define_sprite_tags_general = get_define_sprite_tags(lm_data)
+    define_sprite_tags_general = get_define_sprite_tags(lm_data, action_constant_pool, action_record_list)
     all_tags.extend(define_sprite_tags_general)
     
     # test basic display
     tmp_tags = []
-    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME, 1, id=max_characterID, matrix=swf_helper.pack_matrix(None, None, (0, 0)), name="main"))
+    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX, 1, id=max_characterID, matrix=swf_helper.pack_matrix(None, None, (0, 0))))
 
     action_records = []
     action_records.append("\x8B\x05\x00main\x00")   # ActionSetTarget "main"
     action_records.append("\x81\x02\x00\x01\x00")
     action_records.append("\x06")
     action_records.append("\x8B\x01\x00")
-    tmp_tags.append(swf_helper.make_do_action_tag(action_records))
+#    tmp_tags.append(swf_helper.make_do_action_tag(action_records))
     
     tmp_tags.append(swf_helper.make_show_frame_tag())
     
