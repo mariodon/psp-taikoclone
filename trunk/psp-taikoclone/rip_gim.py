@@ -453,18 +453,30 @@ def list_tagF007_symbol(lm_data):
                         
 def list_tagF005_symbol(lm_data):
     data = lm_data[0x40:]
-    symbol_table = get_symbol_list(lm_data)
     off = 0x40
+    action_record_list = []
     while True:
         tag_type, tag_size = struct.unpack("<HH", data[:0x4])
         tag_size_bytes = tag_size * 4 + 4
         if tag_type == 0xF005:
-            print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
-                tag_size_bytes)        
+#            print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
+#                tag_size_bytes)   
+            cnt, = struct.unpack("<I", data[0x4:0x8])
+            as_off = 0x8
+            for i in xrange(cnt):
+                as_len, = struct.unpack("<I", data[as_off:as_off+0x4])
+                as_record, = struct.unpack("<%ds" % as_len, 
+                    data[as_off+0x4:as_off+0x4+as_len])
+                action_record_list.append(as_record)
+                as_off += 0x4 + (as_len + 3) / 4 * 4
+            break
         if tag_type == 0xFF00:
             break
         off += tag_size_bytes
         data = data[tag_size_bytes:]
+    
+#    print "as record count %d" % len(action_record_list)
+    return action_record_list
 
 def list_tagF002_symbol(lm_data):
     data = lm_data[0x40:]
@@ -634,6 +646,7 @@ if __name__ == "__main__":
             list_tagF004_symbol(data)
         elif options.tag_id == 0xF005:
             print "Actionscript!"
+            list_tagF005_symbol(data)
         elif options.tag_id == 0xF007:
             list_tagF007_symbol(data)
         elif options.tag_id == 0xF00C:

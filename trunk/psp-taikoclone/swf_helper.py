@@ -414,6 +414,7 @@ def make_end_tag():
 def make_do_action_tag(action_records):
     data = "".join(action_records)
     data += pack_ubyte(0)
+    print "action_record len %d" % len(data)
     return make_record_header(12, len(data)) + data
     
 def make_remove_object2_tag(id):
