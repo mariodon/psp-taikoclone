@@ -156,6 +156,9 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
                 frame_label = symbol_list[frame_label_idx]
                 frame_label_dict[the_frame] = frame_label
                 
+            depth2matrix = {}
+            depth2color_trans = {}
+            
             for i in xrange(frame_count):
                 data = rip_gim.seek_next_tag(data, (0x0001,))
                 ptag_cnt, = struct.unpack("<H", data[0x6:0x8])
@@ -196,7 +199,7 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
                             matrix_list[trans_idx][2])
                         flags |= swf_helper.PLACE_FLAG_HAS_MATRIX
                     else:
-                        trans_idx &= 0xFF
+                        trans_idx &= 0x7FFF
                         translate = point_list[trans_idx]
                         scale = rotateskew = None
                         flags |= swf_helper.PLACE_FLAG_HAS_MATRIX
@@ -230,11 +233,19 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
                                 color_add, color_mul)
                     else:
                         color_trans = None
+                        
+                    ratio, = struct.unpack("<h", data[0x6:0x8])
+                    if ratio >= 0:
+                        flags |= swf_helper.PLACE_FLAG_HAS_RATIO
+                    
                     if flags & swf_helper.PLACE_FLAG_HAS_CHARACTER and \
                         flags & swf_helper.PLACE_FLAG_MOVE:
                         control_tags.append(
                             swf_helper.make_remove_object2_tag(depth))
                         flags &= (0xFFFF - swf_helper.PLACE_FLAG_MOVE)
+                        if not (flags & swf_helper.PLACE_FLAG_HAS_MATRIX):
+                            flags |= swf_helper.PLACE_FLAG_HAS_MATRIX
+                            matrix = depth2matrix[depth]
                         
                     clip_action_cnt, = struct.unpack("<H", data[0x20:0x22])
                     if clip_action_cnt > 0:
@@ -252,8 +263,13 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
                         clip_actions = None
                             
                     ptag = swf_helper.make_place_object2_tag(flags, depth, id, 
-                        name=name, matrix=matrix, color_trans=color_trans, clip_actions=clip_actions)
+                        name=name, matrix=matrix, color_trans=color_trans, clip_actions=clip_actions, ratio=ratio)
                     control_tags.append(ptag)
+                    
+                    if matrix:
+                        depth2matrix[depth] = matrix
+                    if color_trans:
+                        depth2color_trans[depth] = color_trans
                     
                 if i in frame_label_dict:
                     control_tags.append(swf_helper.make_frame_label_tag(
@@ -379,7 +395,7 @@ def fix_action_record(data, symbol_list):
     return "".join(ret)
     
 def test(fname):
-    image_root = r"C:\Users\delguoqing\Downloads\disasmTNT\png"
+    image_root = r"D:\tmp_dl\disasmTNT\GimConv\png"
 #    fname = "CHIBI_1P_BALLOON_01.LM"
     f = open(fname, "rb")
     lm_data = f.read()
@@ -455,14 +471,16 @@ def test(fname):
     
     # test basic display
     tmp_tags = []
-    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME, 1, id=max_characterID, matrix=swf_helper.pack_matrix((0.5, 0.5), None, (0, 0), ),name="main"))
+    
+    # INSTANCE ID(ratio) should be enough!
+    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME|swf_helper.PLACE_FLAG_HAS_RATIO, 1, id=max_characterID, matrix=swf_helper.pack_matrix(None, None, (0, 0), ),name="main",ratio=0xFFFF))
 
     action_records = []
     action_records.append("\x8B\x05\x00main\x00")   # ActionSetTarget "main"
-    action_records.append("\x81\x02\x00\x02\x00")
+    action_records.append("\x81\x02\x00\x01\x00")
     action_records.append("\x06")
     action_records.append("\x8B\x01\x00")
-#    tmp_tags.append(swf_helper.make_do_action_tag(action_records))
+    tmp_tags.append(swf_helper.make_do_action_tag(action_records))
     
     tmp_tags.append(swf_helper.make_show_frame_tag())
     
