@@ -433,6 +433,8 @@ def make_place_object2_tag(flags, depth, id=None, matrix=None,
         data += matrix    
     if flags & PLACE_FLAG_HAS_COLOR_TRANSFORM:
         data += color_trans        
+    if flags & PLACE_FLAG_HAS_RATIO:
+        data += pack_uhalf(ratio)
     if flags & PLACE_FLAG_HAS_NAME:
         data += pack_string(name)
     if flags & PLACE_FLAG_HAS_CLIP_ACTIONS:

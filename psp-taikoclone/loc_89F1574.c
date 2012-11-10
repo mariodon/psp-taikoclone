@@ -155,7 +155,6 @@ PLAYER_SELECT.LM
 //		+0xc(2)		flags(1=PlaceFlagHasCharacter, 2=PlaceFlagMove)
 //		+0xe(2)     $zr
 //		+0x10(2)	depth
-//		+0x12(2)	instanceID
 //		+0x14(2)
 //		+0x16(2)    $zr
 //		+0x18(2)    if v & 0x8000, v2=v & 0xF= matrix index;
