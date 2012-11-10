@@ -16,6 +16,12 @@ SHAPE_FLAG_STATE_LINE_STYLE = 0x20
 SHAPE_FLAG_STATE_FILL_STYLE1 = 0x10
 SHAPE_FLAG_STATE_MOVE_TO = 0x8
 
+# don't bother to list all, most are not used!
+CLIP_EVENT_KEY_UP = 0x80000000
+CLIP_EVENT_KEY_DOWN = 0x40000000
+CLIP_EVENT_MOUSE_UP = 0x20000000
+CLIP_EVENT_KEY_PRESS = 0x00000200
+
 def calc_nbits(v):
     v = abs(v)
     if v == 0:
@@ -205,6 +211,25 @@ def pack_fill_style(type, bitmap_id=None, bitmap_matrix=None, color=None):
         data += color
         return data
     
+def pack_clip_action_record(flags, actions, keycode=None):
+    ret = pack_uword(flags)
+    data = ""
+    if flags & CLIP_EVENT_KEY_PRESS:
+        data += pack_ubyte(keycode)
+    data += "".join(actions)
+    ret += pack_uword(len(data))
+    return ret + data
+    
+def pack_clip_actions(clip_action_records):
+    ret = pack_uhalf(0)
+    flags = 0
+    for record in clip_action_records:
+        flags |= struct.unpack("<I", record[:0x4])[0]
+    ret += pack_uword(flags)
+    ret += "".join(clip_action_records)
+    ret += pack_uword(0)
+    return ret
+        
 def pack_line_style(width, color):
     return pack_uhalf(width) + color
         
@@ -383,6 +408,10 @@ def make_define_shape3_tag(id, bounding_rect, shapes):
     data += shapes
     return make_record_header(32, len(data)) + data
     
+def make_frame_label_tag(str):
+    data = pack_string(str)
+    return make_record_header(43, len(data)) + data
+    
 def make_show_frame_tag():
     return make_record_header(1, 0)
     
@@ -406,6 +435,8 @@ def make_place_object2_tag(flags, depth, id=None, matrix=None,
         data += color_trans        
     if flags & PLACE_FLAG_HAS_NAME:
         data += pack_string(name)
+    if flags & PLACE_FLAG_HAS_CLIP_ACTIONS:
+        data += clip_actions
     return make_record_header(26, len(data)) + data
     
 def make_end_tag():

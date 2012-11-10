@@ -140,10 +140,22 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
         if tag_type == 0xFF00:
             break
         if tag_type == 0x0027:
+
             control_tags = []
             sprite_id, = struct.unpack("<H", data[0x4:0x6])
             frame_count, = struct.unpack("<H", data[0xc:0xe])
             print "frame_count %d" % frame_count
+            
+            frame_label_cnt, = struct.unpack("<H", data[0xa:0xc])
+            print "frame lable cnt %d" % frame_label_cnt
+            frame_label_dict = {}
+            for i in xrange(frame_label_cnt):
+                data = rip_gim.seek_next_tag(data, (0x002b,))
+                frame_label_idx, the_frame = struct.unpack("<HH", 
+                    data[0x4:0x8])
+                frame_label = symbol_list[frame_label_idx]
+                frame_label_dict[the_frame] = frame_label
+                
             for i in xrange(frame_count):
                 data = rip_gim.seek_next_tag(data, (0x0001,))
                 ptag_cnt, = struct.unpack("<H", data[0x6:0x8])
@@ -154,10 +166,10 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
                     if _type == 0x0005:
                         depth, = struct.unpack("<H", data[0x6:0x8])
                         control_tags.append(
-                            swf_helper.make_remove_object2_tag(depth))    
+                            swf_helper.make_remove_object2_tag(depth+1))    
                         continue
                     if _type == 0x000c:
-                        as_idx, = struct.unpack("<I", data[0x4:0x8])
+                        as_idx, = struct.unpack("<H", data[0x4:0x6])
                         control_tags.append(
                             swf_helper.make_do_action_tag([action_constant_pool
                             , action_record_list[as_idx]]))
@@ -223,10 +235,29 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
                         control_tags.append(
                             swf_helper.make_remove_object2_tag(depth))
                         flags &= (0xFFFF - swf_helper.PLACE_FLAG_MOVE)
+                        
+                    clip_action_cnt, = struct.unpack("<H", data[0x20:0x22])
+                    if clip_action_cnt > 0:
+                        clip_action_records = []
+                        for k in range(clip_action_cnt):
+                            data = rip_gim.seek_next_tag(data, (0xf014,))
+                            as_idx, event_flags, keycode = struct.unpack("<HIB", data[0x4:0xb])
+                            clip_action_records.append(swf_helper.pack_clip_action_record(event_flags, [action_constant_pool
+                            , action_record_list[as_idx]], keycode))
+                            
+                        flags |= swf_helper.PLACE_FLAG_HAS_CLIP_ACTIONS
+                        clip_actions = \
+                            swf_helper.pack_clip_actions(clip_action_records)
+                    else:
+                        clip_actions = None
+                            
                     ptag = swf_helper.make_place_object2_tag(flags, depth, id, 
-                        name=name, matrix=matrix, color_trans=color_trans)
+                        name=name, matrix=matrix, color_trans=color_trans, clip_actions=clip_actions)
                     control_tags.append(ptag)
                     
+                if i in frame_label_dict:
+                    control_tags.append(swf_helper.make_frame_label_tag(
+                        frame_label_dict[i]))
                 show_frame_tag = swf_helper.make_show_frame_tag()
                 control_tags.append(show_frame_tag)
             # append end tag
@@ -239,7 +270,7 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
             
     return define_sprite_tags
         
-def fix_action_record(data):
+def fix_action_record(data, symbol_list):
     ret = []
     while data:
         action_code, = struct.unpack("<B", data[:0x1])
@@ -289,9 +320,10 @@ def fix_action_record(data):
                 # trim sub block
                 print "sub=======, %x" % \
                     len(data[length+0x3:length+0x3+code_size])
-                sub = fix_action_record(data[length+0x3:length+0x3+code_size])
+                sub = fix_action_record(data[length+0x3:length+0x3+code_size], 
+                    symbol_list)
                 # fix code_size
-               
+                record = record[:-2] + struct.pack("<H", len(sub))
                 ret.append(record+sub)
                 data = data[length + 0x3 + code_size:]
                 print "fixed_code_size %x %x" % (code_size, len(sub))
@@ -309,23 +341,36 @@ def fix_action_record(data):
                     push_type, = struct.unpack("<B", raw_items[0x0:0x1])
                     if push_type in (0x4, 0x5, 0x8):
                         bytes = raw_items[0x1:0x2]
+                        off = 0x1
                     elif push_type in (0x9,):
                         bytes = raw_items[0x1:0x3]
+                        off = 0x2
                     elif push_type in (0x1, 0x7):
                         bytes = raw_items[0x1:0x5]
+                        off = 0x4
                     elif push_type in (0x6,):
                         bytes = raw_items[0x5:0x9] + raw_items[0x1:0x5]
+                        off = 0x8
                     elif push_type == 0x0:
-                        bytes, = raw_items.split("\x00")
-                        bytes += "\x00"
+                        str_idx, = struct.unpack("<H", raw_items[0x1:0x3])
+                        _str = symbol_list[str_idx]
+                        bytes = swf_helper.pack_string(_str)
+                        off = len(bytes)
+                    elif push_type == 0x2:
+                        bytes = ""
+                        off = 0x0
                     else:
                         assert False, "not supported push type %x" % push_type
                     fixed_record += raw_items[0x0:0x1] + bytes
-                    raw_items = raw_items[len(bytes) + 1:]
+                    raw_items = raw_items[off + 1:]
                 
-                assert len(fixed_record) == len(record)
+#                assert len(fixed_record) == len(record)
+                # fix the action push record size
+                fixed_record = fixed_record[0x0:0x1] + struct.pack("<H", 
+                    len(fixed_record)-0x3) + fixed_record[0x3:]
                 ret.append(fixed_record)
                 data = data[length + 0x3:]
+#TODO: fix ActionIf branchoffset
             else:
                 ret.append(record)
                 data = data[length + 0x3:]
@@ -334,7 +379,7 @@ def fix_action_record(data):
     return "".join(ret)
     
 def test(fname):
-    image_root = r"D:\tmp_dl\disasmTNT\GimConv\png"
+    image_root = r"C:\Users\delguoqing\Downloads\disasmTNT\png"
 #    fname = "CHIBI_1P_BALLOON_01.LM"
     f = open(fname, "rb")
     lm_data = f.read()
@@ -350,7 +395,7 @@ def test(fname):
 #    action_record_list = map(fix_action_record, action_record_list)
     print len(action_record_list)
     for i in xrange(len(action_record_list)):
-        action_record_list[i] = fix_action_record(action_record_list[i])
+        action_record_list[i] = fix_action_record(action_record_list[i], symbol_table)
 #    fix_action_record(action_record_list[2])
     
     max_characterID = get_max_characterID(lm_data)
@@ -410,11 +455,11 @@ def test(fname):
     
     # test basic display
     tmp_tags = []
-    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX, 1, id=max_characterID, matrix=swf_helper.pack_matrix(None, None, (0, 0))))
+    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME, 1, id=max_characterID, matrix=swf_helper.pack_matrix((0.5, 0.5), None, (0, 0), ),name="main"))
 
     action_records = []
     action_records.append("\x8B\x05\x00main\x00")   # ActionSetTarget "main"
-    action_records.append("\x81\x02\x00\x01\x00")
+    action_records.append("\x81\x02\x00\x02\x00")
     action_records.append("\x06")
     action_records.append("\x8B\x01\x00")
 #    tmp_tags.append(swf_helper.make_do_action_tag(action_records))
