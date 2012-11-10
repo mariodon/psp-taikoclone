@@ -145,6 +145,7 @@ PLAYER_SELECT.LM
 //tag0001
 //		+0x4(2)		帧序号
 //      +0x6(2)     接下来还有几个tag0004	
+//	+0x8(2)	    接下来有几个tagF014 clipaction
 //
 //tag0004	PlaceObject
 //		+0x4(2)		CharacterID

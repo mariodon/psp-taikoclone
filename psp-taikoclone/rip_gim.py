@@ -321,7 +321,7 @@ def list_tag0004_symbol(lm_data):
                 trans_idx &= 0xFF
                 translate = "(%.1f, %.1f)" % xy_list[trans_idx]
                 scale = rotateskew = "null"
-            
+            clip_action_cnt = struct.unpack("<H", data[0x20:0x22])[0]
             name_idx = struct.unpack("<H", data[0xa:0xc])[0]
             name = symbol_list[name_idx] or "null"
             depth = struct.unpack("<H", data[0x10:0x12])[0]
@@ -350,12 +350,13 @@ def list_tag0004_symbol(lm_data):
                 color_add_str = "(%d,%d,%d,%d)" % tuple(color_add)            
             v_list.append(color_mul_str)
             v_list.append(color_add_str)
+            v_list.append(clip_action_cnt)
             v_list.append(name)
             
                         
             if True:
                 print "PlaceObject, off=0x%x,\tsize=0x%x" % (off,    tag_size_bytes)            
-                print "\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d,\tflags=%s,\t%d,\tcolMul=%s,\tcolAdd=%s,\tname=%s" % tuple(v_list)
+                print "\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d,\tflags=%s,\t%d,\tcolMul=%s,\tcolAdd=%s\t,clipAction=%d\tname=%s" % tuple(v_list)
         if tag_type == 0xFF00:
             break
         off += tag_size_bytes
