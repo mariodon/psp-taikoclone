@@ -311,11 +311,11 @@ def fix_action_record(data, symbol_list):
                 
                 # off:0x4+func_name_len
                 num_param, = struct.unpack("<H", 
-                    data[0x4+func_name_len:0x6+func_name_len])
+                    data[0x5+func_name_len:0x7+func_name_len])
                 
                 # off:0x6+func_name_len
                 str_cnt = 0
-                idx = 0x6 + func_name_len
+                idx = 0x7 + func_name_len
                 while str_cnt < num_param:
                     if data[idx] == '\x00':
                         str_cnt += 1
@@ -326,7 +326,7 @@ def fix_action_record(data, symbol_list):
 
                 # off: idx
                 
-                code_size, = struct.unpack("<H", data[idx+1:idx+3])
+                code_size, = struct.unpack("<H", data[idx:idx+2])
                 print "code size = %x" % code_size
                 # off:idx+2
                 
@@ -402,6 +402,23 @@ def fix_action_record(data, symbol_list):
                 
                 ret.append(record + branch_false)
                 data = data[length + 0x3 + branch_offset:]
+            elif action_code == 0x8E:
+                code_size, = struct.unpack("<H", record[-2:])
+                code = data[0x3 + length: 0x3 + length + code_size]
+                fixed_code = fix_action_record(code, symbol_list)
+                
+                func_name_len = 0
+                while data[0x3 + func_name_len] != '\x00':
+                    func_name_len += 1
+                func_name = data[0x3:0x3+func_name_len]
+                
+                fixed_record = ""
+                fixed_record += record[0x0:0x3+func_name_len+0x1]
+                fixed_record += record[0x3+func_name_len+0x2:-2]
+                fixed_record += struct.pack("<H", len(fixed_code))
+
+                ret.append(fixed_record + fixed_code)
+                data = data[length + 0x3 + code_size:]
             else:
                 ret.append(record)
                 data = data[length + 0x3:]
@@ -409,8 +426,8 @@ def fix_action_record(data, symbol_list):
     print "===="
     return "".join(ret)
     
-def test(fname, ID, label, pos, scale):
-    image_root = r"D:\tmp_dl\disasmTNT\GimConv\png"
+def test(fname, ID, label, pos, scale, fout):
+    image_root = r"C:\Users\delguoqing\Downloads\disasmTNT\png"
 #    fname = "CHIBI_1P_BALLOON_01.LM"
     f = open(fname, "rb")
     lm_data = f.read()
@@ -518,17 +535,19 @@ def test(fname, ID, label, pos, scale):
     swf_header = swf_helper.make_swf_header(0xa, file_length, 480, 272, 60.0, 
         1)
     
-    fout = open(fname[:-3] + ".swf", "wb")
+    fout = fout or fname[:-3] + ".swf"
+    fout = open(fout, "wb")
     fout.write(swf_header + all_data)
     fout.close()
     
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-f", dest="filename")
+    parser.add_option("-o", dest="fout")
     parser.add_option("-l", dest="label")
     parser.add_option("-i", type="int", action="store", dest="characterID")
     parser.add_option("-p", type="float", nargs=2, dest="pos")
     parser.add_option("-s", type="float", dest="scale")
     
     (options, args) = parser.parse_args(sys.argv)
-    test(options.filename, options.characterID, options.label, options.pos, options.scale)
+    test(options.filename, options.characterID, options.label, options.pos, options.scale, options.fout)
