@@ -289,7 +289,7 @@ def list_tag0004_symbol(lm_data):
             print
             print ">>>>>>>>>KeyFrame: v=%d" % struct.unpack("<H", data[0x4:0x6])
         elif tag_type == 0x000c:
-            print ">>>>>>>>>Do Action %d" % struct.unpack("<I", data[0x4:0x8])
+            print ">>>>>>>>>Do Action %d" % struct.unpack("<H", data[0x4:0x6])
         elif tag_type == 0x0005:
             print ">>>>>>>>>RemoveObject at depth%d" % struct.unpack("<H", data[0x6:0x8])
         elif tag_type == 0x002b:
@@ -576,6 +576,7 @@ def shuffle_tagF022(lm_data):
     return head+"".join(tagF022_list)+tail
             
 if __name__ == "__main__":
+
     parser = optparse.OptionParser()
     parser.add_option("-f", dest="filename")
     parser.add_option("-o", dest="outfile")
@@ -629,8 +630,8 @@ if __name__ == "__main__":
             tag = data[0x40:]
             symbol_list = get_symbol_list(tag)
             print "symbols:"
-            for symbol in symbol_list:
-                print symbol.decode("utf8")            
+            for i, symbol in enumerate(symbol_list):
+                print "0x%x\t" % i, symbol.decode("utf8")            
         elif options.tag_id == 0xF002:
             color_list = list_tagF002_symbol(data)
             if color_list:

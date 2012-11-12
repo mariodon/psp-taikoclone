@@ -3,6 +3,7 @@ import sys
 import struct
 import swf_helper
 import rip_gim
+import optparse
 
 def get_max_characterID(lm_data):
     data = lm_data[0x40:]
@@ -307,9 +308,11 @@ def fix_action_record(data, symbol_list):
                 while data[0x3 + func_name_len] != '\x00':
                     func_name_len += 1
                 func_name = data[0x3:0x3+func_name_len]
+                
                 # off:0x4+func_name_len
                 num_param, = struct.unpack("<H", 
                     data[0x4+func_name_len:0x6+func_name_len])
+                
                 # off:0x6+func_name_len
                 str_cnt = 0
                 idx = 0x6 + func_name_len
@@ -387,6 +390,18 @@ def fix_action_record(data, symbol_list):
                 ret.append(fixed_record)
                 data = data[length + 0x3:]
 #TODO: fix ActionIf branchoffset
+            elif action_code == 0x9D:
+                branch_offset, = struct.unpack("<h", record[0x3:0x5])
+                assert branch_offset >= 0, "not support negative branch offset"
+                
+                branch_false = record[0x5:0x5+branch_offset]
+                fixed_branch_false = fix_action_record(branch_false)
+                
+                record = record[0x0:0x1] + \
+                    struct.pack("<h", len(fixed_branch_false))
+                
+                ret.append(record + branch_false)
+                data = data[length + 0x3 + branch_offset:]
             else:
                 ret.append(record)
                 data = data[length + 0x3:]
@@ -394,7 +409,7 @@ def fix_action_record(data, symbol_list):
     print "===="
     return "".join(ret)
     
-def test(fname):
+def test(fname, ID, label, pos, scale):
     image_root = r"D:\tmp_dl\disasmTNT\GimConv\png"
 #    fname = "CHIBI_1P_BALLOON_01.LM"
     f = open(fname, "rb")
@@ -410,6 +425,7 @@ def test(fname):
     action_record_list = rip_gim.list_tagF005_symbol(lm_data)
 #    action_record_list = map(fix_action_record, action_record_list)
     print len(action_record_list)
+#    for i in ():
     for i in xrange(len(action_record_list)):
         action_record_list[i] = fix_action_record(action_record_list[i], symbol_table)
 #    fix_action_record(action_record_list[2])
@@ -473,14 +489,16 @@ def test(fname):
     tmp_tags = []
     
     # INSTANCE ID(ratio) should be enough!
-    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME|swf_helper.PLACE_FLAG_HAS_RATIO, 1, id=max_characterID, matrix=swf_helper.pack_matrix(None, None, (0, 0), ),name="main",ratio=0xFFFF))
+    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME|swf_helper.PLACE_FLAG_HAS_RATIO, 1, id=ID or max_characterID, matrix=swf_helper.pack_matrix(scale and (scale, scale) or None, None, pos or (0, 0), ),name="main",ratio=0xFFFF))
 
-    action_records = []
-    action_records.append("\x8B\x05\x00main\x00")   # ActionSetTarget "main"
-    action_records.append("\x81\x02\x00\x01\x00")
-    action_records.append("\x06")
-    action_records.append("\x8B\x01\x00")
-    tmp_tags.append(swf_helper.make_do_action_tag(action_records))
+    if label is not None:
+        action_records = []
+        action_records.append("\x8B\x05\x00main\x00")   # ActionSetTarget "main"
+        action_records.append("\x8C"+struct.pack("<H", len(label)) + \
+            swf_helper.pack_string(label))
+        action_records.append("\x06")
+        action_records.append("\x8B\x01\x00")
+        tmp_tags.append(swf_helper.make_do_action_tag(action_records))
     
     tmp_tags.append(swf_helper.make_show_frame_tag())
     
@@ -505,4 +523,12 @@ def test(fname):
     fout.close()
     
 if __name__ == "__main__":
-    test(sys.argv[1])
+    parser = optparse.OptionParser()
+    parser.add_option("-f", dest="filename")
+    parser.add_option("-l", dest="label")
+    parser.add_option("-i", type="int", action="store", dest="characterID")
+    parser.add_option("-p", type="float", nargs=2, dest="pos")
+    parser.add_option("-s", type="float", dest="scale")
+    
+    (options, args) = parser.parse_args(sys.argv)
+    test(options.filename, options.characterID, options.label, options.pos, options.scale)
