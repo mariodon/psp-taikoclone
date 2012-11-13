@@ -160,17 +160,21 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
             depth2matrix = {}
             depth2color_trans = {}
             
+            
             for i in xrange(frame_count):
                 data = rip_gim.seek_next_tag(data, (0x0001,))
                 ptag_cnt, = struct.unpack("<H", data[0x6:0x8])
 #                print "frame %d, placeobject%d" % (i, ptag_cnt)
+                if i in frame_label_dict:
+                    control_tags.append(swf_helper.make_frame_label_tag(
+                        frame_label_dict[i]))
                 for j in xrange(ptag_cnt):
                     data = rip_gim.seek_next_tag(data, (0x0004, 0x0005, 0x000c))
                     _type = struct.unpack("<H", data[:0x2])[0]
                     if _type == 0x0005:
                         depth, = struct.unpack("<H", data[0x6:0x8])
                         control_tags.append(
-                            swf_helper.make_remove_object2_tag(depth+1))    
+                            swf_helper.make_remove_object2_tag(depth+1))
                         continue
                     if _type == 0x000c:
                         as_idx, = struct.unpack("<H", data[0x4:0x6])
@@ -272,9 +276,6 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
                     if color_trans:
                         depth2color_trans[depth] = color_trans
                     
-                if i in frame_label_dict:
-                    control_tags.append(swf_helper.make_frame_label_tag(
-                        frame_label_dict[i]))
                 show_frame_tag = swf_helper.make_show_frame_tag()
                 control_tags.append(show_frame_tag)
             # append end tag
@@ -401,7 +402,7 @@ def fix_action_record(data, symbol_list):
                     struct.pack("<h", len(fixed_branch_false))
                 
                 ret.append(record + branch_false)
-                data = data[length + 0x3 + branch_offset:]
+                data = data[length + 0x3 + branch_offset:]                
             elif action_code == 0x8E:
                 code_size, = struct.unpack("<H", record[-2:])
                 code = data[0x3 + length: 0x3 + length + code_size]
@@ -419,6 +420,13 @@ def fix_action_record(data, symbol_list):
 
                 ret.append(fixed_record + fixed_code)
                 data = data[length + 0x3 + code_size:]
+            elif action_code == 0x8c:
+                label_idx, = struct.unpack("<H", record[0x3:])
+                label = symbol_list[label_idx]
+                record = struct.pack("<BH", 0x8c, len(label) + 1) + \
+                    swf_helper.pack_string(label)
+                ret.append(record)
+                data = data[length + 0x3:]                    
             else:
                 ret.append(record)
                 data = data[length + 0x3:]
@@ -440,6 +448,7 @@ def test(fname, ID, label, pos, scale, fout):
     action_constant_pool = struct.pack("<BHH", 0x88, 2+len(constant_pool), 
         len(symbol_table)) + constant_pool
     action_record_list = rip_gim.list_tagF005_symbol(lm_data)
+    frame_label_dict = rip_gim.get_frame_label_dict(lm_data)
 #    action_record_list = map(fix_action_record, action_record_list)
     print len(action_record_list)
 #    for i in ():
@@ -506,16 +515,17 @@ def test(fname, ID, label, pos, scale, fout):
     tmp_tags = []
     
     # INSTANCE ID(ratio) should be enough!
-    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME|swf_helper.PLACE_FLAG_HAS_RATIO, 1, id=ID or max_characterID, matrix=swf_helper.pack_matrix(scale and (scale, scale) or None, None, pos or (0, 0), ),name="main",ratio=0xFFFF))
+    id = ID or max_characterID
+    tmp_tags.append(swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER|swf_helper.PLACE_FLAG_HAS_MATRIX|swf_helper.PLACE_FLAG_HAS_NAME|swf_helper.PLACE_FLAG_HAS_RATIO, 1, id=id, matrix=swf_helper.pack_matrix(scale and (scale, scale) or None, None, pos or (0, 0), ),name="main",ratio=0xFFFF))
 
     if label is not None:
         action_records = []
         action_records.append("\x8B\x05\x00main\x00")   # ActionSetTarget "main"
-        action_records.append("\x8C"+struct.pack("<H", len(label)) + \
-            swf_helper.pack_string(label))
+        frame_idx = frame_label_dict[id][label]
+        action_records.append("\x81\x02\x00" + struct.pack("<H", frame_idx))
         action_records.append("\x06")
         action_records.append("\x8B\x01\x00")
-        tmp_tags.append(swf_helper.make_do_action_tag(action_records))
+        tmp_tags.append(swf_helper.make_do_action_tag(action_records))        
     
     tmp_tags.append(swf_helper.make_show_frame_tag())
     

@@ -79,6 +79,32 @@ def rip_file(fname, fname2=None):
             f.close()
             break
 
+def get_frame_label_dict(lm_data):
+    ret = {}
+    data = lm_data[0x40:]
+    symbol_list = get_symbol_list(data)
+    while True:
+        tag_type, = struct.unpack("<H", data[:0x2])
+        if tag_type == 0xFF00:
+            break
+        if tag_type == 0x0027:
+            sprite_id, = struct.unpack("<H", data[0x4:0x6])
+            frame_label_cnt, = struct.unpack("<H", data[0xa:0xc])
+            ret.setdefault(sprite_id, {})
+            for i in xrange(frame_label_cnt):
+                data = seek_next_tag(data, (0x002b,))
+                frame_label_idx, the_frame = struct.unpack("<HH", 
+                    data[0x4:0x8])
+                frame_label = symbol_list[frame_label_idx]
+                ret[sprite_id][frame_label] = the_frame + 1
+        data = seek_next_tag(data)
+            
+    for id, dic in ret.items():
+        print "labels of %d" % id
+        print dic.keys()
+    
+    return ret
+                        
 def get_symbol_list(tag):
     symbol_list = []
     tag_type, tag_size = struct.unpack("<HH", tag[:0x4])
