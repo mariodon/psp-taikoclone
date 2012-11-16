@@ -515,7 +515,7 @@ def list_tagF002_symbol(lm_data):
         if tag_type == 0xF002:
             color_cnt, = struct.unpack("<I", data[0x4:0x8])
             for i in xrange(color_cnt):
-                color = struct.unpack("<HHHH", \
+                color = struct.unpack("<hhhh", \
                     data[0x8+0x8*i:0x8+0x8*i+0x8])
                 color_list.append(color)
         if tag_type == 0xFF00:
