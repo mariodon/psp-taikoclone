@@ -1,0 +1,4 @@
+apihook @sceThreadManager ThreadManForUser @sceKernelCreateThread x spiixp
+apihook @sceThreadManager ThreadManForUser @sceKernelStartThread x xip
+apihook @sceIOFileManager IoFileMgrForUser @sceIoRead x ixx 
+apihook @sceIOFileManager IoFileMgrForUser @sceIoLseek x ilx
