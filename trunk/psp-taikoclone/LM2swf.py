@@ -24,7 +24,7 @@ def get_image_dict(lm_data, image_root):
     symbol_list = rip_gim.get_symbol_list(lm_data[0x40:])
     for sb in symbol_list:
         if sb.endswith(".png") and image_dict.get(sb) is None:
-            image_file = sb[:-4] + ".gim.png"
+            image_file = sb[:-4] + ".png"
             f = open(os.path.join(image_root, image_file), "rb")
             image_data = f.read()
             f.close()
@@ -145,10 +145,10 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
             control_tags = []
             sprite_id, = struct.unpack("<H", data[0x4:0x6])
             frame_count, = struct.unpack("<H", data[0xc:0xe])
-            print "frame_count %d" % frame_count
+#            print "frame_count %d" % frame_count
             
             frame_label_cnt, = struct.unpack("<H", data[0xa:0xc])
-            print "frame lable cnt %d" % frame_label_cnt
+#            print "frame lable cnt %d" % frame_label_cnt
             frame_label_dict = {}
             for i in xrange(frame_label_cnt):
                 data = rip_gim.seek_next_tag(data, (0x002b,))
@@ -294,7 +294,7 @@ def fix_action_record(data, symbol_list):
         action_code, = struct.unpack("<B", data[:0x1])
         if action_code == 0x0:
             data = data[0x1:]
-            print "empty record trimmed"
+#            print "empty record trimmed"
             continue
         if action_code < 0x80:
             ret.append(data[0])
@@ -328,25 +328,25 @@ def fix_action_record(data, symbol_list):
                 # off: idx
                 
                 code_size, = struct.unpack("<H", data[idx:idx+2])
-                print "code size = %x" % code_size
+#                print "code size = %x" % code_size
                 # off:idx+2
                 
                 assert idx+2 <= length+0x3
                 # fix record size
                 record = record[0x0:0x1] + struct.pack("<H", length-1) + \
                     record[0x3:0x3+length-3] + record[-2:]
-                print "define func trimmed %d" % (length - idx + 1)
+#                print "define func trimmed %d" % (length - idx + 1)
                     
                 # trim sub block
-                print "sub=======, %x" % \
-                    len(data[length+0x3:length+0x3+code_size])
+#                print "sub=======, %x" % \
+#                    len(data[length+0x3:length+0x3+code_size])
                 sub = fix_action_record(data[length+0x3:length+0x3+code_size], 
                     symbol_list)
                 # fix code_size
                 record = record[:-2] + struct.pack("<H", len(sub))
                 ret.append(record+sub)
                 data = data[length + 0x3 + code_size:]
-                print "fixed_code_size %x %x" % (code_size, len(sub))
+#                print "fixed_code_size %x %x" % (code_size, len(sub))
             elif action_code == 0x9D:
                 branch_off, = struct.unpack("<H", record[-2:])
                 record = record[:0x3] + struct.pack("<H", branch_off-1)
@@ -368,10 +368,10 @@ def fix_action_record(data, symbol_list):
                     elif push_type in (0x1, 0x7):
                         bytes = raw_items[0x1:0x5]
                         off = 0x4
-                    elif push_type in (0x6,):
+                    elif push_type in (0x6,):   # swap for double type
                         bytes = raw_items[0x5:0x9] + raw_items[0x1:0x5]
                         off = 0x8
-                    elif push_type == 0x0:
+                    elif push_type == 0x0:  # look up raw string in symbol_list
                         str_idx, = struct.unpack("<H", raw_items[0x1:0x3])
                         _str = symbol_list[str_idx]
                         bytes = swf_helper.pack_string(_str)
@@ -390,7 +390,7 @@ def fix_action_record(data, symbol_list):
                     len(fixed_record)-0x3) + fixed_record[0x3:]
                 ret.append(fixed_record)
                 data = data[length + 0x3:]
-#TODO: fix ActionIf branchoffset
+#TODO: fix branch_offset which points to a previous block that may be trimmed!
             elif action_code == 0x9D:
                 branch_offset, = struct.unpack("<h", record[0x3:0x5])
                 assert branch_offset >= 0, "not support negative branch offset"
@@ -431,11 +431,11 @@ def fix_action_record(data, symbol_list):
                 ret.append(record)
                 data = data[length + 0x3:]
             
-    print "===="
+#    print "===="
     return "".join(ret)
     
-def test(fname, ID, label, pos, scale, fout):
-    image_root = r"C:\Users\delguoqing\Downloads\disasmTNT\png"
+def test(fname, ID, label, pos, scale, fout, img_path):
+    image_root = img_path or r"c:\png"
 #    fname = "CHIBI_1P_BALLOON_01.LM"
     f = open(fname, "rb")
     lm_data = f.read()
@@ -450,7 +450,7 @@ def test(fname, ID, label, pos, scale, fout):
     action_record_list = rip_gim.list_tagF005_symbol(lm_data)
     frame_label_dict = rip_gim.get_frame_label_dict(lm_data)
 #    action_record_list = map(fix_action_record, action_record_list)
-    print len(action_record_list)
+#    print len(action_record_list)
 #    for i in ():
     for i in xrange(len(action_record_list)):
         action_record_list[i] = fix_action_record(action_record_list[i], symbol_table)
@@ -552,12 +552,25 @@ def test(fname, ID, label, pos, scale, fout):
     
 if __name__ == "__main__":
     parser = optparse.OptionParser()
-    parser.add_option("-f", dest="filename")
-    parser.add_option("-o", dest="fout")
-    parser.add_option("-l", dest="label")
-    parser.add_option("-i", type="int", action="store", dest="characterID")
-    parser.add_option("-p", type="float", nargs=2, dest="pos")
-    parser.add_option("-s", type="float", dest="scale")
-    
+    parser.add_option("-f", dest="filename", help="LM file path")
+    parser.add_option("-o", dest="fout", help="output file path")
+    parser.add_option("-t", dest="texture_root", help="where your png files are.")
+    parser.add_option("-l", dest="label", help="framelabel of the sprite.")
+    parser.add_option("-i", type="int", action="store", dest="characterID", help="ID of the character to be placed on the stage.")
+    parser.add_option("-p", type="float", nargs=2, dest="pos", help="postion of the sprite. example: -p 128 128")
+    parser.add_option("-s", type="float", dest="scale", help="the scale of the sprite")
+    parser.add_option("-d", action="store_true", dest="dry_run", help="show all character IDs and their frame labels.")
+
     (options, args) = parser.parse_args(sys.argv)
-    test(options.filename, options.characterID, options.label, options.pos, options.scale, options.fout)
+        
+    if options.dry_run:
+        f = open(options.filename, "rb")
+        lm_data = f.read()
+        f.close()
+        ret = rip_gim.get_frame_label_dict(lm_data)
+        
+        for id, dic in sorted(ret.items()):
+            print "labels of %d" % id
+            print dic.keys()        
+    else:
+        test(options.filename, options.characterID, options.label, options.pos, options.scale, options.fout, options.texture_root)

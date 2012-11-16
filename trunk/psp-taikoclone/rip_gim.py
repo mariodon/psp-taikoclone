@@ -98,10 +98,6 @@ def get_frame_label_dict(lm_data):
                 frame_label = symbol_list[frame_label_idx]
                 ret[sprite_id][frame_label] = the_frame + 1
         data = seek_next_tag(data)
-            
-    for id, dic in ret.items():
-        print "labels of %d" % id
-        print dic.keys()
     
     return ret
                         
