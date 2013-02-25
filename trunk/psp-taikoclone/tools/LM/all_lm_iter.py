@@ -1,4 +1,5 @@
 import os
+import struct
 import rip_gim
 
 def iter():
@@ -6,9 +7,22 @@ def iter():
 	for filename in os.listdir(ROOT):
 		if not filename.upper().endswith(".LM"):
 			continue
-#		print filename
+		print filename
 		yield open(os.path.join(ROOT, filename), "rb").read()
 		
+def iter_tag(lumen, type_set=None):
+	lumen = lumen[0x40:]
+	
+	_type_set = type_set or ()
+		
+	while lumen:
+		tag_type, = struct.unpack("<H", lumen[:0x2])
+		if tag_type == 0xFF00:
+			break
+		if tag_type in _type_set:
+			yield lumen
+		lumen = rip_gim.seek_next_tag(lumen)
+	
 def check_F00C():
 	the_ver0 = None
 	the_ver1 = None
@@ -67,11 +81,37 @@ def check_F007():
 				print "Image Idx not consistent!"
 				return False
 	return True
-				
+			
+def check_0004():
+	values = {}
+	v2 = 0
+	for lumen in iter():
+		for tag in iter_tag(lumen, (0x0004, )):
+			v, = struct.unpack("<H", tag[0xe:0x10])
+			values.setdefault(v, 0)
+			values[v] += 1
+			if v == 3:
+				v2 += 1
+				if v2 == 2:
+					return
+			
+	
+	for k, v in values.iteritems():
+		print "%d: %d" % (k, v)
+
+#0xe:0x10	
+#0: 373658
+#1: 91
+#3: 2
+#4: 2
+#8: 1123
+#9: 4				
+		
 checkers = [
 #	check_F00C, 
 #	check_F004,
-	check_F007,
+#	check_F007,
+	check_0004,
 	]
 for checker in checkers:
 	checker()

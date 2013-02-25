@@ -34,8 +34,11 @@ def get_image_dict(lm_data, image_root):
 def get_shape_dict(lm_data):
     data = lm_data[0x40:]
     color_list = rip_gim.list_tagF002_symbol(lm_data)
+    symbol_list = rip_gim.get_symbol_list(lm_data[0x40:])
+    ori_pic_list = rip_gim.list_tagF007_symbol(lm_data)
     off = 0x40
     ret = {}
+    ret2 = {} # image_name_2_fill_type
     while True:
         tag_type, tag_size = struct.unpack("<HH", data[:0x4])
         tag_size_bytes = tag_size * 4 + 4
@@ -45,23 +48,32 @@ def get_shape_dict(lm_data):
             for i in xrange(img_cnt):
                 data = rip_gim.seek_next_tag(data)
                 img_fname_idx, flag = struct.unpack("<HH", data[0x44:0x48])
+                
+                # calc shape size
+                all_floats = struct.unpack("<"+"f"*16, 
+                    data[0x4:0x4+0x4*16])
+                xs = all_floats[::4]
+                ys = all_floats[1::4]
+                xmin, xmax = min(xs), max(xs)
+                ymin, ymax = min(ys), max(ys)
+                width = xmax - xmin
+                height = ymax - ymin
+                
+                # fill return values
                 if flag == 0x00:
-                    all_floats = struct.unpack("<"+"f"*16, 
-                        data[0x4:0x4+0x4*16])
-                    xs = all_floats[::4]
-                    ys = all_floats[1::4]
-                    xmin, xmax = min(xs), max(xs)
-                    ymin, ymax = min(ys), max(ys)
-                    width = xmax - xmin
-                    height = ymax - ymin                
+                
                     ret[(sprite_id << 16)+i] = (color_list[img_fname_idx], 
                         (int(width), int(height)))
+                else:
+                	
+                	ret2[symbol_list[ori_pic_list[img_fname_idx][1]]] = (flag, int(width), int(height))
+
             continue
         if tag_type == 0xFF00:
             break
         off += tag_size_bytes
         data = data[tag_size_bytes:]
-    return ret
+    return ret, ret2
     
 def get_texture_sprite_tags(lm_data, image_2_id, shape_2_id, image_dict):
     data = lm_data[0x40:]
@@ -80,36 +92,24 @@ def get_texture_sprite_tags(lm_data, image_2_id, shape_2_id, image_dict):
             for i in xrange(img_cnt):    # handle each F023 tag
                 data = rip_gim.seek_next_tag(data)
                 img_fname_idx, flag = struct.unpack("<HH", data[0x44:0x48])
+                
+                # calculate upper left corner of the shape
+                # in current texture sprite
+                all_floats = struct.unpack("<"+"f"*16, 
+                    data[0x4:0x4+0x4*16])
+                xs = all_floats[::4]
+                ys = all_floats[1::4]
+                xmin, xmax = min(xs), max(xs)
+                ymin, ymax = min(ys), max(ys)
+                
                 if flag == 0x00:    # solid fill
-                    all_floats = struct.unpack("<"+"f"*16, 
-                        data[0x4:0x4+0x4*16])
-                    xs = all_floats[::4]
-                    ys = all_floats[1::4]
-                    xmin, xmax = min(xs), max(xs)
-                    ymin, ymax = min(ys), max(ys)
-                    width = xmax - xmin
-                    height = ymax - ymin
                     matrix = swf_helper.pack_matrix(None, None, (xmin, ymin))
                     shape_id = shape_2_id[(sprite_id<<16) + i]
-                else:
-                    assert flag == 0x41, "not supported (fill type) atm!"
+                else:	# clipped bitmap fill or repeating bitmap fill
+                    assert flag in (0x40, 0x41), "not supported (fill type) atm! %d" % flag
                     img_fname = img_fname_list[img_fname_idx]
-                    all_floats = struct.unpack("<"+"f"*16, 
-                        data[0x4:0x4+0x4*16])
-                    xs = all_floats[::4]
-                    ys = all_floats[1::4]
-                    xmin, xmax = min(xs), max(xs)
-                    ymin, ymax = min(ys), max(ys)
-                    width = xmax - xmin
-                    height = ymax - ymin
-                    img_data = image_dict[img_fname]
-                    ori_width, ori_height = struct.unpack(">II",     
-                        img_data[0x10:0x18])
-                    scale_x = width / ori_width
-                    scale_y = height / ori_height
                     shape_id = image_2_id[img_fname]
-                    matrix = swf_helper.pack_matrix((scale_x, scale_y), None, 
-                        (xmin, ymin))
+                    matrix = swf_helper.pack_matrix(None, None, (xmin, ymin))
                         
                 place_object2_tag = swf_helper.make_place_object2_tag(swf_helper.PLACE_FLAG_HAS_CHARACTER | swf_helper.PLACE_FLAG_HAS_MATRIX, i+1, id=shape_id, matrix=matrix)
                 place_object2_tags.append(place_object2_tag)
@@ -458,8 +458,10 @@ def test(fname, ID, label, pos, scale, fout, img_path):
     
     max_characterID = get_max_characterID(lm_data)
     
+    # image_dict: {filename : image_data}
+    # image_dict2: {filename: (fill_style_type, shape_width, shape_height)}
     image_dict = get_image_dict(lm_data, image_root)
-    shape_dict = get_shape_dict(lm_data)
+    shape_dict, image_dict2 = get_shape_dict(lm_data)
     # all tags append to this list
     all_tags = []
     
@@ -487,9 +489,10 @@ def test(fname, ID, label, pos, scale, fout, img_path):
     id = max_characterID + len(image_dict) + 1
     for k, v in image_dict.iteritems():
         img_data = image_dict[k]
-        width, height = struct.unpack(">II", img_data[0x10:0x18])
+        
+        fill_style_type, shape_width, shape_height = image_dict2[k]
         tag = swf_helper.make_define_shape3_tag_bitmap_simple(id, 
-            image_2_id[k], width, height)
+            image_2_id[k], shape_width, shape_height, fill_style_type)
         image_2_shape_id[k] = id
         id += 1
         define_shape_tags.append(tag)

@@ -122,7 +122,13 @@ def seek_next_tag(data, id=None):
 	assert data, "No Tags Any More"
 	tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 	data = data[tag_size * 4 + 4:]
-	tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+	
+	# Has Next Tag?
+	if len(data):
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+	else:
+		return data
+		
 	if id is None or tag_type in id:
 		return data
 	else:
@@ -391,6 +397,8 @@ def list_tag0004_symbol(lm_data):
 			flags_str = ""
 			flags_str += (flags & 1) and "N" or "-"
 			flags_str += (flags & 2) and "M" or "-"
+			if flags & (~3) != 0:
+				print "==============>new flags ! %d " % flags
 			v_list.append(flags_str)
 			v_list.append(struct.unpack("<H", data[0x12:0x14])[0])
 			color_mul_idx = struct.unpack("<h", data[0x1a:0x1c])[0]
@@ -415,6 +423,14 @@ def list_tag0004_symbol(lm_data):
 			if True:
 				print "PlaceObject, off=0x%x,\tsize=0x%x" % (off,	tag_size_bytes)			
 				print "\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d,\tflags=%s,\t%d,\tcolMul=%s,\tcolAdd=%s\t,clipAction=%d\tname=%s,\ttrans_idx=%x" % tuple(v_list)
+				
+				unk, = struct.unpack("<h", data[0xE:0x10])
+				unk2, unk3,unk4 = struct.unpack("<hhh", data[0x12:0x18])
+				unk5, = struct.unpack("<h", data[0x1e:0x20])
+				
+				if unk != 0:
+					print "<=====>unk = %d, %d, %d, %d, %d" % (unk, unk2, unk3, unk4, unk5)
+				
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
