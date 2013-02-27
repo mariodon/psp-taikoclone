@@ -22,13 +22,22 @@ def get_max_characterID(lm_data):
 def get_image_dict(lm_data, image_root):
 	image_dict = {}
 	symbol_list = rip_gim.get_symbol_list(lm_data[0x40:])
-	for sb in symbol_list:
-		if sb.endswith(".png") and image_dict.get(sb) is None:
-			image_file = sb[:-4] + ".png"
-			f = open(os.path.join(image_root, image_file), "rb")
-			image_data = f.read()
-			f.close()
-			image_dict[sb] = image_data
+	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data)
+	
+	for ori_pic_info in ori_pic_list:
+		sb = ori_pic_info[-1]
+		
+		if not ".png" in sb:
+			continue
+#		assert ".png" in sb, ("%s" % sb)
+		idx = sb.rfind(".png")
+		sb = sb[:idx+len(".png")]
+
+		image_file = sb[:-4] + ".png"
+		f = open(os.path.join(image_root, image_file), "rb")
+		image_data = f.read()
+		f.close()
+		image_dict[ori_pic_info[-1]] = image_data
 	return image_dict
 	
 def get_shape_dict(lm_data):
@@ -81,6 +90,7 @@ def get_texture_sprite_tags(lm_data, image_2_id, shape_2_id, image_dict):
 	img_fname_list = [symbol for symbol in symbol_list \
 		if symbol.endswith(".png")]
 	define_sprite_tags = []
+	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data)	
 	while True:
 		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 		if tag_type == 0xFF00:
@@ -107,7 +117,7 @@ def get_texture_sprite_tags(lm_data, image_2_id, shape_2_id, image_dict):
 					shape_id = shape_2_id[(sprite_id<<16) + i]
 				else:	# clipped bitmap fill or repeating bitmap fill
 					assert flag in (0x40, 0x41), "not supported (fill type) atm! %d" % flag
-					img_fname = img_fname_list[img_fname_idx]
+					img_fname = symbol_list[ori_pic_list[img_fname_idx][1]]
 					shape_id = image_2_id[img_fname]
 					matrix = swf_helper.pack_matrix(None, None, (xmin, ymin))
 						
@@ -358,14 +368,22 @@ def fix_action_record(data, symbol_list):
 					elif push_type in (0x1, 0x7):
 						bytes = raw_items[0x1:0x5]
 						off = 0x4
+						
+#						if push_type == 0x1:
+#							print "push float %f" % struct.unpack("<f", bytes)
+#						else:
+#							print "push integer %f" % struct.unpack("<i", bytes)
+							
 					elif push_type in (0x6,):   # swap for double type
 						bytes = raw_items[0x5:0x9] + raw_items[0x1:0x5]
 						off = 0x8
 					elif push_type == 0x0:  # look up raw string in symbol_list
 						str_idx, = struct.unpack("<H", raw_items[0x1:0x3])
+#						print "str_idx: %d" % str_idx
 						_str = symbol_list[str_idx]
 						bytes = swf_helper.pack_string(_str)
-						off = len(bytes)
+
+						off = 0x2
 					elif push_type == 0x2:
 						bytes = ""
 						off = 0x0
@@ -441,23 +459,32 @@ def fix_action_record(data, symbol_list):
 				record = struct.pack("<BH", 0x8c, len(label) + 1) + \
 					swf_helper.pack_string(label)
 				ret.append(record)
-				data = data[length + 0x3:]					
+				data = data[length + 0x3:]
+	
 			# default handler
-			elif action_code in (0x87, ):
+			elif action_code in (0x87, 0x9F, 0x83, 0x81, 0x99):
 				ret.append(record)
 				data = data[length + 0x3:]
 			else:
 				assert False, "New Action Code = 0x%x" % action_code
 			
+			# align to 4 bytes
+#			len_mod = (length+0x3) % 4
+#			if len_mod:
+#				data = data[4 - len_mod:]
 #	print "===="
 	return "".join(ret)
 	
-def test(fname, ID, label, pos, scale, fout, img_path):
+def test(fname, ID, label, pos, scale, fout, img_path, norecreate):
 	image_root = img_path or r"c:\png"
 #	fname = "CHIBI_1P_BALLOON_01.LM"
 	f = open(fname, "rb")
 	lm_data = f.read()
 	f.close()
+	
+	fout = fout or fname[:-3] + ".swf"
+	if norecreate and os.path.exists(fout):
+		return
 	
 	# init
 	symbol_table = rip_gim.get_symbol_list(lm_data[0x40:])
@@ -567,7 +594,6 @@ def test(fname, ID, label, pos, scale, fout, img_path):
 	swf_header = swf_helper.make_swf_header(0xa, file_length, 480, 272, 60.0, 
 		1)
 	
-	fout = fout or fname[:-3] + ".swf"
 	fout = open(fout, "wb")
 	fout.write(swf_header + all_data)
 	fout.close()
@@ -582,17 +608,30 @@ if __name__ == "__main__":
 	parser.add_option("-p", type="float", nargs=2, dest="pos", help="postion of the sprite. example: -p 128 128")
 	parser.add_option("-s", type="float", dest="scale", help="the scale of the sprite")
 	parser.add_option("-d", action="store_true", dest="dry_run", help="show all character IDs and their frame labels.")
+	parser.add_option("-I", action="store_true", dest="norecreate", help="Ignore a file when the corresponding swf is already exists!")
 
 	(options, args) = parser.parse_args(sys.argv)
 		
-	if options.dry_run:
-		f = open(options.filename, "rb")
-		lm_data = f.read()
-		f.close()
-		ret = rip_gim.get_frame_label_dict(lm_data)
 		
-		for id, dic in sorted(ret.items()):
-			print "labels of %d" % id
-			print dic.keys()		
+	if os.path.isdir(options.filename):
+		def is_LM(filename):
+			return filename.upper().endswith(".LM")
+		def join_filename(filename):
+			return os.path.join(options.filename, filename)
+		filenames = map(join_filename, filter(is_LM, os.listdir(options.filename)))
 	else:
-		test(options.filename, options.characterID, options.label, options.pos, options.scale, options.fout, options.texture_root)
+		filenames = (options.filename,)
+	
+	for filename in filenames:
+		print "Doing %s:" % filename
+		if options.dry_run:
+			f = open(filename, "rb")
+			lm_data = f.read()
+			f.close()
+			ret = rip_gim.get_frame_label_dict(lm_data)
+			
+			for id, dic in sorted(ret.items()):
+				print "labels of %d" % id
+				print dic.keys()		
+		else:
+			test(filename, options.characterID, options.label, options.pos, options.scale, options.fout, options.texture_root, options.norecreate)
