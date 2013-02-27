@@ -513,14 +513,7 @@ def list_tagF007_symbol(lm_data):
 			v_list = []
 			for i in range(v_cnt):
 				v = list(struct.unpack("<HHff", data[0x8+i*0xc:0x8+i*0xc+0xc]))
-				j = 0
-				for sb in symbol_list:
-					if sb.endswith(".png") and j == i:
-						v.append(sb)
-						break
-					if sb.endswith(".png"):
-						j += 1
-						
+				v.append(symbol_list[v[1]])
 				v_list.append(v)
 			
 			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
