@@ -405,14 +405,29 @@ def fix_action_record(data, symbol_list):
 				func_name = symbol_list[func_name_idx]
 				func_name_len = len(func_name)
 				
-				fixed_record = ""
-				fixed_record += record[:0x3]	# action record header
-				fixed_record += swf_helper.pack_string(func_name)
-				fixed_record += record[0x5:-2]
-				fixed_record += struct.pack("<H", len(fixed_code))
+				# -- fix register params
+				register_params = []
+				num_params, = struct.unpack("<H", record[0x5:0x7])
+				for i in xrange(num_params):
+					register, param_name_idx = struct.unpack("<BH", 
+						record[0xa+i*0x3: 0xa+i*0x3+0x3])
+					param_name = symbol_list[param_name_idx]
+					register_params.append((register, param_name))
 				
-				fixed_record_length = len(fixed_record) - 0x3
+				# -- rebuild record
+				fixed_record = ""
+				# action record header
+				fixed_record += record[:0x3]
+				# function name
+				fixed_record += swf_helper.pack_string(func_name)
+				fixed_record += record[0x5:0xa]
+				# pack register params
+				for register, param_name in register_params:
+					fixed_record += swf_helper.pack_ubyte(register)
+					fixed_record += swf_helper.pack_string(param_name)
+				fixed_record += struct.pack("<H", len(fixed_code))
 				# fix the whole record size
+				fixed_record_length = len(fixed_record) - 0x3
 				fixed_record = fixed_record[:0x1] + \
 					swf_helper.pack_uhalf(fixed_record_length) + \
 					fixed_record[0x3:]
@@ -427,9 +442,12 @@ def fix_action_record(data, symbol_list):
 					swf_helper.pack_string(label)
 				ret.append(record)
 				data = data[length + 0x3:]					
-			else:
+			# default handler
+			elif action_code in (0x87, ):
 				ret.append(record)
 				data = data[length + 0x3:]
+			else:
+				assert False, "New Action Code = 0x%x" % action_code
 			
 #	print "===="
 	return "".join(ret)
@@ -453,6 +471,7 @@ def test(fname, ID, label, pos, scale, fout, img_path):
 #	print len(action_record_list)
 #	for i in ():
 	for i in xrange(len(action_record_list)):
+		print "fixing action record %d" % i
 		action_record_list[i] = fix_action_record(action_record_list[i], symbol_table)
 #	fix_action_record(action_record_list[2])
 	
