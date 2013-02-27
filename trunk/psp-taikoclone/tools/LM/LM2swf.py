@@ -348,10 +348,26 @@ def fix_action_record(data, symbol_list):
 				data = data[length + 0x3 + code_size:]
 #				print "fixed_code_size %x %x" % (code_size, len(sub))
 			elif action_code == 0x9D:
-				branch_off, = struct.unpack("<H", record[-2:])
-				record = record[:0x3] + struct.pack("<H", branch_off-1)
-				ret.append(record)
-				data = data[length + 0x3:]
+				branch_off, = struct.unpack("<h", record[-2:])
+				
+				if branch_off < 0:
+					raise Exception("Do not support negative branch offset!")
+					
+				# -- fix if sub block
+				sub_block = data[length + 0x3: length + 0x3 + branch_off]
+				fixed_sub_block = fix_action_record(sub_block, symbol_list)
+				fixed_branch_off = len(fixed_sub_block)
+				
+				# -- rebuild action record
+				fixed_record = ""
+				fixed_record += record[:0x3] + \
+					struct.pack("<h", fixed_branch_off)
+					
+				ret.append(fixed_record)
+				ret.append(fixed_sub_block)
+				
+				data = data[0x3 + length + branch_off:]
+
 			elif action_code == 0x96:   # ActionPush
 				fixed_record = ""
 				
@@ -515,7 +531,7 @@ def test(fname, ID, label, pos, scale, fout, img_path, norecreate):
 	all_tags.append(swf_helper.make_file_attributes_tag())
 	
 	# make SetBackgroundColor tag
-	all_tags.append(swf_helper.make_set_background_color_tag(0xFF, 0xFF, 0xFF))
+	all_tags.append(swf_helper.make_set_background_color_tag(0xFF, 0x00, 0x00))
 	
 	# make all DefineBitsJPEG2 tags
 	define_bits_JPEG2_tags = []
