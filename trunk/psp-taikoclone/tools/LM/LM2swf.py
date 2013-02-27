@@ -305,46 +305,36 @@ def fix_action_record(data, symbol_list):
 			
 			# trim some record
 			if action_code == 0x9B:
-				func_name_len = 0
-				while data[0x3 + func_name_len] != '\x00':
-					func_name_len += 1
-				func_name = data[0x3:0x3+func_name_len]
-				
-				# off:0x4+func_name_len
-				num_param, = struct.unpack("<H", 
-					data[0x5+func_name_len:0x7+func_name_len])
-				
-				# off:0x6+func_name_len
-				str_cnt = 0
-				idx = 0x7 + func_name_len
-				while str_cnt < num_param:
-					if data[idx] == '\x00':
-						str_cnt += 1
-					else:
-						idx += 1
-				if num_param > 0:
-					idx += 1
+			
+				func_name_idx, num_param = struct.unpack("<HH", 
+					record[0x3:0x7])
+				func_name = symbol_list[func_name_idx]
+				func_name_len = len(func_name)
 
-				# off: idx
-				
-				code_size, = struct.unpack("<H", data[idx:idx+2])
-#				print "code size = %x" % code_size
-				# off:idx+2
-				
-				assert idx+2 <= length+0x3
-				# fix record size
-				record = record[0x0:0x1] + struct.pack("<H", length-1) + \
-					record[0x3:0x3+length-3] + record[-2:]
-#				print "define func trimmed %d" % (length - idx + 1)
+				param_names = []
+				param_name_idxs = struct.unpack("<"+"H"*num_param, 
+					record[0x7:0x7+0x2*num_param])
+				for param_name_idx in param_name_idxs:
+					param_names.append(symbol_list[param_name_idx])
 					
-				# trim sub block
-#				print "sub=======, %x" % \
-#					len(data[length+0x3:length+0x3+code_size])
+				code_size, = struct.unpack("<H", record[-2:])
 				sub = fix_action_record(data[length+0x3:length+0x3+code_size], 
 					symbol_list)
+					
+				# build new record
+				fixed_record = ""
+				fixed_record += record[:0x3]
+				fixed_record += swf_helper.pack_string(func_name)
+				fixed_record += swf_helper.pack_uhalf(num_param)
+				for param_name in param_names:
+					fixed_record += swf_helper.pack_string(param_name)
+				fixed_record += swf_helper.pack_uhalf(len(sub))
+				fixed_record = fixed_record[:0x1] + \
+					swf_helper.pack_uhalf(len(fixed_record)-0x3) + \
+					fixed_record[0x3:]
+				
 				# fix code_size
-				record = record[:-2] + struct.pack("<H", len(sub))
-				ret.append(record+sub)
+				ret.append(fixed_record+sub)
 				data = data[length + 0x3 + code_size:]
 #				print "fixed_code_size %x %x" % (code_size, len(sub))
 			elif action_code == 0x9D:
@@ -416,7 +406,7 @@ def fix_action_record(data, symbol_list):
 				func_name_len = len(func_name)
 				
 				fixed_record = ""
-				fixed_record += record[0x0:0x3]	# action record header
+				fixed_record += record[:0x3]	# action record header
 				fixed_record += swf_helper.pack_string(func_name)
 				fixed_record += record[0x5:-2]
 				fixed_record += struct.pack("<H", len(fixed_code))
