@@ -619,7 +619,7 @@ def list_tagF00D_symbol(lm_data):
 		if tag_type == 0xF00D:	
 			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
 				tag_size_bytes)
-			print "\timg_cnt=%d, mc_cnt=%d, %d, %d" % struct.unpack("<IIII", data[0x4:0x14])
+			print "\timg_cnt=%d, f018cnt=%d, mc_cnt=%d, f00e=%d, 0025cnt=%d, %d" % struct.unpack("<HHHHII", data[0x4:0x14])
 			break
 		if tag_type == 0xFF00:
 			break
@@ -668,6 +668,28 @@ def shuffle_tagF022(lm_data):
 	
 	return head+"".join(tagF022_list)+tail
 			
+def list_tag0025_symbol(lm_data):
+	data = lm_data[0x40:]
+	off = 0x40
+	ret = []
+	
+	symbol_list = get_symbol_list(data)
+	
+	while True:
+		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
+		tag_size_bytes = tag_size * 4 + 4
+		if tag_type == 0x0025:
+			html_text_idx, = struct.unpack("<H", data[0x4:0x6])
+			html_text = symbol_list[html_text_idx]
+			print "html_text %s" % html_text.decode("utf8")
+			pass
+		if tag_type == 0xFF00:
+			break
+		off += tag_size_bytes
+		data = data[tag_size_bytes:]
+	return ret
+	
+	
 if __name__ == "__main__":
 
 	parser = optparse.OptionParser()
@@ -723,7 +745,7 @@ if __name__ == "__main__":
 			tag = data[0x40:]
 			symbol_list = get_symbol_list(tag)
 			print "symbols:"
-			for i, symbol in enumerate(symbol_list):
+			for i, symbol in enumerate(symbol_list[:65]):
 				print "0x%x\t" % i, symbol.decode("utf8")			
 		elif options.tag_id == 0xF002:
 			color_list = list_tagF002_symbol(data)
@@ -747,7 +769,9 @@ if __name__ == "__main__":
 		elif options.tag_id == 0xF00C:
 			list_tagF00C_symbol(data)
 		elif options.tag_id == 0xF00D:
-			list_tagF00D_symbol(data)			
+			list_tagF00D_symbol(data)
+		elif options.tag_id == 0x0025:
+			res = list_tag0025_symbol(data)
 					
 	elif options.shuffle_tagF022:
 		f = open(options.filename, "rb")
