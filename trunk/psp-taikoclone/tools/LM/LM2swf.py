@@ -195,6 +195,7 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
 					elif _type != 0x0004:
 						print "Ignore other tags ATM"
 						continue
+					
 					_flags = struct.unpack("<H", data[0xc:0xe])[0]
 					flags = 0
 					if _flags & 1:
@@ -249,10 +250,14 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
 					else:
 						color_trans = None
 						
+					clip_depth, = struct.unpack("<H", data[0x12:0x14])
+					if clip_depth > 0:
+						flags |= swf_helper.PLACE_FLAG_HAS_CLIP_DEPTH
+						
 					ratio, = struct.unpack("<h", data[0x6:0x8])
 					if ratio >= 0:
 						flags |= swf_helper.PLACE_FLAG_HAS_RATIO
-					
+
 					if flags & swf_helper.PLACE_FLAG_HAS_CHARACTER and \
 						flags & swf_helper.PLACE_FLAG_MOVE:
 						control_tags.append(
@@ -278,7 +283,7 @@ def get_define_sprite_tags(lm_data, action_constant_pool, action_record_list):
 						clip_actions = None
 							
 					ptag = swf_helper.make_place_object2_tag(flags, depth, id, 
-						name=name, matrix=matrix, color_trans=color_trans, clip_actions=clip_actions, ratio=ratio)
+						name=name, matrix=matrix, color_trans=color_trans, clip_actions=clip_actions, ratio=ratio, clip_depth=clip_depth)
 					control_tags.append(ptag)
 					
 					if matrix:
@@ -531,7 +536,7 @@ def test(fname, ID, label, pos, scale, fout, img_path, norecreate):
 	all_tags.append(swf_helper.make_file_attributes_tag())
 	
 	# make SetBackgroundColor tag
-	all_tags.append(swf_helper.make_set_background_color_tag(0xFF, 0x00, 0x00))
+	all_tags.append(swf_helper.make_set_background_color_tag(0xFF, 0xFF, 0xFF))
 	
 	# make all DefineBitsJPEG2 tags
 	define_bits_JPEG2_tags = []
