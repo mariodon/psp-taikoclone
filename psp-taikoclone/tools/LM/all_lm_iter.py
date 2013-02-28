@@ -87,26 +87,18 @@ def check_0004():
 	v2 = 0
 	for lumen in iter():
 		for tag in iter_tag(lumen, (0x0004, )):
-			v, = struct.unpack("<H", tag[0xe:0x10])
+			v, = struct.unpack("<h", tag[0x1e:0x20])
 			values.setdefault(v, 0)
 			values[v] += 1
-			if v == 3:
-				v2 += 1
-				if v2 == 2:
-					return
-			
 	
+#			if v == 663:
+#				v2 += 1
+#				if v2 == 1:
+#					return 
+					
 	for k, v in values.iteritems():
 		print "%d: %d" % (k, v)
 
-#0xe:0x10	
-#0: 373658
-#1: 91
-#3: 2
-#4: 2
-#8: 1123
-#9: 4				
-		
 checkers = [
 #	check_F00C, 
 #	check_F004,

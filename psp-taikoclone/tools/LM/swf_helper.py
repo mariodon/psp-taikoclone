@@ -438,6 +438,8 @@ def make_place_object2_tag(flags, depth, id=None, matrix=None,
 		data += pack_uhalf(ratio)
 	if flags & PLACE_FLAG_HAS_NAME:
 		data += pack_string(name)
+	if flags & PLACE_FLAG_HAS_CLIP_DEPTH:
+		data += pack_uhalf(clip_depth)
 	if flags & PLACE_FLAG_HAS_CLIP_ACTIONS:
 		data += clip_actions
 	return make_record_header(26, len(data)) + data

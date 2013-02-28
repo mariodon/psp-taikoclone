@@ -2,6 +2,24 @@ import struct
 import sys
 import optparse
 
+blend_mode_2_name = {
+	0 : "normal",
+	1 : "normal",
+	2 : "layer",
+	3 : "multiply",
+	4 : "screen",
+	5 : "lighten",
+	6 : "darken",
+	7 : "difference",
+	8 : "add",
+	9 : "subtract",
+	10 : "invert",
+	11 : "alpha",
+	12 : "erase",
+	13 : "overlay",
+	14 : "hardlight",
+}
+
 def rip(fname):
 	f = open(fname, "rb")
 	data = f.read()
@@ -371,6 +389,8 @@ def list_tag0004_symbol(lm_data):
 			v_list = []
 			v_list.append(struct.unpack("<H", data[0x4:0x6])[0])
 			trans_idx = struct.unpack("<H", data[0x18:0x1a])[0]
+			blend_mode, = struct.unpack("<H", data[0xE:0x10])
+			blend_mode_name = blend_mode_2_name[blend_mode]
 			if trans_idx == 0xFFFF:
 				translate = scale = rotateskew = "null"
 			elif (trans_idx & 0x8000) == 0:
@@ -418,19 +438,17 @@ def list_tag0004_symbol(lm_data):
 			v_list.append(clip_action_cnt)
 			v_list.append(name)
 			v_list.append(trans_idx)
-			
 						
+			clip_depth, = struct.unpack("<H", data[0x12:0x14])
+			
 			if True:
 				print "PlaceObject, off=0x%x,\tsize=0x%x" % (off,	tag_size_bytes)			
 				print "\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d,\tflags=%s,\t%d,\tcolMul=%s,\tcolAdd=%s\t,clipAction=%d\tname=%s,\ttrans_idx=%x" % tuple(v_list)
-				
-				unk, = struct.unpack("<h", data[0xE:0x10])
-				unk2, unk3,unk4 = struct.unpack("<hhh", data[0x12:0x18])
-				unk5, = struct.unpack("<h", data[0x1e:0x20])
-				
-				if unk != 0:
-					print "<=====>unk = %d, %d, %d, %d, %d" % (unk, unk2, unk3, unk4, unk5)
-				
+				if blend_mode_name != "normal":
+					print "\t==> blend_mode = %s" % blend_mode_name
+				if clip_depth > 0:
+					print "\t==> clip depth = %d" % clip_depth
+			
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
