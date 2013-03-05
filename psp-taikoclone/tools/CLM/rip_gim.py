@@ -205,12 +205,13 @@ def list_tag0027_symbol(lm_data):
 		tag_size_bytes = tag_size * 4 + 8
 		if tag_type == 0x0027:
 			characterID = struct.unpack(">I", data[0x8:0xc])[0]
-			_, text, frame_label_cnt = struct.unpack(">III", data[0xc:0x18])
+			unk1, text, frame_label_cnt = struct.unpack(">III", data[0xc:0x18])
 			tag0001_cnt = struct.unpack(">I", data[0x18:0x1c])[0]
 			key_frame_cnt, = struct.unpack(">I", data[0x1c:0x20])
-			max_depth = struct.unpack(">I", data[0x20:0x24])[0]
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d\tframe=%d,\tlabel=%d,\tmaxdepth=%d,htmltext=%d,key=%d,unk=%d" % \
-				(tag_type, off, tag_size_bytes, characterID, tag0001_cnt, frame_label_cnt, max_depth, text, key_frame_cnt,_)
+			max_depth, unk2 = struct.unpack(">HH", data[0x20:0x24])
+			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d\tframe=%d,\tlabel=%d,\tmaxdepth=0x%x,htmltext=%d,key_frame_cnt=%d,unk=%d, %d" % \
+				(tag_type, off, tag_size_bytes, characterID, tag0001_cnt, frame_label_cnt, max_depth, text, key_frame_cnt, unk1, unk2)
+			
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
@@ -480,7 +481,7 @@ def get_xref(lm_data):
 		tag_size_bytes = tag_size * 4 + 8
 		if tag_type == 0x0004:
 			id = struct.unpack(">I", data[0x8:0xc])[0]
-			name_idx = struct.unpack(">h", data[0xa:0xc])[0]
+			name_idx = struct.unpack(">i", data[0x14:0x18])[0]
 			if name_idx > 0:
 				name = symbol_list[name_idx]
 				name_set = ref_table.setdefault(id, set())
@@ -509,7 +510,8 @@ def list_tag0004_symbol(lm_data):
 		if tag_type == 0x0027:
 			flag = True
 			id = struct.unpack(">I", data[0x8:0xc])[0]
-			print "=====================, CharacterID=%d, %s" % (id, id in ref_table and "Ref As %s" % ("".join(list(ref_table[id]))) or "")
+			max_depth, = struct.unpack(">H", data[])
+			print "=====================, offset=0x%x, CharacterID=%d, %s, max_depth=%d" % (off, id, id in ref_table and "Ref As %s" % ("".join(list(ref_table[id]))) or "", )
 		elif tag_type == 0x0001:
 			print "Frame %d, cmd_cnt=%d" % struct.unpack(">II", data[0x8:0x10])
 		elif tag_type == 0xf014:
@@ -534,65 +536,55 @@ def list_tag0004_symbol(lm_data):
 		if tag_type == 0x0004:
 
 			character_id, = struct.unpack(">I", data[0x8: 0xc])
+			inst_id, = struct.unpack(">i", data[0xc: 0x10])
+			unk1, name_idx = struct.unpack(">II", data[0x10: 0x18])
+			flags, = struct.unpack(">I", data[0x18: 0x1c])
+			depth, unk3, unk4 = struct.unpack(">HHI", data[0x1c: 0x24])
+			trans_idx, = struct.unpack(">I", data[0x24: 0x28])
+			color_mul_idx, = struct.unpack(">i", data[0x28:0x2c])
+			color_add_idx, = struct.unpack(">i", data[0x2c:0x30])
+			unk5, = struct.unpack(">I", data[0x30: 0x34])
+			clip_action_cnt, = struct.unpack(">I", data[0x34: 0x38])
+
+			v_list = struct.unpack(">" + "I" * 12, data[0x8:0x38])
 			
-			trans_idx, = struct.unpack(">i", data[0xc: 0x10])
-			color_mul_idx, col_add_idx = struct.unpack(">ii", data[0x28: 0x30])
-			
-#			v_list = []
-#			v_list.append([0])
-#			trans_idx = struct.unpack(">H", data[0x18:0x1a])[0]
-#			blend_mode, = struct.unpack(">H", data[0xE:0x10])
 #			blend_mode_name = blend_mode_2_name[blend_mode]
-#			if trans_idx == 0xFFFF:
-#				translate = scale = rotateskew = "null"
-#			elif (trans_idx & 0x8000) == 0:
-#				translate = "(%.1f, %.1f)" % (matrix_list[trans_idx][4],
-#					matrix_list[trans_idx][5])
-#				scale = "(%.1f, %.1f)" % (matrix_list[trans_idx][0],
-#					matrix_list[trans_idx][3])
-#				rotateskew = "(%.1f, %.1f)" % (
-#					matrix_list[trans_idx][1], 
-#					matrix_list[trans_idx][2])
-#			else:
-#				translate = "(%.1f, %.1f)" % xy_list[trans_idx & 0xFFF]
-#				scale = rotateskew = "null"
-#			clip_action_cnt = struct.unpack(">H", data[0x20:0x22])[0]
-#			name_idx = struct.unpack(">H", data[0xa:0xc])[0]
-#			name = symbol_list[name_idx] or "null"
-#			depth = struct.unpack(">H", data[0x10:0x12])[0]
-#			v_list.append(depth)
-#			v_list.append(translate)
-#			v_list.append(scale)
-#			v_list.append(rotateskew)
-#			v_list.append(struct.unpack(">h", data[0x6:0x8])[0])
-#			flags = struct.unpack(">H", data[0xc:0xe])[0]
-#			flags_str = ""
-#			flags_str += (flags & 1) and "N" or "-"
-#			flags_str += (flags & 2) and "M" or "-"
-#			if flags & (~3) != 0:
-#				print "==============>new flags ! %d " % flags
-#			v_list.append(flags_str)
-#			v_list.append(struct.unpack(">H", data[0x12:0x14])[0])
-#			color_mul_idx = struct.unpack(">h", data[0x1a:0x1c])[0]
-#			color_add_idx = struct.unpack(">h", data[0x1c:0x1e])[0]
-#			if color_mul_idx < 0:
-#				color_mul_str = "null"
-#			else:
-#				color_mul = color_list[color_mul_idx]
-#				color_mul_str = "(%.1f,%.1f,%.1f,%.1f)" % tuple([c/256.0 for c in color_mul])
-#			if color_add_idx < 0:
-#				color_add_str = "null"
-#			else:
-#				color_add = color_list[color_add_idx]
-#				color_add_str = "(%d,%d,%d,%d)" % tuple(color_add)			
-#			v_list.append(color_mul_str)
-#			v_list.append(color_add_str)
-#			v_list.append(clip_action_cnt)
-#			v_list.append(name)
-#			v_list.append(trans_idx)
-#						
-#			clip_depth, = struct.unpack(">H", data[0x12:0x14])
-#			
+			if trans_idx == 0xFFFFFFFF:
+				translate = scale = rotateskew = "null"
+			elif (trans_idx & 0x80000000) == 0:
+				translate = "(%.1f, %.1f)" % (matrix_list[trans_idx][4],
+					matrix_list[trans_idx][5])
+				scale = "(%.1f, %.1f)" % (matrix_list[trans_idx][0],
+					matrix_list[trans_idx][3])
+				rotateskew = "(%.1f, %.1f)" % (
+					matrix_list[trans_idx][1], 
+					matrix_list[trans_idx][2])
+			else:
+				translate = "(%.1f, %.1f)" % xy_list[trans_idx & 0xFFFFFFF]
+				scale = rotateskew = "null"
+			if name_idx >= 0:
+#				print name_idx			
+				name = symbol_list[name_idx]
+			else:
+				name = "null"
+
+			flags_str = ""
+			flags_str += (flags & 0x10000) and "N" or "-"
+			flags_str += (flags & 0x20000) and "M" or "-"
+			if flags & (~0x30000) != 0:
+				print "==============#new flags ! 0x%x " % flags
+
+			if color_mul_idx < 0:
+				color_mul_str = "null"
+			else:
+				color_mul = color_list[color_mul_idx]
+				color_mul_str = "(%.1f,%.1f,%.1f,%.1f)" % tuple([c/256.0 for c in color_mul])
+			if color_add_idx < 0:
+				color_add_str = "null"
+			else:
+				color_add = color_list[color_add_idx]
+				color_add_str = "(%d,%d,%d,%d)" % tuple(color_add)
+
 #			if True:
 #				print "PlaceObject, off=0x%x,\tsize=0x%x" % (off,	tag_size_bytes)			
 #				print "\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d,\tflags=%s,\t%d,\tcolMul=%s,\tcolAdd=%s\t,clipAction=%d\tname=%s,\ttrans_idx=%x" % tuple(v_list)
@@ -602,7 +594,26 @@ def list_tag0004_symbol(lm_data):
 #					print "\t==> clip depth = %d" % clip_depth
 			
 			print "PlaceObject, off=0x%x,\tsize=0x%x" % (off, tag_size_bytes)
-			print "\tID=%d" % (characterID, )
+#			print ("\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d," \
+#				+"\tflags=%s,\tcolMul=%s,\tcolAdd=%s,\tclipAction=%d,\tname=%s") % \
+#				(character_id, depth, translate, scale, rotateskew, inst_id,
+#					flags_str, color_mul_str, color_add_str, clip_action_cnt, name)
+			items = []
+			
+			str0 = "\tID=%d,\tdepth=%d,\tpos=%s,\tflags=%s" % (character_id, depth, translate, flags_str)
+			
+			print str0
+			
+#			if blend_mode_name != "normal":
+#				print "\t==> blend_mode = %s" % blend_mode_name
+			
+#			if name_idx != 0:
+#			if 8 in (unk1, unk3, unk4, unk5):
+			if 8 in v_list:
+				print "===========> 0x%x, 0x%x, 0x%x, 0x%x" % (unk1, 
+					unk3, unk4, unk5)
+#				print "%x %x %x" % (trans_idx, color_add_idx, color_mul_idx)
+				print v_list
 			
 		if tag_type == 0xFF00:
 			break
@@ -619,12 +630,12 @@ def list_tagF103_symbol(lm_data):
 	off = 0x40
 	v_list = []
 	while True:
-		tag_type, tag_size = struct.unpack(">HH", data[:0x4])
-		tag_size_bytes = tag_size * 4 + 4
+		tag_type, tag_size = struct.unpack(">II", data[:0x8])
+		tag_size_bytes = tag_size * 4 + 8
 		if tag_type == 0xF103:
-			v_cnt = struct.unpack(">I", data[0x4:0x8])[0]
+			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
 			for i in range(v_cnt):
-				v_list.append(struct.unpack(">ff", data[0x8+i*0x8:0x8+i*0x8+0x8]))
+				v_list.append(struct.unpack(">ff", data[0xc+i*0x8:0xc+i*0x8+0x8]))
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
@@ -1002,7 +1013,7 @@ if __name__ == "__main__":
 			symbol_list = get_symbol_list(tag)
 			print "symbols:"
 			for i, symbol in enumerate(symbol_list):
-				print "0x%x\t" % i, symbol.decode("utf8")			
+				print "0x%x\t" % i, symbol			
 		elif options.tag_id == 0xF002:
 			color_list = list_tagF002_symbol(data)
 			if color_list:
