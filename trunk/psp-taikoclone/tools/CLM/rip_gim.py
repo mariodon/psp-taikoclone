@@ -510,8 +510,8 @@ def list_tag0004_symbol(lm_data):
 		if tag_type == 0x0027:
 			flag = True
 			id = struct.unpack(">I", data[0x8:0xc])[0]
-			max_depth, = struct.unpack(">H", data[])
-			print "=====================, offset=0x%x, CharacterID=%d, %s, max_depth=%d" % (off, id, id in ref_table and "Ref As %s" % ("".join(list(ref_table[id]))) or "", )
+			max_depth, = struct.unpack(">H", data[0x20: 0x22])
+			print "===================== offset=0x%x, CharacterID=%d, max_depth=%d %s" % (off, id, max_depth, id in ref_table and "Ref As %s" % ("".join(list(ref_table[id]))) or "")
 		elif tag_type == 0x0001:
 			print "Frame %d, cmd_cnt=%d" % struct.unpack(">II", data[0x8:0x10])
 		elif tag_type == 0xf014:
@@ -538,17 +538,17 @@ def list_tag0004_symbol(lm_data):
 			character_id, = struct.unpack(">I", data[0x8: 0xc])
 			inst_id, = struct.unpack(">i", data[0xc: 0x10])
 			unk1, name_idx = struct.unpack(">II", data[0x10: 0x18])
-			flags, = struct.unpack(">I", data[0x18: 0x1c])
-			depth, unk3, unk4 = struct.unpack(">HHI", data[0x1c: 0x24])
+			flags, blend_mode, = struct.unpack(">HH", data[0x18: 0x1c])
+			depth, unk3, ratio, unk5 = struct.unpack(">HHHH", data[0x1c: 0x24])
 			trans_idx, = struct.unpack(">I", data[0x24: 0x28])
 			color_mul_idx, = struct.unpack(">i", data[0x28:0x2c])
 			color_add_idx, = struct.unpack(">i", data[0x2c:0x30])
-			unk5, = struct.unpack(">I", data[0x30: 0x34])
+			unk6, = struct.unpack(">I", data[0x30: 0x34])
 			clip_action_cnt, = struct.unpack(">I", data[0x34: 0x38])
 
 			v_list = struct.unpack(">" + "I" * 12, data[0x8:0x38])
 			
-#			blend_mode_name = blend_mode_2_name[blend_mode]
+			blend_mode_name = blend_mode_2_name[blend_mode]
 			if trans_idx == 0xFFFFFFFF:
 				translate = scale = rotateskew = "null"
 			elif (trans_idx & 0x80000000) == 0:
@@ -561,26 +561,26 @@ def list_tag0004_symbol(lm_data):
 					matrix_list[trans_idx][2])
 			else:
 				translate = "(%.1f, %.1f)" % xy_list[trans_idx & 0xFFFFFFF]
-				scale = rotateskew = "null"
+				scale = rotateskew = ""
 			if name_idx >= 0:
 #				print name_idx			
 				name = symbol_list[name_idx]
 			else:
-				name = "null"
+				name = ""
 
 			flags_str = ""
-			flags_str += (flags & 0x10000) and "N" or "-"
-			flags_str += (flags & 0x20000) and "M" or "-"
-			if flags & (~0x30000) != 0:
-				print "==============#new flags ! 0x%x " % flags
+			flags_str += (flags & 0x1) and "N" or "-"
+			flags_str += (flags & 0x2) and "M" or "-"
+			if flags & (~0x3) != 0:
+				assert False, "==============#new flags ! 0x%x " % flags
 
 			if color_mul_idx < 0:
-				color_mul_str = "null"
+				color_mul_str = ""
 			else:
 				color_mul = color_list[color_mul_idx]
 				color_mul_str = "(%.1f,%.1f,%.1f,%.1f)" % tuple([c/256.0 for c in color_mul])
 			if color_add_idx < 0:
-				color_add_str = "null"
+				color_add_str = ""
 			else:
 				color_add = color_list[color_add_idx]
 				color_add_str = "(%d,%d,%d,%d)" % tuple(color_add)
@@ -594,26 +594,26 @@ def list_tag0004_symbol(lm_data):
 #					print "\t==> clip depth = %d" % clip_depth
 			
 			print "PlaceObject, off=0x%x,\tsize=0x%x" % (off, tag_size_bytes)
-#			print ("\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d," \
-#				+"\tflags=%s,\tcolMul=%s,\tcolAdd=%s,\tclipAction=%d,\tname=%s") % \
-#				(character_id, depth, translate, scale, rotateskew, inst_id,
-#					flags_str, color_mul_str, color_add_str, clip_action_cnt, name)
-			items = []
-			
-			str0 = "\tID=%d,\tdepth=%d,\tpos=%s,\tflags=%s" % (character_id, depth, translate, flags_str)
-			
-			print str0
+			print ("\tID=%d,\tdepth=%d,\tpos=%s,\tscale=%s,\tskew=%s,\tInstID=%d," \
+				+"\tflags=%s,\tcolMul=%s,\tcolAdd=%s,\tclipAction=%d,\tname=%s,\tratio=%d\tblend_mode=%s") % \
+				(character_id, depth, translate, scale, rotateskew, inst_id,
+					flags_str, color_mul_str, color_add_str, clip_action_cnt, name, ratio, blend_mode_name)
+#			items = []
+#			
+#			str0 = "\tID=%d,\tdepth=%d,\tpos=%s,\tflags=%s" % (character_id, depth, translate, flags_str)
+#			
+#			print str0
 			
 #			if blend_mode_name != "normal":
 #				print "\t==> blend_mode = %s" % blend_mode_name
 			
 #			if name_idx != 0:
 #			if 8 in (unk1, unk3, unk4, unk5):
-			if 8 in v_list:
-				print "===========> 0x%x, 0x%x, 0x%x, 0x%x" % (unk1, 
-					unk3, unk4, unk5)
+#			if 8 in v_list:
+			if unk1 + unk3 + unk5 + unk6 != 0:
+				assert False, "===========> 0x%x, 0x%x, 0x%x, 0x%x, 0x%x" % (unk1, unk3, unk5, unk6)
 #				print "%x %x %x" % (trans_idx, color_add_idx, color_mul_idx)
-				print v_list
+#				print v_list
 			
 		if tag_type == 0xFF00:
 			break
