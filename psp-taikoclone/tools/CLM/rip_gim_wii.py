@@ -20,17 +20,44 @@ blend_mode_2_name = {
 	14 : "hardlight",
 }
 
+def get_max_characterID(lm_data):
+	v_list = list_tagF00C_symbol(lm_data)
+	return v_list[3]
+	
+def read_tagF022(tag):
+	tag_size, = struct.unpack(">I", tag[0x4: 0x8])
+	tag_size_bytes = tag_size * 4 + 8
+	
+	if tag_size_bytes == 0x18:
+		character_id, unk1, size_idx, f023_cnt = struct.unpack(">IIII", 
+			tag[0x8:0x18])
+		f024_cnt = 0
+	elif tag_size_bytes == 0x1c:
+		character_id, unk1, size_idx, f023_cnt, f024_cnt = struct.unpack(">IIIII", tag[0x8:0x1c])	
+	else:
+		assert False, "tag 0xF022 of an unknown size!"
+	return character_id, unk1, size_idx, f023_cnt, f024_cnt
+
+def read_tagF023(data):
+	uv_list = struct.unpack(">" + "f" * 16, data[0x8: 0x8 + 16 * 0x4])
+	flag, idx = struct.unpack(">HH", data[0xc + 16 * 0x4: 0x10 + 16 * 0x4])
+	return idx, uv_list
+	
 def iter_tag(lumen, type_set=None):
 	lumen = lumen[0x40:]
 	
 	_type_set = type_set or ()
-		
+	off = 0x40
+	
 	while lumen:
-		_, tag_type, = struct.unpack(">I", lumen[:0x4])
+		tag_type, tag_size = struct.unpack(">II", lumen[:0x8])
+		tag_size_bytes = tag_size * 4 + 8
 		if tag_type == 0xFF00:
 			break
 		if not _type_set or tag_type in _type_set:
-			yield lumen
+			yield off, tag_type, tag_size_bytes, lumen
+			
+		off += tag_size_bytes
 		lumen = seek_next_tag(lumen)
 		
 def rip(fname):
@@ -218,50 +245,17 @@ def list_tag0027_symbol(lm_data):
 		data = data[tag_size_bytes:]
 		
 def list_tagF022_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	
 	bounding_box_list = list_tagF004_symbol(lm_data)
 	
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF022:
-			
-			if tag_size_bytes == 0x18:
-				character_id, unk1, size_idx, f023_cnt = struct.unpack(">IIII", data[0x8:0x18])
-				box = bounding_box_list[size_idx]
-				print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d,\tf023_cnt=%d,%d\n\tbox=(%.2f,%.2f,%.2f,%.2f)\n" \
-				 % (tag_type, off, tag_size_bytes, character_id, f023_cnt, unk1, box[0], box[1], box[2], box[3])
-				 					
-			elif tag_size_bytes == 0x1c:
-			
-				character_id, unk1, size_idx, f023_cnt, shape_cnt = struct.unpack(">IIIII", data[0x8:0x1c])
-				box = bounding_box_list[size_idx]
-				print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d,\tshape_cnt=%d,f023_cnt=%d,%d\n\tbox=(%.2f,%.2f,%.2f,%.2f)\n" \
-				 % (tag_type, off, tag_size_bytes, character_id, shape_cnt, f023_cnt, unk1, box[0], box[1], box[2], box[3])
-			else:
-				raise Exception("tag 0xF022 of an unknown size!")
-				
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-		
-def list_tagF023_symbol(lm_data, off1, off2):
-	data = lm_data[0x40:]
-	off = 0x40
-	while True:
-		tag_type, tag_size = struct.unpack(">HH", data[:0x4])
-		tag_size_bytes = tag_size * 4 + 4
-		if tag_type == 0xF023:
-			v = struct.unpack(">H", data[off1:off2])[0]
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tv=%x" % (tag_type, off, \
-				tag_size_bytes, v)
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF022, )):
+		character_id, unk1, size_idx, f023_cnt, f024_cnt = read_tagF022(tag)
+		box = bounding_box_list[size_idx]
+		print "tag:0x%04x off=0x%x,\tsize=0x%x,\tCharacterID=%d," +
+		"\tf024_cnt=%d,f023_cnt=%d,%d\n" + "\tbox=(%.2f,%.2f,%.2f,%.2f)\n" \
+		 % (tag_type, off, tag_size_bytes, character_id, f024_cnt, f023_cnt,
+		 	unk1, box[0], box[1], box[2], box[3])
+
+	return
 
 def list_tagF024_img(lm_data):
 	data = lm_data[0x40:]
@@ -301,12 +295,14 @@ def list_tagF024_img(lm_data):
 					
 		if tag_type == 0xF024:
 			
-			idx, flag, _, unk = struct.unpack(">IHHI", data[0x8:0x14])
+			idx, flag, unk1, unk2 = struct.unpack(">IHHI", data[0x8:0x14])
 			
 			fv_list = []
 			for off1 in xrange(0x14, 0x54, 0x4):
 				fv = struct.unpack(">f", data[off1:off1+0x4])[0]
 				fv_list.append(fv)	# (x, y, u, v)
+				
+			unk3, unk4, unk5, unk6 = struct.unpack(">IHHI", data[0x54: 0x60])
 
 			x_min = min(x_min, fv_list[0], fv_list[4], fv_list[8], fv_list[12])
 			x_max = max(x_max, fv_list[0], fv_list[4], fv_list[8], fv_list[12])
@@ -320,8 +316,6 @@ def list_tagF024_img(lm_data):
 				ori_pic_fname_idx = ori_pic_list[idx][1]
 				ori_pic_tga_idx = ori_pic_list[idx][0]
 				sb = symbol_list[ori_pic_fname_idx]
-				if not sb:
-					sb = "[IMAGE%d]" % ori_pic_list[idx][0]
 
 				print "\ttag:0x%04x, off=0x%x,\tsize=0x%x,\tfill_img=%s" \
 					% (tag_type, off, tag_size_bytes, sb.decode("utf8"))
@@ -339,6 +333,8 @@ def list_tagF024_img(lm_data):
 				print "\t\t",fv_list[8:12]
 				print "\t\t",fv_list[12:]			
 				
+			print "unk = 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x" % (unk1, unk2, unk3, unk4, unk5, unk6)
+			
 		if tag_type == 0xF023:
 			
 			fv_list = struct.unpack(">" + "f" * 16, data[0x8: 0x8 + 16 * 0x4])
@@ -523,7 +519,7 @@ def list_tag0004_symbol(lm_data):
 		elif tag_type == 0x000c:
 			print ">>>>>>>>>Do Action %d" % struct.unpack(">I", data[0x8:0xc])
 		elif tag_type == 0x0005:
-			print ">>>>>>>>>RemoveObject at depth%d" % struct.unpack(">I", data[0xc:0x10])
+			print ">>>>>>>>>RemoveObject at depth%d" % struct.unpack(">H", data[0xc:0xe])
 		elif tag_type == 0x002b:
 			idx, frame, unk = struct.unpack(">III", data[0x8:0x14])
 			print ">>>>>>>>>FrameLabel: %s@%d, %d" % (symbol_list[idx], frame, unk)
@@ -669,10 +665,7 @@ def list_tagF00C_symbol(lm_data):
 		tag_size_bytes = tag_size * 4 + 8
 		if tag_type == 0xF00C:
 			v_list = struct.unpack(">IIIIIIIfffff", data[0x8:0x38])
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
-				(tag_type, off, tag_size_bytes)
-			print "\t", v_list
-			
+			assert v_list[3] == v_list[5], "max character_id != start character id, %d, %d" % (v_list[3], v_list[5])
 			return v_list
 			
 		if tag_type == 0xFF00:
@@ -786,7 +779,7 @@ def list_tagF008_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]
 			
-def list_tagF007_symbol(lm_data):
+def list_tagF007_symbol(lm_data, prefix_for_noname=""):
 	data = lm_data[0x40:]
 	symbol_list = get_symbol_list(data)
 	off = 0x40
@@ -798,7 +791,14 @@ def list_tagF007_symbol(lm_data):
 			v_list = []
 			for i in range(v_cnt):
 				v = list(struct.unpack(">IIff", data[0xc+i*0x10:0xc+i*0x10+0x10]))
-				v.append(symbol_list[v[1]])
+				
+				# fix noname images
+				fname_idx = v[1]
+				if symbol_list[fname_idx] == "":
+					fname = "noname_%s_0x%x.png" % (prefix_for_noname, v[0])
+				else:
+					fname = symbol_list[fname_idx]
+				v.append(fname)
 				v_list.append(v)
 				
 			return v_list
@@ -1051,7 +1051,11 @@ if __name__ == "__main__":
 		elif options.tag_id == 0xF00B:
 			list_tagF00B_symbol(data)					
 		elif options.tag_id == 0xF00C:
-			list_tagF00C_symbol(data)
+		
+			v_list = list_tagF00C_symbol(data)
+			print "Stage info:"
+			print "\t", v_list
+			
 		elif options.tag_id == 0xF00D:
 			list_tagF00D_symbol(data)
 		elif options.tag_id == 0x0025:
