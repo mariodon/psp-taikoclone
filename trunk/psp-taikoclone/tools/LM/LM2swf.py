@@ -2,52 +2,66 @@ import os
 import sys
 import struct
 import swf_helper
-import rip_gim
 import optparse
 
-def get_max_characterID(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	while True:
-		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
-		tag_size_bytes = tag_size * 4 + 4
-		if tag_type == 0xF00C:
-			return struct.unpack("<H", data[0xa:0xc])[0]
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-	assert False, "missing tagF00C"
-	
+# the 'LM ripper' flag
+# for different platform, use different ripper module
+PLATFORM_WII = 0
+PLATFORM_PSPDX = 1
+
+prefix_for_noname = ""
+
+# get an image_dict
+# {filename: data}
 def get_image_dict(lm_data, image_root):
+	global prefix_for_noname
+	
 	image_dict = {}
 	symbol_list = rip_gim.get_symbol_list(lm_data[0x40:])
-	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data)
+	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data, prefix_for_noname)
 	
 	for ori_pic_info in ori_pic_list:
+	
+		# get the right image file name
 		sb = ori_pic_info[-1]
-		
-		if not ".png" in sb:
-			continue
-#		assert ".png" in sb, ("%s" % sb)
+
+		# remove blend mode suffix in filename
+		# e.g: xyz.png__BLEND_ADD__ ---> xyz.png		
 		idx = sb.rfind(".png")
 		sb = sb[:idx+len(".png")]
-
 		image_file = sb[:-4] + ".png"
+		
+		# store image data in a dict
 		f = open(os.path.join(image_root, image_file), "rb")
 		image_data = f.read()
 		f.close()
 		image_dict[ori_pic_info[-1]] = image_data
+		
 	return image_dict
 	
+# get a shape info dict
 def get_shape_dict(lm_data):
+	global prefix_for_noname
+	
 	data = lm_data[0x40:]
 	color_list = rip_gim.list_tagF002_symbol(lm_data)
 	symbol_list = rip_gim.get_symbol_list(lm_data[0x40:])
-	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data)
+	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data, prefix_for_noname)
 	off = 0x40
 	ret = {}
 	ret2 = {} # image_name_2_fill_type
+	
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, \
+		(0xF022, 0xF023, 0xF024)):
+		
+		if tag_type == 0xF022:
+			sprite_id, unk1, size_idx, f023_cnt, f024_cnt = \
+				rip_gim.read_tagF022(tag)
+		elif tag_type == 0xF023:
+			pass
+		elif tag_type == 0xF024:
+			pass
+			
 	while True:
 		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 		tag_size_bytes = tag_size * 4 + 4
@@ -85,12 +99,14 @@ def get_shape_dict(lm_data):
 	return ret, ret2
 	
 def get_texture_sprite_tags(lm_data, image_2_id, shape_2_id, image_dict):
+	global prefix_for_noname
+	
 	data = lm_data[0x40:]
 	symbol_list = rip_gim.get_symbol_list(data)
 	img_fname_list = [symbol for symbol in symbol_list \
 		if symbol.endswith(".png")]
 	define_sprite_tags = []
-	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data)	
+	ori_pic_list = rip_gim.list_tagF007_symbol(lm_data, prefix_for_noname)
 	while True:
 		tag_type, tag_size = struct.unpack("<HH", data[:0x4])
 		if tag_type == 0xFF00:
@@ -497,6 +513,9 @@ def fix_action_record(data, symbol_list):
 	return "".join(ret)
 	
 def test(fname, ID, label, pos, scale, fout, img_path, norecreate):
+	global prefix_for_noname
+	prefix_for_noname = os.path.splitext(os.path.split(fname)[1])[0]
+	
 	image_root = img_path or r"c:\png"
 #	fname = "CHIBI_1P_BALLOON_01.LM"
 	f = open(fname, "rb")
@@ -523,10 +542,11 @@ def test(fname, ID, label, pos, scale, fout, img_path, norecreate):
 		action_record_list[i] = fix_action_record(action_record_list[i], symbol_table)
 #	fix_action_record(action_record_list[2])
 	
-	max_characterID = get_max_characterID(lm_data)
+	max_characterID = rip_gim.get_max_characterID(lm_data)
 	
 	# image_dict: {filename : image_data}
 	# image_dict2: {filename: (fill_style_type, shape_width, shape_height)}
+
 	image_dict = get_image_dict(lm_data, image_root)
 	shape_dict, image_dict2 = get_shape_dict(lm_data)
 	# all tags append to this list
@@ -630,9 +650,19 @@ if __name__ == "__main__":
 	parser.add_option("-s", type="float", dest="scale", help="the scale of the sprite")
 	parser.add_option("-d", action="store_true", dest="dry_run", help="show all character IDs and their frame labels.")
 	parser.add_option("-I", action="store_true", dest="norecreate", help="Ignore a file when the corresponding swf is already exists!")
+	parser.add_option("-P", action="store", type="int", dest="platform", default=0, help="specify platform: %d for wii, %d for pspdx, default:%d" % (PLATFORM_WII, PLATFORM_PSPDX, 0))
 
 	(options, args) = parser.parse_args(sys.argv)
-		
+	
+	sys.path.append("../CLM")
+	
+	if options.platform == PLATFORM_WII:
+		import rip_gim_wii as rip_gim
+	elif options.platform == PLATFORM_PSPDX:
+		import rip_gim_pspdx as rip_gim
+	else:
+		print "Unsupported platform!"
+		os.exit()
 		
 	if os.path.isdir(options.filename):
 		def is_LM(filename):
