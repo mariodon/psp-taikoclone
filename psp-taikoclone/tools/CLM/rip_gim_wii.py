@@ -1,6 +1,8 @@
 import struct
 import sys
 import optparse
+import lm_format_wii as format
+import read_tag_by_fmt as tag_reader
 
 blend_mode_2_name = {
 	0 : "normal",
@@ -27,15 +29,17 @@ def get_max_characterID(lm_data):
 def read_tagF022(tag):
 	tag_size, = struct.unpack(">I", tag[0x4: 0x8])
 	tag_size_bytes = tag_size * 4 + 8
-	
-	if tag_size_bytes == 0x18:
-		character_id, unk1, size_idx, f023_cnt = struct.unpack(">IIII", 
-			tag[0x8:0x18])
+
+	res = tag_reader.read_tag(format.DATA[0xF022], tag)
+	character_id = res["character_id"]
+	unk1 = res["const0_0"]
+	assert unk1 == 0
+	size_idx = res["size_idx"]
+	f023_cnt = res["f023_cnt"]
+	f024_cnt = res["f024_cnt"]
+	if f024_cnt is None:
 		f024_cnt = 0
-	elif tag_size_bytes == 0x1c:
-		character_id, unk1, size_idx, f023_cnt, f024_cnt = struct.unpack(">IIIII", tag[0x8:0x1c])	
-	else:
-		assert False, "tag 0xF022 of an unknown size!"
+	
 	return character_id, unk1, size_idx, f023_cnt, f024_cnt
 
 def read_tagF023(data):
@@ -52,10 +56,10 @@ def iter_tag(lumen, type_set=None):
 	while lumen:
 		tag_type, tag_size = struct.unpack(">II", lumen[:0x8])
 		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xFF00:
-			break
 		if not _type_set or tag_type in _type_set:
 			yield off, tag_type, tag_size_bytes, lumen
+		if tag_type == 0xFF00:
+			break
 			
 		off += tag_size_bytes
 		lumen = seek_next_tag(lumen)
@@ -160,21 +164,10 @@ def get_frame_label_dict(lm_data):
 	return ret
 						
 def get_symbol_list(tag):
-	symbol_list = []
-	_, tag_type, tag_size = struct.unpack(">HHI", tag[:0x8])
-	if tag_type != 0xF001:
-		print "Unknown Tag 0x%x" % tag_type
-		return ()
-	symbol_count = struct.unpack(">I", tag[0x8:0xc])[0]
-	
-	tag = tag[0xc:]
-	for i in xrange(symbol_count):
-		symbol_len = struct.unpack(">I", tag[:0x4])[0]
-		symbol_list.append(\
-			struct.unpack(">%ds" % symbol_len, tag[0x4:0x4+symbol_len])[0])
-		tag = tag[symbol_len / 4 * 4 + 8:]
-		
-	return symbol_list
+	res = tag_reader.read_tag(format.DATA[0xF001], tag)
+	ret = [symbol["symbol"] or "" for symbol in res["symbol_list"]]
+
+	return ret
 
 def seek_next_tag(data, id=None):
 	assert data, "No Tags Any More"
@@ -193,18 +186,9 @@ def seek_next_tag(data, id=None):
 		return seek_next_tag(data, id)
 		
 def tag_list(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data):
 		print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
 			tag_size_bytes)
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-	
 
 def list_tag002b_symbol(lm_data):
 	data = lm_data[0x40:]
@@ -223,39 +207,43 @@ def list_tag002b_symbol(lm_data):
 		off += tag_size_bytes
 		data = data[tag_size_bytes:]	
 
-def list_tag0027_symbol(lm_data):
+def list_tag0027_symbol(lm_data, fname=""):
 	data = lm_data[0x40:]
 	symbol_list = get_symbol_list(data)
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0x0027:
-			characterID = struct.unpack(">I", data[0x8:0xc])[0]
-			unk1, text, frame_label_cnt = struct.unpack(">III", data[0xc:0x18])
-			tag0001_cnt = struct.unpack(">I", data[0x18:0x1c])[0]
-			key_frame_cnt, = struct.unpack(">I", data[0x1c:0x20])
-			max_depth, unk2 = struct.unpack(">HH", data[0x20:0x24])
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d\tframe=%d,\tlabel=%d,\tmaxdepth=0x%x,htmltext=%d,key_frame_cnt=%d,unk=%d, %d" % \
-				(tag_type, off, tag_size_bytes, characterID, tag0001_cnt, frame_label_cnt, max_depth, text, key_frame_cnt, unk1, unk2)
-			
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-		
-def list_tagF022_symbol(lm_data):
-	bounding_box_list = list_tagF004_symbol(lm_data)
 	
+	ret = []
+	flag = False
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0x0027, )):
+		res = tag_reader.read_tag(format.DATA[0x0027], tag)
+
+		characterID = res["character_id"]
+		unk1, text, frame_label_cnt = res["const0_0"], res["text"], res["frame_label_cnt"]
+		tag0001_cnt = res["0001_cnt"]
+		key_frame_cnt = res["key_frame_cnt"]
+		max_depth, unk2 = res["max_depth"], res["const1_0"]
+		ret.append((tag_type, off, tag_size_bytes, characterID, tag0001_cnt, frame_label_cnt, max_depth, text, key_frame_cnt, unk1, unk2))
+		
+#		assert unk1 == 0
+#		assert text in range(15), fname
+#		assert unk2 == 0
+		if text != 0:
+			print "class %s" % symbol_list[text]
+			flag = True
+#			break
+			
+	if flag:
+		print fname
+	return ret
+	
+def list_tagF022_symbol(lm_data, fname=""):
+	bounding_box_list = list_tagF004_symbol(lm_data)
+	ret = []
 	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF022, )):
 		character_id, unk1, size_idx, f023_cnt, f024_cnt = read_tagF022(tag)
 		box = bounding_box_list[size_idx]
-		print "tag:0x%04x off=0x%x,\tsize=0x%x,\tCharacterID=%d," +
-		"\tf024_cnt=%d,f023_cnt=%d,%d\n" + "\tbox=(%.2f,%.2f,%.2f,%.2f)\n" \
-		 % (tag_type, off, tag_size_bytes, character_id, f024_cnt, f023_cnt,
-		 	unk1, box[0], box[1], box[2], box[3])
-
-	return
+		ret.append((tag_type, off, tag_size_bytes, character_id, f024_cnt, 
+			f023_cnt, box[0], box[1], box[2], box[3]))
+	return ret
 
 def list_tagF024_img(lm_data):
 	data = lm_data[0x40:]
@@ -337,8 +325,15 @@ def list_tagF024_img(lm_data):
 			
 		if tag_type == 0xF023:
 			
-			fv_list = struct.unpack(">" + "f" * 16, data[0x8: 0x8 + 16 * 0x4])
-			flag, idx = struct.unpack(">HH", data[0xc + 16 * 0x4: 0x10 + 16 * 0x4])
+			d = tag_reader.read_tag(format.DATA[0xF023], data)
+			fv_list = [
+						d["x0"], d["y0"], d["u0"], d["v0"],
+						d["x1"], d["y1"], d["u1"], d["v1"],
+						d["x2"], d["y2"], d["u2"], d["v2"],
+						d["x3"], d["y3"], d["u3"], d["v3"],
+						]
+			flag, idx = d["fill_style"], d["fill_idx"]
+			unk = d["unk"]
 			
 			x_min = min(x_min, fv_list[0], fv_list[4], fv_list[8], fv_list[12])
 			x_max = max(x_max, fv_list[0], fv_list[4], fv_list[8], fv_list[12])
@@ -361,7 +356,8 @@ def list_tagF024_img(lm_data):
 				print "\t\t",fv_list[4:8]
 				print "\t\t",fv_list[8:12]
 				print "\t\t",fv_list[12:]
-
+				
+				assert unk == ori_pic_list[idx][0]
 			else:
 				pass
 				print "\ttag:0x%04x, off=0x%x,\tsize=0x%x,fill_color_idx=0x%x" \
@@ -370,7 +366,10 @@ def list_tagF024_img(lm_data):
 				print "\t\t",fv_list[4:8]
 				print "\t\t",fv_list[8:12]
 				print "\t\t",fv_list[12:]			
+				
+				assert unk == 0
 		
+			
 		if tag_type == 0xFF00:
 			break
 		off += tag_size_bytes
@@ -622,275 +621,99 @@ def list_tag0004_symbol(lm_data):
 #	print "}}}}}}}}}}}}}}}}}}}}}}}}}}}"		
 
 def list_tagF103_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	v_list = []
-	while True:
-		tag_type, tag_size = struct.unpack(">II", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF103:
-			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
-			for i in range(v_cnt):
-				v_list.append(struct.unpack(">ff", data[0xc+i*0x8:0xc+i*0x8+0x8]))
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-	return v_list
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF103,)):
+		res = tag_reader.read_tag(format.DATA[0xF103], tag)
+		pos_list = [(pos["x"], pos["y"]) for pos in res["pos_list"]]
+		return pos_list
+	assert False, "Missing tag F103"
 
 def list_tagF004_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF004:
-			
-			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
-			v_list = []
-			for i in range(v_cnt):
-				v_list.append(struct.unpack(">ffff", data[0xc+i*0x10:0xc+i*0x10+0x10]))
-			return tuple(v_list)
-			
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF004,)):
+		res = tag_reader.read_tag(format.DATA[0xF004], tag)
+		box_list = [(box["xmin"], box["ymin"], box["xmax"], box["ymax"]) for box in res["box_list"]]
+		return box_list
+	assert False, "Missing tag F004"
 		
 def list_tagF00C_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF00C:
-			v_list = struct.unpack(">IIIIIIIfffff", data[0x8:0x38])
-			assert v_list[3] == v_list[5], "max character_id != start character id, %d, %d" % (v_list[3], v_list[5])
-			return v_list
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF00C,)):
+		res = tag_reader.read_tag(format.DATA[0xF00C], tag)
+
+		assert res["v"] == 0 and res["e"] == 1 and res["r"] == 2
+		assert res["max_character_id"] == res["start_character_id"]
+		assert res["reserved"] == -1
+		assert res["reserved2"] == 0
+		
+		return res
+	assert False, "Missing tag F00C"
 			
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
+def list_tagF008_symbol(lm_data):
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF008,)):
+		res = tag_reader.read_tag(format.DATA[0xF008], tag)
+		return
+	assert False, "Missing tag F008"
+
+def list_tagF009_symbol(lm_data):
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF009,)):
+		res = tag_reader.read_tag(format.DATA[0xF009], tag)
+		assert res["unk"] == 0
+		return		
+	assert False, "Missing tag F009"
+	
+def list_tagF00A_symbol(lm_data):
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF00A,)):
+		res = tag_reader.read_tag(format.DATA[0xF00A], tag)
+		return		
+	assert False, "Missing tag F00A"
 
 def list_tagF00B_symbol(lm_data):
-	data = lm_data[0x40:]
-	symbol_list = get_symbol_list(data)
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF00B:
-			v, = struct.unpack(">I", data[0x8:0xc])
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
-				(tag_type, off, tag_size_bytes)
-			print "\tunk=", v
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF00B,)):
+		res = tag_reader.read_tag(format.DATA[0xF00B], tag)
+		assert res["unk"] == 1
+		return		
+	assert False, "Missing tag F00B"
 				
-			return v
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-		
-def list_tagF00A_symbol(lm_data):
-	data = lm_data[0x40:]
-	symbol_list = get_symbol_list(data)
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF00A:
-			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
-			v_list = []
-			
-			assert v_cnt == 0, "tag 0xF00A not empty!"
-			
-			for i in range(v_cnt):
-				v = list(struct.unpack(">IIff", data[0xc+i*0x10:0xc+i*0x10+0x10]))
-				v.append(symbol_list[v[1]])
-				v_list.append(v)
-			
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
-				(tag_type, off, tag_size_bytes)
-			for v in v_list:
-				print "\t", v
-				
-			return v_list
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-		
-def list_tagF009_symbol(lm_data):
-	data = lm_data[0x40:]
-	symbol_list = get_symbol_list(data)
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF009:
-			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
-			v_list = []
-			
-			assert v_cnt == 0, "tag 0xF009 not empty!"
-			
-			for i in range(v_cnt):
-				v = list(struct.unpack(">IIff", data[0xc+i*0x10:0xc+i*0x10+0x10]))
-				v.append(symbol_list[v[1]])
-				v_list.append(v)
-			
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
-				(tag_type, off, tag_size_bytes)
-			for v in v_list:
-				print "\t", v
-				
-			return v_list
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-				
-def list_tagF008_symbol(lm_data):
-	data = lm_data[0x40:]
-	symbol_list = get_symbol_list(data)
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF008:
-			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
-			v_list = []
-			
-			assert v_cnt == 0, "tag 0xF008 not empty!"
-			
-			for i in range(v_cnt):
-				v = list(struct.unpack(">IIff", data[0xc+i*0x10:0xc+i*0x10+0x10]))
-				v.append(symbol_list[v[1]])
-				v_list.append(v)
-			
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % \
-				(tag_type, off, tag_size_bytes)
-			for v in v_list:
-				print "\t", v
-				
-			return v_list
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-			
 def list_tagF007_symbol(lm_data, prefix_for_noname=""):
-	data = lm_data[0x40:]
-	symbol_list = get_symbol_list(data)
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF007:
-			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
-			v_list = []
-			for i in range(v_cnt):
-				v = list(struct.unpack(">IIff", data[0xc+i*0x10:0xc+i*0x10+0x10]))
-				
-				# fix noname images
-				fname_idx = v[1]
-				if symbol_list[fname_idx] == "":
-					fname = "noname_%s_0x%x.png" % (prefix_for_noname, v[0])
-				else:
-					fname = symbol_list[fname_idx]
-				v.append(fname)
-				v_list.append(v)
-				
-			return v_list
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
+	symbol_list = get_symbol_list(lm_data[0x40:])
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF007,)):
+		res = tag_reader.read_tag(format.DATA[0xF007], tag)
+		image_list = []
+		for image_info in res["img_list"]:
+			if symbol_list[image_info["name_idx"]] == "":
+				fname = "noname_%s_0x%x.png" % (prefix_for_noname, 
+					image_info["img_idx"])
+			else:
+				fname = symbol_list[image_info["name_idx"]]
+			image_list.append((image_info["img_idx"], image_info["name_idx"], image_info["width"], image_info["height"], fname))
+		return image_list
+	assert False, "Missing tag F007"
 						
 def list_tagF005_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	action_record_list = []
-	action_record_off_list = []
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF005:
-#			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
-#				tag_size_bytes)   
-			cnt, = struct.unpack(">I", data[0x8:0xc])
-			as_off = 0xc
-			for i in xrange(cnt):
-				as_len, = struct.unpack(">I", data[as_off:as_off+0x4])
-				as_record, = struct.unpack(">%ds" % as_len, 
-					data[as_off+0x4:as_off+0x4+as_len])
-				action_record_list.append(as_record)
-				action_record_off_list.append(as_off + off)
-				as_off += 0x4 + (as_len + 3) / 4 * 4
-			return zip(action_record_off_list, action_record_list)
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-	
-	print "as record count %d" % len(action_record_list)
-	return action_record_list
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF005,)):
+		res = tag_reader.read_tag(format.DATA[0xF005], tag)
+		as_list = [(abc["as_len"], abc["bytecode"]) for abc in res["as_list"]]
+		return as_list
+	assert False, "Missing tag F005"
 
 def list_tagF002_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	color_list = []
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF002:
-			color_cnt, = struct.unpack(">I", data[0x8:0xc])
-			for i in xrange(color_cnt):
-				color = struct.unpack(">hhhh", \
-					data[0xc+0x8*i:0xc+0x8*i+0x8])
-				color_list.append(color)
-			break
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-	return color_list
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF002,)):
+		res = tag_reader.read_tag(format.DATA[0xF002], tag)
+		color_list = [(color["R"], color["G"], color["B"], color["A"]) for color in res["color_list"]]
+		return color_list
+	assert False, "Missing tag F002"
 			
 def list_tagF003_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	matrix_list = []
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF003:
-			v_cnt = struct.unpack(">I", data[0x8:0xc])[0]
-			v_list = []
-			for i in range(v_cnt):
-				v_list.append(struct.unpack(">ffffff", data[0xc+i*0x4*6:0xc+i*0x4*6+0x4*6]))
-				matrix_list.append(v_list[-1])
-			break
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
-	return matrix_list
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF003,)):
+		res = tag_reader.read_tag(format.DATA[0xF003], tag)
+		mat_list = [(mat["trans_x"], mat["trans_y"], mat["rotateskew_x"], mat["rotateskew_y"], mat["scale_x"], mat["scale_y"]) for mat in res["mat_list"]]
+		return mat_list
+	assert False, "Missing tag F003"
 					
 def list_tagF00D_symbol(lm_data):
-	data = lm_data[0x40:]
-	off = 0x40
-	while True:
-		_, tag_type, tag_size = struct.unpack(">HHI", data[:0x8])
-		tag_size_bytes = tag_size * 4 + 8
-		if tag_type == 0xF00D:	
-			print "tag:0x%04x, off=0x%x,\tsize=0x%x" % (tag_type, off, \
-				tag_size_bytes)
-			print "\tF022:%d, %d, 0027:%d, %d, %d, %d, %d, %d" % struct.unpack(">IIIIIIII", data[0x8:0x28])
-			break
-		if tag_type == 0xFF00:
-			break
-		off += tag_size_bytes
-		data = data[tag_size_bytes:]
+	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF00D,)):
+		res = tag_reader.read_tag(format.DATA[0xF00D], tag)
+#		assert res["unk6"] in (0, ), "%d" % res["unk6"]
+		
+		return res
 		
 def shuffle_tagF022(lm_data):
 	head = ""
@@ -980,20 +803,22 @@ if __name__ == "__main__":
 			tag_list(data)
 		elif options.tag_id == 0x002b:
 			list_tag002b_symbol(data)
-		elif options.tag_id == 0x0027:
-			list_tagF022_symbol(data)
+		elif options.tag_id == 0x0027 or options.tag_id == 0xF022:
+			res = list_tagF022_symbol(data)
+			for arg in res:
+				print ("tag:0x%04x off=0x%x,\tsize=0x%x,\tCharacterID=%d," + \
+				"\tf024_cnt=%d,f023_cnt=%d\n\tbox=(%.2f,%.2f,%.2f,%.2f)\n") \
+				 % arg
 			print "==============="
-			list_tag0027_symbol(data)
+			res = list_tag0027_symbol(data)
+			for arg in res:
+				print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d\tframe=%d,\tlabel=%d,\tmaxdepth=0x%x,htmltext=%d,key_frame_cnt=%d,unk=%d, %d" % arg
 		elif options.tag_id == 0xF023:
 #			for off in range(0, 0x48, 2):
 #				print "off %x~%x" % (off, off+2)
 #				list_tagF023_symbol(data, off, off+2)
 			list_tagF023_img(data)
-		elif options.tag_id == 0xF022:
-			list_tagF022_symbol(data)
-			print "==============="
-			print "TODO: list tag 0027 here!"
-#			list_tag0027_symbol(data)
+
 		elif options.tag_id == 0x0001:
 			list_tag0001_symbol(data)
 		elif options.tag_id == 0x0004:
@@ -1034,8 +859,8 @@ if __name__ == "__main__":
 		elif options.tag_id == 0xF005:
 			res = list_tagF005_symbol(data)
 			print "Actionscript:"
-			for as_off, as_data in res:
-				print "off=0x%x,\tsize=0x%x" % (as_off, len(as_data))
+			for i, (as_len, bytecode) in enumerate(res):
+				print "%x:\tsize=0x%x" % (i, as_len)
 		elif options.tag_id == 0xF007:
 			v_list = list_tagF007_symbol(data)
 			print "img file info:"
@@ -1051,13 +876,19 @@ if __name__ == "__main__":
 		elif options.tag_id == 0xF00B:
 			list_tagF00B_symbol(data)					
 		elif options.tag_id == 0xF00C:
-		
-			v_list = list_tagF00C_symbol(data)
+
+			res = list_tagF00C_symbol(data)
+			
 			print "Stage info:"
-			print "\t", v_list
+			print "ver = %d%d%d" % (res["v"], res["e"], res["r"])
+			print "max/start character id = %d" % res["max_character_id"]
+			print "stage size (%.2f, %.2f), pos=(%.2f, %.2f), fps = %.2f" % (res["width"], res["height"], res["x"], res["y"], res["fps"])
+			print "UNKNOWN unk = %d" % res["unk"]
+			print "reserved = %d, reserved2 = %d" % (res["reserved"], res["reserved2"])
 			
 		elif options.tag_id == 0xF00D:
-			list_tagF00D_symbol(data)
+			res = list_tagF00D_symbol(data)
+			print "\tF022:%d, 0027:%d" % (res["f022_cnt"], res["0027_cnt"])			
 		elif options.tag_id == 0x0025:
 			res = list_tag0025_symbol(data)
 		elif options.tag_id == 0xF024:
