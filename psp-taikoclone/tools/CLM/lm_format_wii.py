@@ -56,6 +56,7 @@ DATA = {
 		),
 	),
 
+	# bounding rect list
 	0xF004: (
 		("tag_type", 0x4, ">I"),
 		("tag_size", 0x4, ">I"),
@@ -154,14 +155,15 @@ DATA = {
 		("y", 0x4, ">f"),
 	),
 
+	# an overview of all character define tags
 	0xF00D: (
 		("tag_type", 0x4, ">I"),
 		("tag_size", 0x4, ">I"),
-		("f022_cnt", 0x4, ">I"),
-		("0007_cnt", 0x4, ">I"),
-		("0027_cnt", 0x4, ">I"),
+		("f022_cnt", 0x4, ">I"),	# super shape/ texture sprite
+		("0007_cnt", 0x4, ">I"),	# button
+		("0027_cnt", 0x4, ">I"),	# sprite
 		("000b_cnt", 0x4, ">I"),
-		("0025_cnt", 0x4, ">I"),
+		("0025_cnt", 0x4, ">I"),	# edit text
 		("const0_0", 0x4, ">I"),
 		("const1_0", 0x4, ">I"),
 		("const2_0", 0x4, ">I"),
@@ -363,22 +365,22 @@ DATA = {
 	0x0025: (
 		("tag_type", 0x4, ">I"),
 		("tag_size", 0x4, ">I"),
-		("unk0", 0x4, ">I"),
+		("character_id", 0x4, ">I"),
 		("unk1", 0x4, ">I"),		
-		("unk2", 0x4, ">I"),
+		("init_txt_idx", 0x4, ">I"),
 		("unk3", 0x4, ">I"),		
-		("unk4", 0x4, ">I"),
-		("unk5", 0x4, ">I"),		
-		("unk6", 0x4, ">I"),
+		("color_idx", 0x4, ">I"),
+		("rect_idx", 0x4, ">I"),		
+		("var_name_idx", 0x4, ">I"),	# idx of name of variable
 		("unk7", 0x4, ">I"),
 		("unk8", 0x4, ">I"),
 		("unk9", 0x4, ">I"),		
 		("unk10", 0x4, ">I"),
-		("unk11", 0x4, ">f"),		
-		("unk12", 0x4, ">f"),				
-		("unk13", 0x4, ">f"),				
-		("unk14", 0x4, ">f"),				
-		("unk15", 0x4, ">f"),										
+		("font_size", 0x4, ">f"),		
+		("left_margin", 0x4, ">f"),				
+		("right_margin", 0x4, ">f"),				
+		("indent", 0x4, ">f"),				
+		("leading", 0x4, ">f"),										
 	),
 													
 	0xFF00: (

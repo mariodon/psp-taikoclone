@@ -19,6 +19,6 @@ for dirname, _, filenames in os.walk(r"CLM_split"):
 #			rip_gim_wii.list_tag0027_symbol(data, filename)
 #			rip_gim_wii.list_tagF024_img(data)
 #			rip_gim_wii.list_tag0004_symbol(data)
-#			rip_gim_wii.list_tag0007_symbol(data)
-			for off, tag_type, tag_size_bytes, tag in rip_gim_wii.iter_tag(data, (0x9999, )):
-				pass
+			rip_gim_wii.list_tag0025_symbol(data)
+#			for off, tag_type, tag_size_bytes, tag in rip_gim_wii.iter_tag(data, (0x9999, )):
+#				pass
