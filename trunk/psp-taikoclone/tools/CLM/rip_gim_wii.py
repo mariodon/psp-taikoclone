@@ -57,7 +57,7 @@ def iter_tag(lumen, type_set=None):
 		tag_type, tag_size = struct.unpack(">II", lumen[:0x8])
 		tag_size_bytes = tag_size * 4 + 8
 		
-		assert tag_type in format.DATA, "Not Analyzed Tag!!! off=%x 0x%04x" % (off, tag_type)
+#		assert tag_type in format.DATA, "Not Analyzed Tag!!! off=%x 0x%04x" % (off, tag_type)
 		
 		if not _type_set or tag_type in _type_set:
 			yield off, tag_type, tag_size_bytes, lumen
@@ -215,27 +215,21 @@ def list_tag0027_symbol(lm_data, fname=""):
 	symbol_list = get_symbol_list(data)
 	
 	ret = []
-	flag = False
 	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0x0027, )):
 		res = tag_reader.read_tag(format.DATA[0x0027], tag)
 
 		characterID = res["character_id"]
-		unk1, text, frame_label_cnt = res["const0_0"], res["class_name_idx"], res["frame_label_cnt"]
+		unk1, class_name_idx, frame_label_cnt = res["const0_0"], res["class_name_idx"], res["frame_label_cnt"]
 		tag0001_cnt = res["0001_cnt"]
 		key_frame_cnt = res["key_frame_cnt"]
 		max_depth, unk2 = res["max_depth"], res["const1_0"]
-		ret.append((tag_type, off, tag_size_bytes, characterID, tag0001_cnt, frame_label_cnt, max_depth, text, key_frame_cnt, unk1, unk2))
+		class_name = symbol_list[class_name_idx]
+		ret.append((tag_type, off, tag_size_bytes, characterID, tag0001_cnt, frame_label_cnt, max_depth, class_name, key_frame_cnt, unk1, unk2))
 		
 #		assert unk1 == 0
 #		assert text in range(15), fname
 #		assert unk2 == 0
-		if text != 0:
-			print "class %s" % symbol_list[text]
-			flag = True
-#			break
 			
-	if flag:
-		print fname
 	return ret
 	
 def list_tagF022_symbol(lm_data, fname=""):
@@ -669,8 +663,10 @@ def shuffle_tagF022(lm_data):
 	return head+"".join(tagF022_list)+tail
 			
 def list_tag0025_symbol(lm_data):
-#	data = lm_data[0x40:]
-#	symbol_list = get_symbol_list(data)
+	data = lm_data[0x40:]
+	symbol_list = get_symbol_list(data)
+	
+	box_list = list_tagF004_symbol(lm_data)
 	
 	for off, tag_type, tag_size_bytes, tag in iter_tag(lm_data, (0xF00D, 0x0025)):
 		d = tag_reader.read_tag(format.DATA[tag_type], tag)
@@ -678,8 +674,18 @@ def list_tag0025_symbol(lm_data):
 			tag0025_cnt = d["0025_cnt"]
 		elif tag_type == 0x0025:
 			tag0025_cnt -= 1
-			print "0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x" % (d["unk0"], d["unk1"], d["unk2"], d["unk3"], d["unk4"], d["unk5"], d["unk6"], d["unk7"], d["unk8"], d["unk9"], d["unk10"])
-			print "%.2f, %.2f, %.2f, %.2f, %.2f\n" % (d["unk11"], d["unk12"], d["unk13"], d["unk14"], d["unk15"])
+			print "0x%x, 0x%x, 0x%x, 0x%x, 0x%x, 0x%x" % (d["unk1"], d["unk3"], d["unk7"], d["unk8"], d["unk9"], d["unk10"])
+			
+			# A neat print for all known fields of tag 0x0025
+			flags = (d["unk9"] << 32) + d["unk10"]
+			fHTML = flags & 0x1
+			
+			
+			box = box_list[d["rect_idx"]]
+			var_name = symbol_list[d["var_name_idx"]]
+			init_text = symbol_list[d["init_txt_idx"]]
+			print "ID=%d, rect:(%.2f, %.2f, %.2f, %.2f), font_size=%.2f, spacing=(%.2f, %.2f, %.2f, %.2f), var=%s, init_text=%s," % ((d["character_id"],) + tuple(box) + (d["font_size"], d["left_margin"], d["right_margin"], d["indent"], d["leading"], var_name, init_text))
+			
 		if tag0025_cnt == 0:
 			break
 	
@@ -716,7 +722,7 @@ if __name__ == "__main__":
 			print "==============="
 			res = list_tag0027_symbol(data)
 			for arg in res:
-				print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d\tframe=%d,\tlabel=%d,\tmaxdepth=0x%x,htmltext=%d,key_frame_cnt=%d,unk=%d, %d" % arg
+				print "tag:0x%04x, off=0x%x,\tsize=0x%x,\tCharacterID=%d\tframe=%d,\tlabel=%d,\tmaxdepth=0x%x,class_name=%s,key_frame_cnt=%d,unk=%d, %d" % arg
 		elif options.tag_id == 0xF023:
 #			for off in range(0, 0x48, 2):
 #				print "off %x~%x" % (off, off+2)
@@ -760,8 +766,8 @@ if __name__ == "__main__":
 		elif options.tag_id == 0xF004:
 			res = list_tagF004_symbol(data)
 			print "Bounding Box Info:"
-			for v in res:
-				print "\t", v	
+			for i, v in enumerate(res):
+				print "0x%x\t" % i, v	
 		elif options.tag_id == 0xF005:
 			res = list_tagF005_symbol(data)
 			print "Actionscript:"

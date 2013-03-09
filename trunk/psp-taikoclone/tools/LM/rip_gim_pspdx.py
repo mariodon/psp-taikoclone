@@ -746,7 +746,7 @@ if __name__ == "__main__":
 			symbol_list = get_symbol_list(tag)
 			print "symbols:"
 			for i, symbol in enumerate(symbol_list[:65]):
-				print "0x%x\t" % i, symbol.decode("utf8")			
+				print "0x%x\t" % i, symbol			
 		elif options.tag_id == 0xF002:
 			color_list = list_tagF002_symbol(data)
 			if color_list:
