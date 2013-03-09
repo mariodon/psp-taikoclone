@@ -8,7 +8,7 @@ for dirname, _, filenames in os.walk(r"CLM_split"):
 			f = open(os.path.join(dirname, filename), "rb")
 			data = f.read()
 			f.close()
-#			print filename
+			print filename
 #			rip_gim_wii.list_tagF008_symbol(data)
 #			rip_gim_wii.list_tagF009_symbol(data)
 #			rip_gim_wii.list_tagF00A_symbol(data)
@@ -17,4 +17,8 @@ for dirname, _, filenames in os.walk(r"CLM_split"):
 #			rip_gim_wii.list_tagF00D_symbol(data)
 #			rip_gim_wii.list_tagF022_symbol(data, filename)			
 #			rip_gim_wii.list_tag0027_symbol(data, filename)
-			rip_gim_wii.list_tagF024_img(data)			
+#			rip_gim_wii.list_tagF024_img(data)
+#			rip_gim_wii.list_tag0004_symbol(data)
+#			rip_gim_wii.list_tag0007_symbol(data)
+			for off, tag_type, tag_size_bytes, tag in rip_gim_wii.iter_tag(data, (0x9999, )):
+				pass
