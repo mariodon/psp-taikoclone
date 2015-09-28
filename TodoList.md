@@ -1,0 +1,1 @@
+**copy cptbl.dat in flash0 to encodings folder, change code accordingly** use a script to finish scan folder + guessing encoding offline.
